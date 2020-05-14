@@ -11,9 +11,24 @@
             Location = location;
         }
 
+        public void Board(CrewMember? driver, CrewMember? passenger)
+        {
+
+        }
+
+        public void DisembarkDriver(CrewMember driver)
+        {
+
+        }
+
+        public void DisembarkPassenger(CrewMember passenger)
+        {
+
+        }
+
         public void Move(Place location)
         {
-            
+
         }
     }
 }
