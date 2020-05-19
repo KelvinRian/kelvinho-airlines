@@ -32,7 +32,7 @@ namespace kelvinho_airlines.Entities.Places
                 crewMembers.AppendLine($"{crewMember.GetType().Name} : {crewMember.Name}");
             }
 
-            return $"Terminal:\n\n{crewMembers.ToString()}";
+            return $"Terminal:\n\n{crewMembers}";
         }
     }
 }
