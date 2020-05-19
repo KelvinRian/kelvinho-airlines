@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Runtime.ConstrainedExecution;
 
 namespace kelvinho_airlines.Entities
 {
@@ -6,7 +7,12 @@ namespace kelvinho_airlines.Entities
     {
         public List<CrewMember> CrewMembers { get; protected set; }
 
-        public abstract void Board(params CrewMember[] crewMembers);
+        public Place()
+        {
+            CrewMembers = new List<CrewMember>();
+        }
+
+        public abstract void Board(List<CrewMember> crewMembers);
         public abstract void Disembark(params CrewMember[] crewMembers);
     }
 }

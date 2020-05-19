@@ -6,7 +6,7 @@
         public CrewMember Passenger { get; protected set; }
         public Place Location { get; protected set; }
 
-        public SmartFortwo(Place location)
+        public SmartFortwo(Place location) : base()
         {
             Location = location;
         }

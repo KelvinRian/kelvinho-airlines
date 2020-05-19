@@ -2,5 +2,9 @@
 {
     public class Policeman : CrewMember
     {
+        public Policeman(string name) : base(name)
+        {
+
+        }
     }
 }

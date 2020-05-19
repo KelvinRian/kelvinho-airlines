@@ -2,5 +2,9 @@
 {
     public class FlightAttendant : CrewMember
     {
+        public FlightAttendant(string name) : base(name)
+        {
+
+        }
     }
 }
