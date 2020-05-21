@@ -11,6 +11,16 @@ namespace kelvinho_airlines.Entities.Places
             Board(crewMembers);
         }
 
+        public Terminal(List<CrewMember> crewMembers, SmartFortwo smartFortwo) : base()
+        {
+            if (!string.IsNullOrEmpty(smartFortwo.Location))
+            {
+                throw new ArgumentException("You can't set a smart fortwo that already had a location at constructor");
+            }
+            SetSmartFortwo(smartFortwo);
+            Board(crewMembers);
+        }
+
         public override void Board(List<CrewMember> crewMembers)
         {
             foreach(var crewMember in crewMembers)

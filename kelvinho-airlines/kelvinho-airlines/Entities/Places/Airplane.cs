@@ -4,6 +4,11 @@ namespace kelvinho_airlines.Entities.Places
 {
     public class Airplane : Place
     {
+        public Airplane() : base()
+        {
+
+        }
+
         public override void Board(List<CrewMember> crewMembers)
         {
             throw new System.NotImplementedException();
