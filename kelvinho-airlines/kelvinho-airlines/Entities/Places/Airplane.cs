@@ -9,12 +9,7 @@ namespace kelvinho_airlines.Entities.Places
 
         }
 
-        public override void Board(List<CrewMember> crewMembers)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public override void Disembark(params CrewMember[] crewMembers)
+        public override void Disembark(List<CrewMember> crewMembers)
         {
             throw new System.NotImplementedException();
         }

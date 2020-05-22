@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Common;
-using System.Runtime.ConstrainedExecution;
+﻿using System.Collections.Generic;
+using System.Text;
 
 namespace kelvinho_airlines.Entities
 {
@@ -26,8 +24,28 @@ namespace kelvinho_airlines.Entities
             SmartFortwo = null;
         }
 
-        public abstract void Board(List<CrewMember> crewMembers);
+        public void Board(List<CrewMember> crewMembers)
+        {
+            foreach (var crewMember in crewMembers)
+            {
+                CrewMembers.Add(crewMember);
+            }
+        }
 
-        public abstract void Disembark(params CrewMember[] crewMembers);
+        public abstract void Disembark(List<CrewMember> crewMembers);
+
+        public override string ToString()
+        {
+            StringBuilder crewMembers = new StringBuilder();
+            foreach (var crewMember in CrewMembers)
+            {
+                crewMembers.AppendLine($"{crewMember.GetType().Name} : {crewMember.Name}");
+            }
+
+            if (crewMembers.Length == 0)
+                return $"{GetType().Name}: This place is empty";
+
+            return $"{GetType().Name}:\n\n{crewMembers}";
+        }
     }
 }

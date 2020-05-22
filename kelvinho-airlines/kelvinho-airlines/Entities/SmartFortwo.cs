@@ -24,14 +24,16 @@
             }
         }
 
-        public void DisembarkDriver(CrewMember driver)
+        public void DisembarkDriver()
         {
 
         }
 
-        public void DisembarkPassenger(CrewMember passenger)
+        public CrewMember DisembarkPassenger()
         {
-
+            var passenger = Passenger;
+            Passenger = null;
+            return passenger;
         }
 
         public void Move(Place location)
@@ -41,7 +43,10 @@
 
         public override string ToString()
         {
-            return $"Driver: {Driver.Name}\nPassenger: {Passenger.Name}\nLocation: {Location}";
+            var driver = Driver != null ? Driver.Name : "Empty";
+            var passenger = Passenger != null ? Passenger.Name : "Empty";
+
+            return $"Smart Fortwo: \n\nDriver: {driver}\nPassenger: {passenger}\nLocation: {Location}";
         }
     }
 }

@@ -4,8 +4,9 @@ namespace kelvinho_airlines.Services.Interfaces
 {
     public interface ITripService
     {
-        void DisembarkDriver(Place place);
-        void DisembarkPassenger(Place place);
+        void BoardTheSmartFortwo(Place place, CrewMember driver, CrewMember passenger);
+        void DisembarkDriverFromSmartFortwo(Place place);
+        void DisembarkPassengerFromSmartFortwo(Place place);
         void Move(Place origin, Place destiny);
     }
 }

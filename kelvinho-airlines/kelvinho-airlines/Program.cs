@@ -25,19 +25,28 @@ namespace kelvinho_airlines
             var terminal = new Terminal(crewMembers, new SmartFortwo());
             var airplane = new Airplane();
 
-            //This method should be updated to get only crewmembers of the place where the smartFortwo is
-            terminal.SmartFortwo.Board(crewMembers[0], crewMembers[1]);
+            Console.WriteLine("Started\n");
+            Console.WriteLine($"{terminal.SmartFortwo}\n");
+            Console.WriteLine(terminal);
+            Console.WriteLine(airplane);
+            Console.WriteLine("______________________________________");
 
-            Console.WriteLine(terminal.SmartFortwo);
-            Console.WriteLine(airplane.SmartFortwo);
+            Console.WriteLine("Boarding\n");
+            _tripService.BoardTheSmartFortwo(terminal, crewMembers[0], crewMembers[1]);
+            Console.WriteLine($"{terminal.SmartFortwo}\n");
+            Console.WriteLine(terminal);
+            Console.WriteLine(airplane);
+            Console.WriteLine("______________________________________");
 
             _tripService.Move(terminal, airplane);
-            Console.WriteLine("\nMoved :)\n");
+            Console.WriteLine("moving :)");
+            Console.WriteLine("______________________________________");
 
-            Console.WriteLine(terminal.SmartFortwo);
-            Console.WriteLine(airplane.SmartFortwo);
-
-
+            Console.WriteLine("Disembarking");
+            _tripService.DisembarkPassengerFromSmartFortwo(airplane);
+            Console.WriteLine($"\n{airplane.SmartFortwo}");
+            Console.WriteLine($"\n{terminal}");
+            Console.WriteLine(airplane);
         }
     }
 }
