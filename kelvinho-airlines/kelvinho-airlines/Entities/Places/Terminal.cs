@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace kelvinho_airlines.Entities.Places
 {
@@ -11,22 +9,11 @@ namespace kelvinho_airlines.Entities.Places
             Board(crewMembers);
         }
 
-        public Terminal(List<CrewMember> crewMembers, SmartFortwo smartFortwo) : base()
+        public static Terminal StartWithASmartFortwo(List<CrewMember> crewMembers)
         {
-            if (!string.IsNullOrEmpty(smartFortwo.Location))
-            {
-                throw new ArgumentException("You can't set a smart fortwo that already had a location at constructor");
-            }
-            SetSmartFortwo(smartFortwo);
-            Board(crewMembers);
-        }
-
-        public override void Disembark(List<CrewMember> crewMembers)
-        {
-            foreach (var crewMember in crewMembers)
-            {
-                CrewMembers.Remove(crewMember);
-            }
+            var terminal = new Terminal(crewMembers);
+            terminal.SetSmartFortwo(new SmartFortwo());
+            return terminal;
         }
     }
 }

@@ -10,7 +10,7 @@ namespace kelvinho_airlines
     {
         static void Main(string[] args)
         {
-            var _tripService = new TripService();
+            var _smartFotwoService = new SmartFortwoService();
 
             List<CrewMember> crewMembers = new List<CrewMember>();
             crewMembers.Add(new Pilot("Soler"));
@@ -22,7 +22,7 @@ namespace kelvinho_airlines
             crewMembers.Add(new Policeman("Tyler"));
             crewMembers.Add(new Prisoner("Mankalão"));
 
-            var terminal = new Terminal(crewMembers, new SmartFortwo());
+            var terminal = Terminal.StartWithASmartFortwo(crewMembers);
             var airplane = new Airplane();
 
             Console.WriteLine("Started\n");
@@ -32,18 +32,18 @@ namespace kelvinho_airlines
             Console.WriteLine("______________________________________");
 
             Console.WriteLine("Boarding\n");
-            _tripService.BoardTheSmartFortwo(terminal, crewMembers[0], crewMembers[1]);
+            _smartFotwoService.Board(terminal, crewMembers[0], crewMembers[1]);
             Console.WriteLine($"{terminal.SmartFortwo}\n");
             Console.WriteLine(terminal);
             Console.WriteLine(airplane);
             Console.WriteLine("______________________________________");
 
-            _tripService.Move(terminal, airplane);
+            _smartFotwoService.Move(terminal, airplane);
             Console.WriteLine("moving :)");
             Console.WriteLine("______________________________________");
 
             Console.WriteLine("Disembarking");
-            _tripService.DisembarkPassengerFromSmartFortwo(airplane);
+            _smartFotwoService.DisembarkPassenger(airplane);
             Console.WriteLine($"\n{airplane.SmartFortwo}");
             Console.WriteLine($"\n{terminal}");
             Console.WriteLine(airplane);

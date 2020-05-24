@@ -5,9 +5,9 @@ using System.Collections.Generic;
 
 namespace kelvinho_airlines.Services
 {
-    public class TripService : ITripService
+    public class SmartFortwoService : ISmartFortwoService
     {
-        public void BoardTheSmartFortwo(Place place, CrewMember driver, CrewMember passenger)
+        public void Board(Place place, CrewMember driver, CrewMember passenger)
         {
             if (place == null)
                 throw new ArgumentException("Place should not be null");
@@ -25,12 +25,12 @@ namespace kelvinho_airlines.Services
             place.SmartFortwo.Board(driver, passenger);
         }
 
-        public void DisembarkDriverFromSmartFortwo(Place place)
+        public void DisembarkDriver(Place place)
         {
             throw new System.NotImplementedException();
         }
 
-        public void DisembarkPassengerFromSmartFortwo(Place place)
+        public void DisembarkPassenger(Place place)
         {
             if (place == null)
                 throw new ArgumentException("Place should not be null");

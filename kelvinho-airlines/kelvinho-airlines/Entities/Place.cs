@@ -6,7 +6,7 @@ namespace kelvinho_airlines.Entities
     public abstract class Place
     {
         public List<CrewMember> CrewMembers { get; protected set; }
-        public SmartFortwo SmartFortwo { get; protected set; }
+        public SmartFortwo SmartFortwo { get; private set; }
 
         public Place()
         {
@@ -32,7 +32,13 @@ namespace kelvinho_airlines.Entities
             }
         }
 
-        public abstract void Disembark(List<CrewMember> crewMembers);
+        public void Disembark(List<CrewMember> crewMembers)
+        {
+            foreach (var crewMember in crewMembers)
+            {
+                CrewMembers.Remove(crewMember);
+            }
+        }
 
         public override string ToString()
         {

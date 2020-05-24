@@ -8,10 +8,5 @@ namespace kelvinho_airlines.Entities.Places
         {
 
         }
-
-        public override void Disembark(List<CrewMember> crewMembers)
-        {
-            throw new System.NotImplementedException();
-        }
     }
 }
