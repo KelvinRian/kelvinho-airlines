@@ -38,11 +38,6 @@
             return passenger;
         }
 
-        public void Move(Place location)
-        {
-
-        }
-
         public override string ToString()
         {
             var driver = Driver != null ? Driver.Name : "Empty";

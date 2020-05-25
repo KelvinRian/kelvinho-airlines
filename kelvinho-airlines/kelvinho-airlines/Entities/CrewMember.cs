@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace kelvinho_airlines.Entities
+﻿namespace kelvinho_airlines.Entities
 {
     public abstract class CrewMember : BaseEntity
     {

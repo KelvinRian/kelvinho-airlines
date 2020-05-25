@@ -16,9 +16,9 @@ namespace kelvinho_airlines.Services
                 throw new ArgumentException("This place doesn't have a smart fortwo to board");
 
             var crewMembers = new List<CrewMember>
-            { 
+            {
                 driver,
-                passenger 
+                passenger
             };
 
             place.Disembark(crewMembers);
