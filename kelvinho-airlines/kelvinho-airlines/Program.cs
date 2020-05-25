@@ -47,6 +47,18 @@ namespace kelvinho_airlines
             Console.WriteLine($"\n{airplane.SmartFortwo}");
             Console.WriteLine($"\n{terminal}");
             Console.WriteLine(airplane);
+            Console.WriteLine("______________________________________");
+
+            _smartFotwoService.Move(airplane, terminal);
+            Console.WriteLine("moving :)");
+            Console.WriteLine("______________________________________");
+
+            Console.WriteLine("Disembarking");
+            _smartFotwoService.DisembarkDriver(terminal);
+            Console.WriteLine($"\n{terminal.SmartFortwo}");
+            Console.WriteLine($"\n{terminal}");
+            Console.WriteLine(airplane);
+            Console.WriteLine("______________________________________");
         }
     }
 }

@@ -27,7 +27,17 @@ namespace kelvinho_airlines.Services
 
         public void DisembarkDriver(Place place)
         {
-            throw new System.NotImplementedException();
+            if (place == null)
+                throw new ArgumentException("Place should not be null");
+
+            if (place.SmartFortwo == null)
+                throw new ArgumentException("The smart fortwo isn't at the place");
+
+            if (place.SmartFortwo.Driver == null)
+                throw new ArgumentException("There is no driver in the smart fortwo");
+
+            var driver = place.SmartFortwo.DisembarkDriver();
+            place.Board(new List<CrewMember> { driver });
         }
 
         public void DisembarkPassenger(Place place)

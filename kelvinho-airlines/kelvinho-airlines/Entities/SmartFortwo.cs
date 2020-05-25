@@ -24,9 +24,11 @@
             }
         }
 
-        public void DisembarkDriver()
+        public CrewMember DisembarkDriver()
         {
-
+            var driver = Driver;
+            Driver = null;
+            return driver;
         }
 
         public CrewMember DisembarkPassenger()
