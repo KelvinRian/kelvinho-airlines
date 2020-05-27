@@ -7,6 +7,18 @@ namespace kelvinho_airlines.Services
 {
     public class SmartFortwoService : ISmartFortwoService
     {
+        private List<string> drivers;
+        
+        public SmartFortwoService()
+        {
+            drivers = new List<string>()
+            {
+                "Pilot",
+                "Policeman",
+                "FlightServiceChief"
+            };
+        }
+
         public void Board(Place place, CrewMember driver, CrewMember passenger)
         {
             if (place == null)
@@ -65,6 +77,9 @@ namespace kelvinho_airlines.Services
 
             if (origin.SmartFortwo.Driver == null)
                 throw new ArgumentException("Smart Fortwo can't move without a driver");
+
+            if (!drivers.Contains(origin.SmartFortwo.Driver.GetType().Name))
+                throw new ArgumentException($"{origin.SmartFortwo.Driver.Name} is not authorized to drive this vehicle");
 
             destiny.SetSmartFortwo(origin.SmartFortwo);
             origin.RemoveSmartFortwo();
