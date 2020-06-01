@@ -11,11 +11,11 @@ namespace kelvinho_airlines.Entities
         {
             Name = name;
 
-            if (GetType().Name == "Pilot" || GetType().Name == "Officer")
+            if (this is Pilot || this is Officer)
             {
                 CrewType = CrewType.Technical;
             }
-            else if (GetType().Name == "FlightServiceChief" || GetType().Name == "FlightAttendant")
+            else if (this is FlightServiceChief || this is FlightAttendant)
             {
                 CrewType = CrewType.Cabin;
             }
