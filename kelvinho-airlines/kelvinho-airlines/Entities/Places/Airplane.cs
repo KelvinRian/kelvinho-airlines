@@ -1,5 +1,6 @@
 ﻿using kelvinho_airlines.Enums;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace kelvinho_airlines.Entities.Places
@@ -17,10 +18,12 @@ namespace kelvinho_airlines.Entities.Places
             CommonCrew = new List<CrewMember>();
         }
 
-        public override void Board(List<CrewMember> crewMembers)
+        public override void Board(HashSet<CrewMember> crewMembers)
         {
             foreach (var crewMember in crewMembers)
             {
+                CrewMembers.Add(crewMember);
+
                 if (crewMember.CrewType == CrewType.Technical)
                 {
                     TechnicalCrew.Add(crewMember);
@@ -36,10 +39,12 @@ namespace kelvinho_airlines.Entities.Places
             }
         }
 
-        public override void Disembark(List<CrewMember> crewMembers)
+        public override void Disembark(HashSet<CrewMember> crewMembers)
         {
             foreach (var crewMember in crewMembers)
             {
+                CrewMembers.Remove(crewMember);
+
                 if (crewMember.CrewType == CrewType.Technical)
                 {
                     TechnicalCrew.Remove(crewMember);

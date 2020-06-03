@@ -27,7 +27,7 @@ namespace kelvinho_airlines.Services
             if (place.SmartFortwo == null)
                 throw new ArgumentException("This place doesn't have a smart fortwo to board");
 
-            var crewMembers = new List<CrewMember>
+            var crewMembers = new HashSet<CrewMember>
             {
                 driver,
                 passenger
@@ -49,7 +49,7 @@ namespace kelvinho_airlines.Services
                 throw new ArgumentException("There is no driver in the smart fortwo");
 
             var driver = place.SmartFortwo.DisembarkDriver();
-            place.Board(new List<CrewMember> { driver });
+            place.Board(new HashSet<CrewMember> { driver });
         }
 
         public void DisembarkPassenger(Place place)
@@ -64,7 +64,7 @@ namespace kelvinho_airlines.Services
                 throw new ArgumentException("There is no passenger in the smart fortwo");
 
             var passenger = place.SmartFortwo.DisembarkPassenger();
-            place.Board(new List<CrewMember> { passenger });
+            place.Board(new HashSet<CrewMember> { passenger });
         }
 
         public void Move(Place origin, Place destiny)
@@ -83,6 +83,12 @@ namespace kelvinho_airlines.Services
 
             destiny.SetSmartFortwo(origin.SmartFortwo);
             origin.RemoveSmartFortwo();
+        }
+
+        private void VerifyCrewMembersMovement(Place place)
+        {
+            //TODO
+            //To verify in this method wheter there are crewmbers that cannot be together in the place and in the smartfortwo
         }
     }
 }

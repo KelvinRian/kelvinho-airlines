@@ -5,22 +5,20 @@ namespace kelvinho_airlines.Entities.Places
 {
     public class Terminal : Place
     {
-        public List<CrewMember> CrewMembers { get; set; }
 
-        public Terminal(List<CrewMember> crewMembers) : base()
+        public Terminal(HashSet<CrewMember> crewMembers) : base()
         {
-            CrewMembers = new List<CrewMember>();
             Board(crewMembers);
         }
 
-        public static Terminal StartWithASmartFortwo(List<CrewMember> crewMembers)
+        public static Terminal StartWithASmartFortwo(HashSet<CrewMember> crewMembers)
         {
             var terminal = new Terminal(crewMembers);
             terminal.SetSmartFortwo(new SmartFortwo());
             return terminal;
         }
 
-        public override void Board(List<CrewMember> crewMembers)
+        public override void Board(HashSet<CrewMember> crewMembers)
         {
             foreach (var crewMember in crewMembers)
             {
@@ -28,7 +26,7 @@ namespace kelvinho_airlines.Entities.Places
             }
         }
 
-        public override void Disembark(List<CrewMember> crewMembers)
+        public override void Disembark(HashSet<CrewMember> crewMembers)
         {
             foreach (var crewMember in crewMembers)
             {

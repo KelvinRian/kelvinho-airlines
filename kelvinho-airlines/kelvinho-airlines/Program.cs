@@ -3,6 +3,7 @@ using kelvinho_airlines.Entities.Places;
 using kelvinho_airlines.Services;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace kelvinho_airlines
 {
@@ -12,7 +13,7 @@ namespace kelvinho_airlines
         {
             var _smartFotwoService = new SmartFortwoService();
 
-            List<CrewMember> crewMembers = new List<CrewMember>();
+            HashSet<CrewMember> crewMembers = new HashSet<CrewMember>();
             crewMembers.Add(new Pilot("Soler"));
             crewMembers.Add(new Officer("Coleta"));
             crewMembers.Add(new Officer("Ivan"));
@@ -32,7 +33,7 @@ namespace kelvinho_airlines
             Console.WriteLine("______________________________________");
 
             Console.WriteLine("Boarding\n");
-            _smartFotwoService.Board(terminal, crewMembers[0], crewMembers[1]);
+            _smartFotwoService.Board(terminal, crewMembers.First(), crewMembers.Last());
             Console.WriteLine($"{terminal.SmartFortwo}\n");
             Console.WriteLine(terminal);
             Console.WriteLine(airplane);
@@ -61,7 +62,7 @@ namespace kelvinho_airlines
             Console.WriteLine("______________________________________");
 
             Console.WriteLine("Boarding\n");
-            _smartFotwoService.Board(terminal, crewMembers[4], crewMembers[7]);
+            _smartFotwoService.Board(terminal, crewMembers.First(), crewMembers.Last());
             Console.WriteLine($"{terminal.SmartFortwo}\n");
             Console.WriteLine(terminal);
             Console.WriteLine(airplane);
