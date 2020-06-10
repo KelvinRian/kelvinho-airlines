@@ -41,9 +41,12 @@
         public override string ToString()
         {
             var driver = Driver != null ? Driver.Name : "Empty";
-            var passenger = Passenger != null ? Passenger.Name : "Empty";
+            var driverType = Driver != null ? Driver.GetType().Name : "";
 
-            return $"Smart Fortwo: \n\nDriver: {driver}\nPassenger: {passenger}\nLocation: {Location}";
+            var passenger = Passenger != null ? Passenger.Name : "Empty";
+            var passengerType = Passenger != null ? Passenger.GetType().Name : "";
+
+            return $"Smart Fortwo: \n\nDriver: {driverType} {driver}\nPassenger: {passengerType} {passenger}\nLocation: {Location}";
         }
     }
 }
