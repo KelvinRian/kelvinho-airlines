@@ -39,7 +39,7 @@ namespace kelvinho_airlines
             Console.WriteLine("______________________________________");
 
             Console.WriteLine("Boarding\n");
-            _smartFotwoService.Board(terminal, crewMembers.Last(), crewMembers.First());
+            _smartFotwoService.Board(terminal, crewMembers.First(), crewMembers.Last());
             Console.WriteLine($"{terminal.SmartFortwo}\n");
             Console.WriteLine(terminal);
             Console.WriteLine(airplane);

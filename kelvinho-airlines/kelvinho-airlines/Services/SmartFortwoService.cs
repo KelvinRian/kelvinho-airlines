@@ -121,7 +121,7 @@ namespace kelvinho_airlines.Services
                 List<CrewMember> crewMembersThatCannotBeTogether = new List<CrewMember>();
                 foreach (var crewMemberAtPlace in crewMembers)
                 {
-                    if (crewMember.CantBeAloneWith.Contains(crewMemberAtPlace.GetType().Name))
+                    if (crewMember.CantStayAloneWith.Contains(crewMemberAtPlace.GetType()))
                         crewMembersThatCannotBeTogether.Add(crewMemberAtPlace);
                 }
 

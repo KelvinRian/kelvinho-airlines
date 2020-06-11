@@ -4,7 +4,8 @@
     {
         public Officer(string name) : base(name)
         {
-
+            CantStayAloneWith.Add(typeof(Prisoner));
+            CantStayAloneWith.Add(typeof(FlightServiceChief));
         }
     }
 }
