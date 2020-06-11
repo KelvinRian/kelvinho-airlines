@@ -2,23 +2,16 @@
 using kelvinho_airlines.Services.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Resources;
 
 namespace kelvinho_airlines.Services
 {
     public class SmartFortwoService : ISmartFortwoService
     {
-        private readonly List<string> drivers;
+        private readonly List<Type> _drivers;
 
-        public SmartFortwoService()
+        public SmartFortwoService(List<Type> drivers)
         {
-            drivers = new List<string>()
-            {
-                "Pilot",
-                "Policeman",
-                "FlightServiceChief"
-            };
+            _drivers = drivers;
         }
 
         public void Board(Place place, CrewMember driver, CrewMember passenger)
@@ -28,6 +21,9 @@ namespace kelvinho_airlines.Services
 
             if (place.SmartFortwo == null)
                 throw new ArgumentException("This place doesn't have a smart fortwo to board");
+
+            if (!_drivers.Contains(driver.GetType()))
+                throw new ArgumentException($"{driver.Name} is not authorized to drive this vehicle");
 
             var crewMembers = new HashSet<CrewMember>
             {
@@ -79,9 +75,6 @@ namespace kelvinho_airlines.Services
 
             if (origin.SmartFortwo.Driver == null)
                 throw new ArgumentException("Smart Fortwo can't move without a driver");
-
-            if (!drivers.Contains(origin.SmartFortwo.Driver.GetType().Name))
-                throw new ArgumentException($"{origin.SmartFortwo.Driver.Name} is not authorized to drive this vehicle");
 
             //Refatorar
             VerifyCrewMembersMovement(origin.CrewMembers);

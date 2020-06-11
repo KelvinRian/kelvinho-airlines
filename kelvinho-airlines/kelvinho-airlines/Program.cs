@@ -11,7 +11,13 @@ namespace kelvinho_airlines
     {
         static void Main(string[] args)
         {
-            var _smartFotwoService = new SmartFortwoService();
+            var drivers = new List<Type>()
+            {
+                typeof(Pilot),
+                typeof(Policeman),
+                typeof(FlightServiceChief)
+            };
+            var _smartFotwoService = new SmartFortwoService(drivers);
 
             HashSet<CrewMember> crewMembers = new HashSet<CrewMember>();
             crewMembers.Add(new Pilot("Soler"));
@@ -19,7 +25,7 @@ namespace kelvinho_airlines
             crewMembers.Add(new Officer("Ivan"));
             crewMembers.Add(new FlightServiceChief("Kelvin"));
             crewMembers.Add(new FlightAttendant("Pâmela"));
-            crewMembers.Add(new FlightAttendant("Nadia"));
+            crewMembers.Add(new FlightAttendant("Guerreiro"));
             crewMembers.Add(new Policeman("Tyler"));
             crewMembers.Add(new Prisoner("Mankalão"));
 
@@ -33,7 +39,7 @@ namespace kelvinho_airlines
             Console.WriteLine("______________________________________");
 
             Console.WriteLine("Boarding\n");
-            _smartFotwoService.Board(terminal, crewMembers.First(), crewMembers.Last());
+            _smartFotwoService.Board(terminal, crewMembers.Last(), crewMembers.First());
             Console.WriteLine($"{terminal.SmartFortwo}\n");
             Console.WriteLine(terminal);
             Console.WriteLine(airplane);
