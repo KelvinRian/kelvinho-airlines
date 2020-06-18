@@ -14,12 +14,12 @@ namespace kelvinho_airlines.Services
             _drivers = drivers;
         }
 
-        public void Board(Place place, CrewMember driver, CrewMember passenger)
+        public void Board(Place originPlace, CrewMember driver, CrewMember passenger)
         {
-            if (place == null)
+            if (originPlace == null)
                 throw new ArgumentException("Place should not be null");
 
-            if (place.SmartFortwo == null)
+            if (originPlace.SmartFortwo == null)
                 throw new ArgumentException("This place doesn't have a smart fortwo to board");
 
             if (!_drivers.Contains(driver.GetType()))
@@ -31,8 +31,8 @@ namespace kelvinho_airlines.Services
                 passenger
             };
 
-            place.Disembark(crewMembers);
-            place.SmartFortwo.Board(driver, passenger);
+            originPlace.Disembark(crewMembers);
+            originPlace.SmartFortwo.Board(driver, passenger);
         }
 
         public void DisembarkDriver(Place place)
@@ -78,7 +78,12 @@ namespace kelvinho_airlines.Services
 
             //Refatorar
             VerifyCrewMembersMovement(origin.CrewMembers);
-            VerifyCrewMembersMovement(new List<CrewMember> { origin.SmartFortwo.Driver, origin.SmartFortwo.Passenger });
+
+            var crewMembersInSmartFortwo = new List<CrewMember> { origin.SmartFortwo.Driver };
+            if (origin.SmartFortwo.Passenger != null)
+                crewMembersInSmartFortwo.Add(origin.SmartFortwo.Passenger);
+
+            VerifyCrewMembersMovement(crewMembersInSmartFortwo);
 
             destiny.SetSmartFortwo(origin.SmartFortwo);
             origin.RemoveSmartFortwo();
@@ -87,34 +92,32 @@ namespace kelvinho_airlines.Services
         //Refatorar
         private void VerifyCrewMembersMovement(IEnumerable<CrewMember> crewMembers)
         {
-            //Hashset que recebe uma cópia da lista passada por parâmetro para poder utilizar o método
-            //intersctWith sem perder dados da lista principal
-            HashSet<CrewMember> crewMembersToCapare = new HashSet<CrewMember>();
+            HashSet<CrewMember> crewMembersBase = new HashSet<CrewMember>();
             foreach (var crewMember in crewMembers)
             {
-                crewMembersToCapare.Add(crewMember);
+                crewMembersBase.Add(crewMember);
             }
 
-            //Para cada crewMember na lista, é verificado se existe um tipo de crewMember que não pode estar acompanhado
-            //do crewMember em questâo sem a presença de outro crewMember, se existir, é armazenado o tipo desse crewmember em outra lista
             foreach (var crewMember in crewMembers)
             {
-                //Como o prisioneiro nao pode ficar junto com os outros tripulantes sem a presença de um policial
-                //é realizado esse foreach pra verificar se existe um policial quando o crewMember analisado é um prisioneiro
+                var crewMembersToCompare = new HashSet<CrewMember>();
+                foreach (var member in crewMembersBase)
+                {
+                    crewMembersToCompare.Add(member);
+                }
+
                 if (crewMember is Prisoner)
                 {
                     bool hasPoliceman = false;
-                    bool hasMoreOneCrewMember = false;
                     foreach (var crewMemberAtPlace in crewMembers)
                     {
                         if (crewMemberAtPlace is Policeman)
+                        {
                             hasPoliceman = true;
-
-                        else if (!(crewMemberAtPlace is Prisoner))
-                            hasMoreOneCrewMember = true;
-
+                            break;
+                        }
                     }
-                    if (!hasPoliceman && hasMoreOneCrewMember)
+                    if (!hasPoliceman)
                         throw new ArgumentException("The prisoner can't stay with the crew members without a policeman");
                 }
 
@@ -125,10 +128,8 @@ namespace kelvinho_airlines.Services
                         crewMembersThatCannotBeTogether.Add(crewMemberAtPlace);
                 }
 
-                //após a chamada do método intersectWith, se restar algum crewmember significa que possuí outro tipo de crewmember no lugar
-                //o que faz com que a movimentacao seja valida
-                crewMembersToCapare.IntersectWith(crewMembersThatCannotBeTogether);
-                if (crewMembersToCapare.Count == 0)
+                crewMembersToCompare.IntersectWith(crewMembersThatCannotBeTogether);
+                if (crewMembersThatCannotBeTogether.Count > 0 && crewMembersToCompare.Count == 0)
                     throw new ArgumentException("There is some crewMember who is accompanied by someone who should not");
             }
         }

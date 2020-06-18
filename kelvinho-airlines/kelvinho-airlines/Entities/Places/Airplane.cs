@@ -65,22 +65,30 @@ namespace kelvinho_airlines.Entities.Places
             StringBuilder technicalCrew = new StringBuilder();
             foreach(var crewMember in TechnicalCrew)
             {
-                technicalCrew.AppendLine($"{crewMember.GetType().Name} : {crewMember.Name}");
+                if (technicalCrew.Length > 0)
+                    technicalCrew.Append("   |   ");
+
+                technicalCrew.Append($"{crewMember.GetType().Name}: {crewMember.Name}");
             }
 
             StringBuilder cabinCrew = new StringBuilder();
             foreach (var crewMember in CabinCrew)
             {
-                cabinCrew.AppendLine($"{crewMember.GetType().Name} : {crewMember.Name}");
+                if (cabinCrew.Length > 0)
+                    cabinCrew.Append("  |   ");
+
+                cabinCrew.Append($"{crewMember.GetType().Name}: {crewMember.Name}");
             }
 
             StringBuilder commonCrew = new StringBuilder();
             foreach (var crewMember in CabinCrew)
             {
-                commonCrew.AppendLine($"{crewMember.GetType().Name} : {crewMember.Name}");
+                if (commonCrew.Length > 0)
+                    commonCrew.Append("   |   ");
+                commonCrew.Append($"{crewMember.GetType().Name}: {crewMember.Name}");
             }
 
-            return $"Airplane:\n\nTechnical Crew:\n\n{technicalCrew}\nCabin Crew:\n\n{cabinCrew}\nCommon Crew:\n\n{commonCrew}\n";
+            return $"Airplane:\n\nTechnical Crew:   {technicalCrew}\n\nCabin Crew:   {cabinCrew}\n\nCommon Crew:   {commonCrew}";
         }
     }
 }

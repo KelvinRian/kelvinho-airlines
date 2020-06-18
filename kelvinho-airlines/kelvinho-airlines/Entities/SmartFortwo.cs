@@ -46,7 +46,7 @@
             var passenger = Passenger != null ? Passenger.Name : "Empty";
             var passengerType = Passenger != null ? Passenger.GetType().Name : "";
 
-            return $"Smart Fortwo: \n\nDriver: {driverType} {driver}\nPassenger: {passengerType} {passenger}\nLocation: {Location}";
+            return $"Smart Fortwo:   |   Driver: {driverType} {driver}   |   Passenger: {passengerType} {passenger}   |   Location: {Location}";
         }
     }
 }
