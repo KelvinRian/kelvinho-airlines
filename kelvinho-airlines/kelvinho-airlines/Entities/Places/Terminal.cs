@@ -26,7 +26,7 @@ namespace kelvinho_airlines.Entities.Places
             }
         }
 
-        public override void Disembark(HashSet<CrewMember> crewMembers)
+        public override void Disembark(List<CrewMember> crewMembers)
         {
             foreach (var crewMember in crewMembers)
             {

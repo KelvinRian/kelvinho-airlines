@@ -2,6 +2,7 @@
 using kelvinho_airlines.Services.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace kelvinho_airlines.Services
 {
@@ -14,7 +15,7 @@ namespace kelvinho_airlines.Services
             _drivers = drivers;
         }
 
-        public void Board(Place originPlace, CrewMember driver, CrewMember passenger)
+        public List<CrewMember> Board(Place originPlace, CrewMember driver, CrewMember passenger)
         {
             if (originPlace == null)
                 throw new ArgumentException("Place should not be null");
@@ -22,26 +23,43 @@ namespace kelvinho_airlines.Services
             if (originPlace.SmartFortwo == null)
                 throw new ArgumentException("This place doesn't have a smart fortwo to board");
 
-            if (!_drivers.Contains(driver.GetType()))
-                throw new ArgumentException($"{driver.Name} is not authorized to drive this vehicle");
+            if (driver != null)
+            {
+                if (!_drivers.Contains(driver.GetType()))
+                    throw new ArgumentException($"{driver.Name} is not authorized to drive this vehicle");
+            }
 
-            var crewMembers = new HashSet<CrewMember>
+            var crewMembers = new List<CrewMember>
             {
                 driver,
                 passenger
             };
-
             originPlace.Disembark(crewMembers);
+
             originPlace.SmartFortwo.Board(driver, passenger);
+
+            return crewMembers;
+        }
+
+        public void Disembark(Place place)
+        {
+            VerifyDisembark(place);
+
+            if (place.SmartFortwo.Driver == null)
+                throw new ArgumentException("There is no driver in the smart fortwo");
+
+            if (place.SmartFortwo.Passenger == null)
+                throw new ArgumentException("There is no passenger in the smart fortwo");
+
+            var driver = place.SmartFortwo.DisembarkDriver();
+            var passenger = place.SmartFortwo.DisembarkPassenger();
+
+            place.Board(new HashSet<CrewMember> { driver, passenger });
         }
 
         public void DisembarkDriver(Place place)
         {
-            if (place == null)
-                throw new ArgumentException("Place should not be null");
-
-            if (place.SmartFortwo == null)
-                throw new ArgumentException("The smart fortwo isn't at the place");
+            VerifyDisembark(place);
 
             if (place.SmartFortwo.Driver == null)
                 throw new ArgumentException("There is no driver in the smart fortwo");
@@ -90,7 +108,7 @@ namespace kelvinho_airlines.Services
         }
 
         //Refatorar
-        private void VerifyCrewMembersMovement(IEnumerable<CrewMember> crewMembers)
+        private static void VerifyCrewMembersMovement(IEnumerable<CrewMember> crewMembers)
         {
             HashSet<CrewMember> crewMembersBase = new HashSet<CrewMember>();
             foreach (var crewMember in crewMembers)
@@ -132,6 +150,15 @@ namespace kelvinho_airlines.Services
                 if (crewMembersThatCannotBeTogether.Count > 0 && crewMembersToCompare.Count == 0)
                     throw new ArgumentException("There is some crewMember who is accompanied by someone who should not");
             }
+        }
+
+        private static void VerifyDisembark(Place place)
+        {
+            if (place == null)
+                throw new ArgumentException("Place should not be null");
+
+            if (place.SmartFortwo == null)
+                throw new ArgumentException("The smart fortwo isn't at the place");
         }
     }
 }

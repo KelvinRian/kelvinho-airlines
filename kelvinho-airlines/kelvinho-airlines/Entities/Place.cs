@@ -25,6 +25,6 @@ namespace kelvinho_airlines.Entities
 
         public abstract void Board(HashSet<CrewMember> crewMembers);
 
-        public abstract void Disembark(HashSet<CrewMember> crewMembers);
+        public abstract void Disembark(List<CrewMember> crewMembers);
     }
 }

@@ -39,23 +39,26 @@ namespace kelvinho_airlines.Entities.Places
             }
         }
 
-        public override void Disembark(HashSet<CrewMember> crewMembers)
+        public override void Disembark(List<CrewMember> crewMembers)
         {
             foreach (var crewMember in crewMembers)
             {
-                CrewMembers.Remove(crewMember);
+                if (crewMember != null)
+                {
+                    CrewMembers.Remove(crewMember);
 
-                if (crewMember.CrewType == CrewType.Technical)
-                {
-                    TechnicalCrew.Remove(crewMember);
-                }
-                else if (crewMember.CrewType == CrewType.Cabin)
-                {
-                    CabinCrew.Remove(crewMember);
-                }
-                else
-                {
-                    CommonCrew.Remove(crewMember);
+                    if (crewMember.CrewType == CrewType.Technical)
+                    {
+                        TechnicalCrew.Remove(crewMember);
+                    }
+                    else if (crewMember.CrewType == CrewType.Cabin)
+                    {
+                        CabinCrew.Remove(crewMember);
+                    }
+                    else
+                    {
+                        CommonCrew.Remove(crewMember);
+                    }
                 }
             }
         }
@@ -63,7 +66,7 @@ namespace kelvinho_airlines.Entities.Places
         public override string ToString()
         {
             StringBuilder technicalCrew = new StringBuilder();
-            foreach(var crewMember in TechnicalCrew)
+            foreach (var crewMember in TechnicalCrew)
             {
                 if (technicalCrew.Length > 0)
                     technicalCrew.Append("   |   ");
@@ -81,14 +84,14 @@ namespace kelvinho_airlines.Entities.Places
             }
 
             StringBuilder commonCrew = new StringBuilder();
-            foreach (var crewMember in CabinCrew)
+            foreach (var crewMember in CommonCrew)
             {
                 if (commonCrew.Length > 0)
                     commonCrew.Append("   |   ");
                 commonCrew.Append($"{crewMember.GetType().Name}: {crewMember.Name}");
             }
 
-            return $"Airplane:\n\nTechnical Crew:   {technicalCrew}\n\nCabin Crew:   {cabinCrew}\n\nCommon Crew:   {commonCrew}";
+            return $"Airplane:\n\nTechnical Crew:   {technicalCrew}\n\nCabin Crew:   {cabinCrew}\n\nCommon Crew:   {commonCrew}\n";
         }
     }
 }

@@ -31,5 +31,10 @@ namespace kelvinho_airlines.Entities
                 CrewType = CrewType.Common;
             }
         }
+
+        public override string ToString()
+        {
+            return $"{GetType().Name}: {Name}";
+        }
     }
 }

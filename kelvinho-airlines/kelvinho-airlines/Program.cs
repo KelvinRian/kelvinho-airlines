@@ -1,6 +1,7 @@
 ﻿using kelvinho_airlines.Entities;
 using kelvinho_airlines.Entities.Places;
 using kelvinho_airlines.Services;
+using kelvinho_airlines.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +18,7 @@ namespace kelvinho_airlines
                 typeof(Policeman),
                 typeof(FlightServiceChief)
             };
-            var _smartFotwoService = new SmartFortwoService(drivers);
+            var smartFotwoService = new SmartFortwoService(drivers);
 
             var terminal = Terminal.StartWithASmartFortwo(new HashSet<CrewMember>
             {
@@ -32,40 +33,9 @@ namespace kelvinho_airlines
             });
             var airplane = new Airplane();
 
-            Console.WriteLine("Started\n");
-            Console.WriteLine($"{terminal.SmartFortwo}\n");
-            Console.WriteLine(terminal);
-            Console.WriteLine(airplane);
-            Console.WriteLine("____________________________________________________________________________");
+            ITripService tripService = new TripService(smartFotwoService, terminal, airplane);
 
-            Console.WriteLine("Boarding\n");
-            _smartFotwoService.Board(terminal, terminal.CrewMembers.First(c => c is Pilot), terminal.CrewMembers.First(c => c is Officer));
-            Console.WriteLine($"{terminal.SmartFortwo}\n");
-            Console.WriteLine(terminal);
-            Console.WriteLine(airplane);
-            Console.WriteLine("____________________________________________________________________________");
-
-            Console.WriteLine("Moving :)\n");
-            _smartFotwoService.Move(terminal, airplane);
-            Console.WriteLine("____________________________________________________________________________");
-
-            Console.WriteLine("Disembarking");
-            _smartFotwoService.DisembarkPassenger(airplane);
-            Console.WriteLine($"\n{airplane.SmartFortwo}");
-            Console.WriteLine($"\n{terminal}");
-            Console.WriteLine(airplane);
-            Console.WriteLine("____________________________________________________________________________");
-
-            Console.WriteLine("Moving :)\n");
-            _smartFotwoService.Move(airplane, terminal);
-            Console.WriteLine("____________________________________________________________________________");
-
-            Console.WriteLine("Disembarking");
-            _smartFotwoService.DisembarkDriver(terminal);
-            Console.WriteLine($"\n{terminal.SmartFortwo}");
-            Console.WriteLine($"\n{terminal}");
-            Console.WriteLine(airplane);
-            Console.WriteLine("____________________________________________________________________________");
+            tripService.Execute();
         }
     }
 }
