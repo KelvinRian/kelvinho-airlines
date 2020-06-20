@@ -43,7 +43,7 @@ namespace kelvinho_airlines.Entities.Places
             }
 
             if (crewMembers.Length == 0)
-                return $"Terminal: This place is empty";
+                return $"Terminal: Empty\n";
 
             return $"Terminal:\n\n{crewMembers}";
         }

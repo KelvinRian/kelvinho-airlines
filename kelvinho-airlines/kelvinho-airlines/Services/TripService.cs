@@ -14,14 +14,21 @@ namespace kelvinho_airlines.Services
         private readonly Terminal _terminal;
         private readonly Airplane _airplane;
 
-        public TripService(
-            ISmartFortwoService smartFortwoService,
-            Terminal terminal,
-            Airplane airplane)
+        public TripService(ISmartFortwoService smartFortwoService)
         {
             _smartFortwoService = smartFortwoService;
-            _terminal = terminal;
-            _airplane = airplane;
+            _terminal = Terminal.StartWithASmartFortwo(new HashSet<CrewMember>
+            {
+                new Pilot("Soler"),
+                new Officer("Coleta"),
+                new Officer("Ivan"),
+                new FlightServiceChief("Kelvin"),
+                new FlightAttendant("Pâmela"),
+                new FlightAttendant("Guerreiro"),
+                new Policeman("Tyler"),
+                new Prisoner("Mankalão")
+            });
+            _airplane = new Airplane();
         }
 
         public void Execute()
@@ -29,8 +36,35 @@ namespace kelvinho_airlines.Services
             Console.WriteLine("Started\n");
             ShowInfo();
             Board(typeof(Pilot), typeof(Officer));
-            ShowInfo();
             Move();
+            DisembarkPassenger();
+            Move();
+            Board(null, typeof(Officer));
+            Move();
+            DisembarkPassenger();
+            Move();
+            DisembarkDriver();
+            Board(typeof(FlightServiceChief), typeof(FlightAttendant));
+            Move();
+            DisembarkPassenger();
+            Move();
+            Board(null, typeof(FlightAttendant));
+            Move();
+            DisembarkPassenger();
+            Move();
+            Board(null, typeof(Pilot));
+            Move();
+            DisembarkPassenger();
+            Move();
+            DisembarkDriver();
+            Board(typeof(Policeman), typeof(Prisoner));
+            Move();
+            Disembark();
+            Board(typeof(Pilot), null);
+            Move();
+            Board(null, typeof(FlightServiceChief));
+            Move();
+            Disembark();
         }
 
         private void ShowInfo()
@@ -61,14 +95,14 @@ namespace kelvinho_airlines.Services
                 crewMembers = _smartFortwoService.Board(
                     _terminal,
                     _terminal.CrewMembers.FirstOrDefault(c => c.GetType() == driver),
-                    _terminal.CrewMembers.FirstOrDefault(c => c.GetType() == passenger));
+                    _terminal.CrewMembers.FirstOrDefault(c => c.GetType() == passenger)).ToList();
             }
             else if (_airplane.SmartFortwo != null)
             {
                 crewMembers = _smartFortwoService.Board(
                     _airplane,
                     _airplane.CrewMembers.FirstOrDefault(c => c.GetType() == driver),
-                    _airplane.CrewMembers.FirstOrDefault(c => c.GetType() == passenger));
+                    _airplane.CrewMembers.FirstOrDefault(c => c.GetType() == passenger)).ToList();
             }
             else
             {
@@ -87,6 +121,7 @@ namespace kelvinho_airlines.Services
             }
 
             Console.WriteLine($"Boarding ({crewMembersBoarding})\n");
+            ShowInfo();
         }
 
         private void Move()
@@ -107,6 +142,80 @@ namespace kelvinho_airlines.Services
             }
 
             Console.WriteLine("\n*******************************************************************************************");
+        }
+
+        private void DisembarkPassenger()
+        {
+            CrewMember passenger;
+
+            if (_terminal.SmartFortwo != null)
+            {
+                passenger = _smartFortwoService.DisembarkPassenger(_terminal);
+            }
+            else if (_airplane.SmartFortwo != null)
+            {
+                passenger = _smartFortwoService.DisembarkPassenger(_airplane);
+            }
+            else
+            {
+                throw new ArgumentException("The smart fortwo was not found!");
+            }
+
+            Console.WriteLine($"Disembarking ({passenger})\n");
+            ShowInfo();
+        }
+
+        private void DisembarkDriver()
+        {
+            CrewMember driver;
+
+            if (_terminal.SmartFortwo != null)
+            {
+                driver = _smartFortwoService.DisembarkDriver(_terminal);
+            }
+            else if (_airplane.SmartFortwo != null)
+            {
+                driver = _smartFortwoService.DisembarkDriver(_airplane);
+            }
+            else
+            {
+                throw new ArgumentException("The smart fortwo was not found!");
+            }
+
+            Console.WriteLine($"Disembarking ({driver})\n");
+            ShowInfo();
+        }
+
+        private void Disembark()
+        {
+            List<CrewMember> crewMembers;
+
+            if (_terminal.SmartFortwo != null)
+            {
+                crewMembers = _smartFortwoService.Disembark(_terminal).ToList();
+            }
+            else if (_airplane.SmartFortwo != null)
+            {
+                crewMembers = _smartFortwoService.Disembark(_airplane).ToList();
+            }
+            else
+            {
+                throw new ArgumentException("The smart fortwo was not found!");
+            }
+
+            StringBuilder crewMembersDisembarking = new StringBuilder();
+
+            foreach (var crewMember in crewMembers)
+            {
+                if (crewMembersDisembarking.Length > 0)
+                    crewMembersDisembarking.Append(", ");
+
+                if (crewMember != null)
+                    crewMembersDisembarking.Append(crewMember);
+            }
+
+            Console.WriteLine($"Disembarking ({crewMembersDisembarking})\n");
+            ShowInfo();
         }
     }
 }

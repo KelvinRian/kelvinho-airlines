@@ -15,7 +15,7 @@ namespace kelvinho_airlines.Services
             _drivers = drivers;
         }
 
-        public List<CrewMember> Board(Place originPlace, CrewMember driver, CrewMember passenger)
+        public IEnumerable<CrewMember> Board(Place originPlace, CrewMember driver, CrewMember passenger)
         {
             if (originPlace == null)
                 throw new ArgumentException("Place should not be null");
@@ -41,7 +41,7 @@ namespace kelvinho_airlines.Services
             return crewMembers;
         }
 
-        public void Disembark(Place place)
+        public IEnumerable<CrewMember> Disembark(Place place)
         {
             VerifyDisembark(place);
 
@@ -55,9 +55,11 @@ namespace kelvinho_airlines.Services
             var passenger = place.SmartFortwo.DisembarkPassenger();
 
             place.Board(new HashSet<CrewMember> { driver, passenger });
+
+            return new List<CrewMember> { driver, passenger };
         }
 
-        public void DisembarkDriver(Place place)
+        public CrewMember DisembarkDriver(Place place)
         {
             VerifyDisembark(place);
 
@@ -66,9 +68,11 @@ namespace kelvinho_airlines.Services
 
             var driver = place.SmartFortwo.DisembarkDriver();
             place.Board(new HashSet<CrewMember> { driver });
+
+            return driver;
         }
 
-        public void DisembarkPassenger(Place place)
+        public CrewMember DisembarkPassenger(Place place)
         {
             if (place == null)
                 throw new ArgumentException("Place should not be null");
@@ -81,6 +85,8 @@ namespace kelvinho_airlines.Services
 
             var passenger = place.SmartFortwo.DisembarkPassenger();
             place.Board(new HashSet<CrewMember> { passenger });
+
+            return passenger;
         }
 
         public void Move(Place origin, Place destiny)
