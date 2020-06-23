@@ -100,7 +100,6 @@ namespace kelvinho_airlines.Services
             if (origin.SmartFortwo.Driver == null)
                 throw new ArgumentException("Smart Fortwo can't move without a driver");
 
-            //Refatorar
             VerifyCrewMembersMovement(origin.CrewMembers);
 
             var crewMembersInSmartFortwo = new List<CrewMember> { origin.SmartFortwo.Driver };
@@ -113,18 +112,15 @@ namespace kelvinho_airlines.Services
             origin.RemoveSmartFortwo();
         }
 
-        //Refatorar
         private static void VerifyCrewMembersMovement(IEnumerable<CrewMember> crewMembers)
         {
-            HashSet<Type> IncompatibleCrewMembers = new HashSet<Type>();
-            HashSet<Type> crewMemberTypes = new HashSet<Type>();
+            HashSet<Type> IncompatibleTypesOfCrewMembersAtPlace = new HashSet<Type>();
+            HashSet<Type> crewMemberTypesAtPlace = new HashSet<Type>();
             bool hasPoliceman = false;
             bool hasPrisoner = false;
 
             foreach (var crewMember in crewMembers)
             {
-                crewMemberTypes.Add(crewMember.GetType());
-
                 if (crewMember is Policeman)
                     hasPoliceman = true;
 
@@ -134,18 +130,24 @@ namespace kelvinho_airlines.Services
                 }
                 else
                 {
-                    IncompatibleCrewMembers.UnionWith(crewMember.IncompatibleCrewMemberTypes);
+                    crewMemberTypesAtPlace.Add(crewMember.GetType());
+                    IncompatibleTypesOfCrewMembersAtPlace.UnionWith(crewMember.IncompatibleCrewMemberTypes);
                 }
             }
 
             if (hasPrisoner && !hasPoliceman)
                 throw new ArgumentException("The prisoner can't stay with the others crew members without a policeman");
 
-            IncompatibleCrewMembers.IntersectWith(crewMemberTypes);
+            IncompatibleTypesOfCrewMembersAtPlace.IntersectWith(crewMemberTypesAtPlace);
 
-            //TODO
-            //Verify wheter incompatibleCrewMembers list had more than 2 elements
-            //if not, verify wheter had other crewmember type at place
+            if (IncompatibleTypesOfCrewMembersAtPlace.Count() == 2 || IncompatibleTypesOfCrewMembersAtPlace.Count() == 1)
+            {
+                crewMemberTypesAtPlace.ExceptWith(IncompatibleTypesOfCrewMembersAtPlace);
+                if (crewMemberTypesAtPlace.Count() == 0)
+                {
+                    throw new ArgumentException("There is some crew members that cannot be together at the place");
+                }
+            }
         }
 
         private static void VerifyDisembark(Place place)
