@@ -18,15 +18,15 @@ namespace kelvinho_airlines.Services
         public IEnumerable<CrewMember> Board(Place originPlace, CrewMember driver, CrewMember passenger)
         {
             if (originPlace == null)
-                throw new ArgumentException("Place should not be null");
+                throw new Exception("Place should not be null");
 
             if (originPlace.SmartFortwo == null)
-                throw new ArgumentException("This place doesn't have a smart fortwo to board");
+                throw new Exception("This place doesn't have a smart fortwo to board");
 
             if (driver != null)
             {
                 if (!_drivers.Contains(driver.GetType()))
-                    throw new ArgumentException($"{driver.Name} is not authorized to drive this vehicle");
+                    throw new Exception($"{driver.Name} is not authorized to drive this vehicle");
             }
 
             var crewMembers = new List<CrewMember>
@@ -46,10 +46,10 @@ namespace kelvinho_airlines.Services
             VerifyDisembark(place);
 
             if (place.SmartFortwo.Driver == null)
-                throw new ArgumentException("There is no driver in the smart fortwo");
+                throw new Exception("There is no driver in the smart fortwo");
 
             if (place.SmartFortwo.Passenger == null)
-                throw new ArgumentException("There is no passenger in the smart fortwo");
+                throw new Exception("There is no passenger in the smart fortwo");
 
             var driver = place.SmartFortwo.DisembarkDriver();
             var passenger = place.SmartFortwo.DisembarkPassenger();
@@ -64,7 +64,7 @@ namespace kelvinho_airlines.Services
             VerifyDisembark(place);
 
             if (place.SmartFortwo.Driver == null)
-                throw new ArgumentException("There is no driver in the smart fortwo");
+                throw new Exception("There is no driver in the smart fortwo");
 
             var driver = place.SmartFortwo.DisembarkDriver();
             place.Board(new HashSet<CrewMember> { driver });
@@ -75,13 +75,13 @@ namespace kelvinho_airlines.Services
         public CrewMember DisembarkPassenger(Place place)
         {
             if (place == null)
-                throw new ArgumentException("Place should not be null");
+                throw new Exception("Place should not be null");
 
             if (place.SmartFortwo == null)
-                throw new ArgumentException("The smart fortwo isn't at the place");
+                throw new Exception("The smart fortwo isn't at the place");
 
             if (place.SmartFortwo.Passenger == null)
-                throw new ArgumentException("There is no passenger in the smart fortwo");
+                throw new Exception("There is no passenger in the smart fortwo");
 
             var passenger = place.SmartFortwo.DisembarkPassenger();
             place.Board(new HashSet<CrewMember> { passenger });
@@ -92,13 +92,13 @@ namespace kelvinho_airlines.Services
         public void Move(Place origin, Place destiny)
         {
             if (origin == null || destiny == null)
-                throw new ArgumentException("Origin and destiny should not be null");
+                throw new Exception("Origin and destiny should not be null");
 
             if (origin.SmartFortwo == null)
-                throw new ArgumentException("The origin place doesn't have a smart fortwo to move");
+                throw new Exception("The origin place doesn't have a smart fortwo to move");
 
             if (origin.SmartFortwo.Driver == null)
-                throw new ArgumentException("Smart Fortwo can't move without a driver");
+                throw new Exception("Smart Fortwo can't move without a driver");
 
             VerifyCrewMembersMovement(origin.CrewMembers);
 
@@ -136,7 +136,7 @@ namespace kelvinho_airlines.Services
             }
 
             if (hasPrisoner && !hasPoliceman)
-                throw new ArgumentException("The prisoner can't stay with the others crew members without a policeman");
+                throw new Exception("The prisoner can't stay with the others crew members without a policeman");
 
             IncompatibleTypesOfCrewMembersAtPlace.IntersectWith(crewMemberTypesAtPlace);
 
@@ -145,7 +145,7 @@ namespace kelvinho_airlines.Services
                 crewMemberTypesAtPlace.ExceptWith(IncompatibleTypesOfCrewMembersAtPlace);
                 if (crewMemberTypesAtPlace.Count() == 0)
                 {
-                    throw new ArgumentException("There is some crew members that cannot be together at the place");
+                    throw new Exception("There is some crew members that cannot be together at the place");
                 }
             }
         }
@@ -153,10 +153,10 @@ namespace kelvinho_airlines.Services
         private static void VerifyDisembark(Place place)
         {
             if (place == null)
-                throw new ArgumentException("Place should not be null");
+                throw new Exception("Place should not be null");
 
             if (place.SmartFortwo == null)
-                throw new ArgumentException("The smart fortwo isn't at the place");
+                throw new Exception("The smart fortwo isn't at the place");
         }
     }
 }

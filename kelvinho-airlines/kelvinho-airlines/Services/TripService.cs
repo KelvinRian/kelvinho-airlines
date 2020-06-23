@@ -106,7 +106,7 @@ namespace kelvinho_airlines.Services
             }
             else
             {
-                throw new ArgumentException("The smart fortwo was not found!");
+                throw new Exception("The smart fortwo was not found!");
             }
 
             StringBuilder crewMembersBoarding = new StringBuilder();
@@ -138,7 +138,7 @@ namespace kelvinho_airlines.Services
             }
             else
             {
-                throw new ArgumentException("The smart fortwo was not found!");
+                throw new Exception("The smart fortwo was not found!");
             }
 
             Console.WriteLine("\n*******************************************************************************************");
@@ -158,7 +158,7 @@ namespace kelvinho_airlines.Services
             }
             else
             {
-                throw new ArgumentException("The smart fortwo was not found!");
+                throw new Exception("The smart fortwo was not found!");
             }
 
             Console.WriteLine($"Disembarking ({passenger})\n");
@@ -179,7 +179,7 @@ namespace kelvinho_airlines.Services
             }
             else
             {
-                throw new ArgumentException("The smart fortwo was not found!");
+                throw new Exception("The smart fortwo was not found!");
             }
 
             Console.WriteLine($"Disembarking ({driver})\n");
@@ -200,7 +200,7 @@ namespace kelvinho_airlines.Services
             }
             else
             {
-                throw new ArgumentException("The smart fortwo was not found!");
+                throw new Exception("The smart fortwo was not found!");
             }
 
             StringBuilder crewMembersDisembarking = new StringBuilder();
