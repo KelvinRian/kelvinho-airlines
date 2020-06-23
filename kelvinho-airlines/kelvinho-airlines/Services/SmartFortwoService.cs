@@ -116,46 +116,36 @@ namespace kelvinho_airlines.Services
         //Refatorar
         private static void VerifyCrewMembersMovement(IEnumerable<CrewMember> crewMembers)
         {
-            HashSet<CrewMember> crewMembersBase = new HashSet<CrewMember>();
-            foreach (var crewMember in crewMembers)
-            {
-                crewMembersBase.Add(crewMember);
-            }
+            HashSet<Type> IncompatibleCrewMembers = new HashSet<Type>();
+            HashSet<Type> crewMemberTypes = new HashSet<Type>();
+            bool hasPoliceman = false;
+            bool hasPrisoner = false;
 
             foreach (var crewMember in crewMembers)
             {
-                var crewMembersToCompare = new HashSet<CrewMember>();
-                foreach (var member in crewMembersBase)
-                {
-                    crewMembersToCompare.Add(member);
-                }
+                crewMemberTypes.Add(crewMember.GetType());
+
+                if (crewMember is Policeman)
+                    hasPoliceman = true;
 
                 if (crewMember is Prisoner)
                 {
-                    bool hasPoliceman = false;
-                    foreach (var crewMemberAtPlace in crewMembers)
-                    {
-                        if (crewMemberAtPlace is Policeman)
-                        {
-                            hasPoliceman = true;
-                            break;
-                        }
-                    }
-                    if (!hasPoliceman)
-                        throw new ArgumentException("The prisoner can't stay with the crew members without a policeman");
+                    hasPrisoner = true;
                 }
-
-                List<CrewMember> crewMembersThatCannotBeTogether = new List<CrewMember>();
-                foreach (var crewMemberAtPlace in crewMembers)
+                else
                 {
-                    if (crewMember.CantStayAloneWith.Contains(crewMemberAtPlace.GetType()))
-                        crewMembersThatCannotBeTogether.Add(crewMemberAtPlace);
+                    IncompatibleCrewMembers.UnionWith(crewMember.IncompatibleCrewMemberTypes);
                 }
-
-                crewMembersToCompare.IntersectWith(crewMembersThatCannotBeTogether);
-                if (crewMembersThatCannotBeTogether.Count > 0 && crewMembersToCompare.Count == 0)
-                    throw new ArgumentException("There is some crewMember who is accompanied by someone who should not");
             }
+
+            if (hasPrisoner && !hasPoliceman)
+                throw new ArgumentException("The prisoner can't stay with the others crew members without a policeman");
+
+            IncompatibleCrewMembers.IntersectWith(crewMemberTypes);
+
+            //TODO
+            //Verify wheter incompatibleCrewMembers list had more than 2 elements
+            //if not, verify wheter had other crewmember type at place
         }
 
         private static void VerifyDisembark(Place place)

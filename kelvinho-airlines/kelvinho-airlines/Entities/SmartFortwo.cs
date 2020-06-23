@@ -1,6 +1,6 @@
 ﻿namespace kelvinho_airlines.Entities
 {
-    public class SmartFortwo
+    public class SmartFortwo : BaseEntity
     {
         public CrewMember Driver { get; protected set; }
         public CrewMember Passenger { get; protected set; }

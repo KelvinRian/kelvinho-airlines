@@ -8,7 +8,7 @@ namespace kelvinho_airlines.Entities
     {
         public string Name { get; protected set; }
         public CrewType CrewType { get; protected set; }
-        public List<Type> CantStayAloneWith { get; protected set; } = new List<Type>();
+        public HashSet<Type> IncompatibleCrewMemberTypes { get; protected set; } = new HashSet<Type>();
 
         public CrewMember(string name) : base()
         {

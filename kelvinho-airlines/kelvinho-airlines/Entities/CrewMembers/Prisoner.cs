@@ -4,10 +4,10 @@
     {
         public Prisoner(string name) : base(name)
         {
-            CantStayAloneWith.Add(typeof(Officer));
-            CantStayAloneWith.Add(typeof(FlightServiceChief));
-            CantStayAloneWith.Add(typeof(Pilot));
-            CantStayAloneWith.Add(typeof(FlightAttendant));
+            IncompatibleCrewMemberTypes.Add(typeof(Officer));
+            IncompatibleCrewMemberTypes.Add(typeof(FlightServiceChief));
+            IncompatibleCrewMemberTypes.Add(typeof(Pilot));
+            IncompatibleCrewMemberTypes.Add(typeof(FlightAttendant));
         }
     }
 }

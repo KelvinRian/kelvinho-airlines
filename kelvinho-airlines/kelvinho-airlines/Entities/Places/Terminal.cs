@@ -5,7 +5,6 @@ namespace kelvinho_airlines.Entities.Places
 {
     public class Terminal : Place
     {
-
         public Terminal(HashSet<CrewMember> crewMembers) : base()
         {
             Board(crewMembers);

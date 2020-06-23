@@ -4,8 +4,8 @@
     {
         public Pilot(string name) : base(name)
         {
-            CantStayAloneWith.Add(typeof(Prisoner));
-            CantStayAloneWith.Add(typeof(FlightAttendant));
+            IncompatibleCrewMemberTypes.Add(typeof(Prisoner));
+            IncompatibleCrewMemberTypes.Add(typeof(FlightAttendant));
         }
     }
 }
