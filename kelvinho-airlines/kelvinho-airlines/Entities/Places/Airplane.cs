@@ -1,21 +1,20 @@
 ﻿using kelvinho_airlines.Enums;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
 namespace kelvinho_airlines.Entities.Places
 {
     public class Airplane : Place
     {
-        public List<CrewMember> TechnicalCrew { get; protected set; }
-        public List<CrewMember> CabinCrew { get; protected set; }
-        public List<CrewMember> CommonCrew { get; protected set; }
+        public HashSet<CrewMember> TechnicalCrew { get; protected set; }
+        public HashSet<CrewMember> CabinCrew { get; protected set; }
+        public HashSet<CrewMember> CommonCrew { get; protected set; }
 
         public Airplane()
         {
-            TechnicalCrew = new List<CrewMember>();
-            CabinCrew = new List<CrewMember>();
-            CommonCrew = new List<CrewMember>();
+            TechnicalCrew = new HashSet<CrewMember>();
+            CabinCrew = new HashSet<CrewMember>();
+            CommonCrew = new HashSet<CrewMember>();
         }
 
         public override void Board(HashSet<CrewMember> crewMembers)
