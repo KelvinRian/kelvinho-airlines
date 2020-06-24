@@ -26,7 +26,7 @@ namespace kelvinho_airlines.Services
                 new FlightAttendant("Pâmela"),
                 new FlightAttendant("Guerreiro"),
                 new Policeman("Tyler"),
-                new Prisoner("Mankalão")
+                new Prisoner("Mahnke")
             });
             _airplane = new Airplane();
         }
@@ -111,13 +111,12 @@ namespace kelvinho_airlines.Services
 
             StringBuilder crewMembersBoarding = new StringBuilder();
 
-            foreach (var crewMember in crewMembers)
+            foreach (var crewMember in crewMembers.Where(c => c != null))
             {
                 if (crewMembersBoarding.Length > 0)
                     crewMembersBoarding.Append(", ");
 
-                if (crewMember != null)
-                    crewMembersBoarding.Append(crewMember);
+                crewMembersBoarding.Append(crewMember);
             }
 
             Console.WriteLine($"Boarding ({crewMembersBoarding})\n");
