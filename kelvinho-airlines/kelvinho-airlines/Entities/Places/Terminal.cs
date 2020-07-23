@@ -19,18 +19,12 @@ namespace kelvinho_airlines.Entities.Places
 
         public override void Board(HashSet<CrewMember> crewMembers)
         {
-            foreach (var crewMember in crewMembers)
-            {
-                CrewMembers.Add(crewMember);
-            }
+            CrewMembers.UnionWith(crewMembers);
         }
 
         public override void Disembark(List<CrewMember> crewMembers)
         {
-            foreach (var crewMember in crewMembers)
-            {
-                CrewMembers.Remove(crewMember);
-            }
+            CrewMembers.ExceptWith(crewMembers);
         }
 
         public override string ToString()

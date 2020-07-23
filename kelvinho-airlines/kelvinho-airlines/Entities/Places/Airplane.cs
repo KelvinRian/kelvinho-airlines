@@ -19,10 +19,10 @@ namespace kelvinho_airlines.Entities.Places
 
         public override void Board(HashSet<CrewMember> crewMembers)
         {
+            CrewMembers.UnionWith(crewMembers);
+
             foreach (var crewMember in crewMembers)
             {
-                CrewMembers.Add(crewMember);
-
                 if (crewMember.CrewType == CrewType.Technical)
                 {
                     TechnicalCrew.Add(crewMember);
@@ -40,12 +40,12 @@ namespace kelvinho_airlines.Entities.Places
 
         public override void Disembark(List<CrewMember> crewMembers)
         {
+            CrewMembers.ExceptWith(crewMembers);
+
             foreach (var crewMember in crewMembers)
             {
                 if (crewMember != null)
                 {
-                    CrewMembers.Remove(crewMember);
-
                     if (crewMember.CrewType == CrewType.Technical)
                     {
                         TechnicalCrew.Remove(crewMember);
