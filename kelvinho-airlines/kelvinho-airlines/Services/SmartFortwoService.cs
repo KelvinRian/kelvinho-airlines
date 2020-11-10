@@ -36,7 +36,7 @@ namespace kelvinho_airlines.Services
             };
             originPlace.Disembark(crewMembers);
 
-            originPlace.SmartFortwo.Board(driver, passenger);
+            originPlace.SmartFortwo.GetIn(originPlace, driver, passenger);
 
             return crewMembers;
         }

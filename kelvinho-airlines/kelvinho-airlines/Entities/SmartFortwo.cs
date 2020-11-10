@@ -1,4 +1,7 @@
-﻿namespace kelvinho_airlines.Entities
+﻿using System;
+using System.Collections.Generic;
+
+namespace kelvinho_airlines.Entities
 {
     public class SmartFortwo : BaseEntity
     {
@@ -11,17 +14,20 @@
 
         }
 
-        public void Board(CrewMember driver, CrewMember passenger)
+        public IEnumerable<CrewMember> GetIn(Place originPlace, CrewMember driver, CrewMember passenger)
         {
+            if (originPlace == null)
+                throw new Exception("Place should not be null");
+
             if (driver != null)
-            {
                 Driver = driver;
-            }
 
             if (passenger != null)
-            {
                 Passenger = passenger;
-            }
+
+            originPlace.Disembark(new List<CrewMember>() { driver, passenger });
+
+            return new List<CrewMember> { driver, passenger };
         }
 
         public CrewMember DisembarkDriver()
