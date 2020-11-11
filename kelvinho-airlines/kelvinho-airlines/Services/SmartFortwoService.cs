@@ -8,37 +8,8 @@ namespace kelvinho_airlines.Services
 {
     public class SmartFortwoService : ISmartFortwoService
     {
-        private readonly List<Type> _drivers;
-
         public SmartFortwoService(List<Type> drivers)
         {
-            _drivers = drivers;
-        }
-
-        public IEnumerable<CrewMember> Board(Place originPlace, CrewMember driver, CrewMember passenger)
-        {
-            if (originPlace == null)
-                throw new Exception("Place should not be null");
-
-            if (originPlace.SmartFortwo == null)
-                throw new Exception("This place doesn't have a smart fortwo to board");
-
-            if (driver != null)
-            {
-                if (!_drivers.Contains(driver.GetType()))
-                    throw new Exception($"{driver.Name} is not authorized to drive this vehicle");
-            }
-
-            var crewMembers = new List<CrewMember>
-            {
-                driver,
-                passenger
-            };
-            originPlace.Disembark(crewMembers);
-
-            originPlace.SmartFortwo.GetIn(originPlace, driver, passenger);
-
-            return crewMembers;
         }
 
         public IEnumerable<CrewMember> Disembark(Place place)

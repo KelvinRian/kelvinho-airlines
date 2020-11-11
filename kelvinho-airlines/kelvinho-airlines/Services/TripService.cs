@@ -13,9 +13,11 @@ namespace kelvinho_airlines.Services
         private readonly ISmartFortwoService _smartFortwoService;
         private readonly Terminal _terminal;
         private readonly Airplane _airplane;
+        private readonly List<Type> _drivers;
 
-        public TripService(ISmartFortwoService smartFortwoService)
+        public TripService(ISmartFortwoService smartFortwoService, List<Type> drivers)
         {
+            _drivers = drivers;
             _smartFortwoService = smartFortwoService;
             _terminal = Terminal.StartWithASmartFortwo(new HashSet<CrewMember>
             {
@@ -35,34 +37,34 @@ namespace kelvinho_airlines.Services
         {
             Console.WriteLine("Started\n");
             ShowInfo();
-            Board(typeof(Pilot), typeof(Officer));
+            GetInTheSmartFortwo(typeof(Pilot), typeof(Officer));
             Move();
             DisembarkPassenger();
             Move();
-            Board(null, typeof(Officer));
-            Move();
-            DisembarkPassenger();
-            Move();
-            DisembarkDriver();
-            Board(typeof(FlightServiceChief), typeof(FlightAttendant));
-            Move();
-            DisembarkPassenger();
-            Move();
-            Board(null, typeof(FlightAttendant));
-            Move();
-            DisembarkPassenger();
-            Move();
-            Board(null, typeof(Pilot));
+            GetInTheSmartFortwo(null, typeof(Officer));
             Move();
             DisembarkPassenger();
             Move();
             DisembarkDriver();
-            Board(typeof(Policeman), typeof(Prisoner));
+            GetInTheSmartFortwo(typeof(FlightServiceChief), typeof(FlightAttendant));
+            Move();
+            DisembarkPassenger();
+            Move();
+            GetInTheSmartFortwo(null, typeof(FlightAttendant));
+            Move();
+            DisembarkPassenger();
+            Move();
+            GetInTheSmartFortwo(null, typeof(Pilot));
+            Move();
+            DisembarkPassenger();
+            Move();
+            DisembarkDriver();
+            GetInTheSmartFortwo(typeof(Policeman), typeof(Prisoner));
             Move();
             Disembark();
-            Board(typeof(Pilot), null);
+            GetInTheSmartFortwo(typeof(Pilot), null);
             Move();
-            Board(null, typeof(FlightServiceChief));
+            GetInTheSmartFortwo(null, typeof(FlightServiceChief));
             Move();
             Disembark();
         }
@@ -86,40 +88,60 @@ namespace kelvinho_airlines.Services
             Console.WriteLine("*******************************************************************************************");
         }
 
-        private void Board(Type driver, Type passenger)
+        private void GetInTheSmartFortwo(Type driverType, Type passengerType)
         {
-            var crewMembers = new List<CrewMember>();
+            CrewMember driver;
+            CrewMember passenger;
 
             if (_terminal.SmartFortwo != null)
             {
-                crewMembers = _smartFortwoService.Board(
+                driver = _terminal.CrewMembers.FirstOrDefault(c => c.GetType() == driverType);
+                passenger = _terminal.CrewMembers.FirstOrDefault(c => c.GetType() == passengerType);
+
+                if (driver != null)
+                {
+                    if (!_drivers.Contains(driver.GetType()))
+                        throw new Exception($"{driver.Name} is not authorized to drive this vehicle");
+                }
+
+                _terminal.SmartFortwo.GetIn(
                     _terminal,
-                    _terminal.CrewMembers.FirstOrDefault(c => c.GetType() == driver),
-                    _terminal.CrewMembers.FirstOrDefault(c => c.GetType() == passenger)).ToList();
+                    driver,
+                    passenger).ToList();
             }
             else if (_airplane.SmartFortwo != null)
             {
-                crewMembers = _smartFortwoService.Board(
+                driver = _airplane.CrewMembers.FirstOrDefault(c => c.GetType() == driverType);
+                passenger = _airplane.CrewMembers.FirstOrDefault(c => c.GetType() == passengerType);
+
+                if (driver != null)
+                {
+                    if (!_drivers.Contains(driver.GetType()))
+                        throw new Exception($"{driver.Name} is not authorized to drive this vehicle");
+                }
+
+                _airplane.SmartFortwo.GetIn(
                     _airplane,
-                    _airplane.CrewMembers.FirstOrDefault(c => c.GetType() == driver),
-                    _airplane.CrewMembers.FirstOrDefault(c => c.GetType() == passenger)).ToList();
+                    driver,
+                    passenger).ToList();
             }
             else
             {
                 throw new Exception("The smart fortwo was not found!");
             }
 
-            StringBuilder crewMembersBoarding = new StringBuilder();
+            var crewMembers = new List<CrewMember> { driver, passenger };
+            StringBuilder crewMembersInfo = new StringBuilder();
 
             foreach (var crewMember in crewMembers.Where(c => c != null))
             {
-                if (crewMembersBoarding.Length > 0)
-                    crewMembersBoarding.Append(", ");
+                if (crewMembersInfo.Length > 0)
+                    crewMembersInfo.Append(", ");
 
-                crewMembersBoarding.Append(crewMember);
+                crewMembersInfo.Append(crewMember);
             }
 
-            Console.WriteLine($"Boarding ({crewMembersBoarding})\n");
+            Console.WriteLine($"Boarding ({crewMembersInfo})\n");
             ShowInfo();
         }
 

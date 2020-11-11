@@ -18,7 +18,7 @@ namespace kelvinho_airlines
             };
             var smartFotwoService = new SmartFortwoService(drivers);
 
-            ITripService tripService = new TripService(smartFotwoService);
+            ITripService tripService = new TripService(smartFotwoService, drivers);
 
             tripService.Execute();
         }
