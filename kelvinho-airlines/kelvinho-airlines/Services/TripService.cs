@@ -107,7 +107,7 @@ namespace kelvinho_airlines.Services
                 _terminal.SmartFortwo.GetIn(
                     _terminal,
                     driver,
-                    passenger).ToList();
+                    passenger);
             }
             else if (_airplane.SmartFortwo != null)
             {
@@ -123,7 +123,7 @@ namespace kelvinho_airlines.Services
                 _airplane.SmartFortwo.GetIn(
                     _airplane,
                     driver,
-                    passenger).ToList();
+                    passenger);
             }
             else
             {
@@ -213,11 +213,11 @@ namespace kelvinho_airlines.Services
 
             if (_terminal.SmartFortwo != null)
             {
-                crewMembers = _smartFortwoService.Disembark(_terminal).ToList();
+                crewMembers = _terminal.SmartFortwo.DisembarkAllIn(_terminal).ToList();
             }
             else if (_airplane.SmartFortwo != null)
             {
-                crewMembers = _smartFortwoService.Disembark(_airplane).ToList();
+                crewMembers = _airplane.SmartFortwo.DisembarkAllIn(_airplane).ToList();
             }
             else
             {

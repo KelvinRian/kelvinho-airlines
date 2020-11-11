@@ -17,16 +17,10 @@ namespace Tests.Entities
             var originPlace = new Terminal(new HashSet<CrewMember> { driver, passenger });
             var smartFortwo = new SmartFortwo();
 
-            var crewMembersReturned = smartFortwo.GetIn(originPlace, driver, passenger);
+            smartFortwo.GetIn(originPlace, driver, passenger);
 
             Assert.Equal(driver, smartFortwo.Driver);
             Assert.Equal(passenger, smartFortwo.Passenger);
-
-            var expectedQuantity = 2;
-            Assert.Equal(expectedQuantity, crewMembersReturned.Count());
-            Assert.Contains(driver, crewMembersReturned);
-            Assert.Contains(passenger, crewMembersReturned);
-
             Assert.Empty(originPlace.CrewMembers);
         }
 
@@ -40,16 +34,10 @@ namespace Tests.Entities
             var smartFortwo = new SmartFortwo();
             smartFortwo.GetIn(originPlace, driver, null);
 
-            var crewMembersReturned = smartFortwo.GetIn(originPlace, null, passenger);
+            smartFortwo.GetIn(originPlace, null, passenger);
 
             Assert.Equal(driver, smartFortwo.Driver);
             Assert.Equal(passenger, smartFortwo.Passenger);
-
-            var expectedQuantity = 2;
-            Assert.Equal(expectedQuantity, crewMembersReturned.Count());
-            Assert.Contains(passenger, crewMembersReturned);
-            Assert.DoesNotContain(driver, crewMembersReturned);
-
             Assert.Empty(originPlace.CrewMembers);
         }
 
@@ -63,25 +51,94 @@ namespace Tests.Entities
             var smartFortwo = new SmartFortwo();
             smartFortwo.GetIn(originPlace, null, passenger);
 
-            var crewMembersReturned = smartFortwo.GetIn(originPlace, driver, null);
+            smartFortwo.GetIn(originPlace, driver, null);
 
             Assert.Equal(driver, smartFortwo.Driver);
             Assert.Equal(passenger, smartFortwo.Passenger);
-
-            var expectedQuantity = 2;
-            Assert.Equal(expectedQuantity, crewMembersReturned.Count());
-            Assert.Contains(driver, crewMembersReturned);
-            Assert.DoesNotContain(passenger, crewMembersReturned);
-
             Assert.Empty(originPlace.CrewMembers);
         }
 
         [Fact]
-        public void should_return_exception_when_place_argument_of_get_in_method_is_null()
+        public void should_return_exception_if_place_argument_of_get_in_method_is_null()
         {
             var smartFortwo = new SmartFortwo();
             var exception = Assert.Throws<Exception>(() => smartFortwo.GetIn(null, new Pilot("pilot"), new Officer("officer")));
             Assert.Equal("Place should not be null", exception.Message);
+        }
+
+        [Fact]
+        public void should_disembark_all_crew_members_from_the_smart_fortwo_and_put_them_in_the_given_place()
+        {
+            var driver = new Pilot("pilot");
+            var passenger = new Officer("officer");
+            var originPlace = new Terminal(new HashSet<CrewMember> { driver, passenger });
+            var smartFortwo = new SmartFortwo();
+
+            smartFortwo.GetIn(originPlace, driver, passenger);
+
+            var destinyPlace = new Airplane();
+            destinyPlace.SetSmartFortwo(smartFortwo);
+            var crewMembersReturned = smartFortwo.DisembarkAllIn(destinyPlace);
+
+            Assert.Null(smartFortwo.Driver);
+            Assert.Null(smartFortwo.Passenger);
+
+            Assert.Contains(driver, destinyPlace.CrewMembers);
+            Assert.Contains(passenger, destinyPlace.CrewMembers);
+
+            Assert.Equal(2, crewMembersReturned.Count());
+            Assert.Contains(driver, crewMembersReturned);
+            Assert.Contains(passenger, crewMembersReturned);
+        }
+
+        [Fact]
+        public void should_return_exception_if_the_place_argument_of_disembark_all_in_method_is_null()
+        {
+            var smartFortwo = new SmartFortwo();
+
+            var exception = Assert.Throws<Exception>(() => smartFortwo.DisembarkAllIn(null));
+
+            Assert.Equal("Place should not be null", exception.Message);
+        }
+
+        [Fact]
+        public void should_return_exception_if_the_place_argument_of_disembark_all_in_method_has_no_smart_fortwo()
+        {
+            var airplane = new Airplane();
+            var smartFortwo = new SmartFortwo();
+
+            var exception = Assert.Throws<Exception>(() => smartFortwo.DisembarkAllIn(airplane));
+
+            Assert.Equal("The smart fortwo isn't at the place", exception.Message);
+        }
+
+        [Fact]
+        public void should_return_exception_if_driver_is_null_when_try_to_disembark_all()
+        {
+            var airplane = new Airplane();
+            var smartFortwo = new SmartFortwo();
+            airplane.SetSmartFortwo(smartFortwo);
+
+            var exception = Assert.Throws<Exception>(() => smartFortwo.DisembarkAllIn(airplane));
+
+            Assert.Equal("There is no driver in the smart fortwo", exception.Message);
+        }
+
+        [Fact]
+        public void should_return_exception_if_passenger_is_null_when_try_to_disembark_all()
+        {
+            var driver = new Pilot("pilot");
+            var originPlace = new Terminal(new HashSet<CrewMember> { driver });
+            var smartFortwo = new SmartFortwo();
+
+            smartFortwo.GetIn(originPlace, driver, null);
+
+            var destinyPlace = new Airplane();
+            destinyPlace.SetSmartFortwo(smartFortwo);
+
+            var exception = Assert.Throws<Exception>(() => smartFortwo.DisembarkAllIn(destinyPlace));
+
+            Assert.Equal("There is no passenger in the smart fortwo", exception.Message);
         }
     }
 }

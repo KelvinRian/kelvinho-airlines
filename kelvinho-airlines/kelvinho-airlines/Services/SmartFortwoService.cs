@@ -12,24 +12,6 @@ namespace kelvinho_airlines.Services
         {
         }
 
-        public IEnumerable<CrewMember> Disembark(Place place)
-        {
-            VerifyDisembark(place);
-
-            if (place.SmartFortwo.Driver == null)
-                throw new Exception("There is no driver in the smart fortwo");
-
-            if (place.SmartFortwo.Passenger == null)
-                throw new Exception("There is no passenger in the smart fortwo");
-
-            var driver = place.SmartFortwo.DisembarkDriver();
-            var passenger = place.SmartFortwo.DisembarkPassenger();
-
-            place.Board(new HashSet<CrewMember> { driver, passenger });
-
-            return new List<CrewMember> { driver, passenger };
-        }
-
         public CrewMember DisembarkDriver(Place place)
         {
             VerifyDisembark(place);

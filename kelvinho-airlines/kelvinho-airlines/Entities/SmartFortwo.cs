@@ -14,7 +14,7 @@ namespace kelvinho_airlines.Entities
 
         }
 
-        public IEnumerable<CrewMember> GetIn(Place originPlace, CrewMember driver, CrewMember passenger)
+        public void GetIn(Place originPlace, CrewMember driver, CrewMember passenger)
         {
             if (originPlace == null)
                 throw new Exception("Place should not be null");
@@ -26,6 +26,26 @@ namespace kelvinho_airlines.Entities
                 Passenger = passenger;
 
             originPlace.Disembark(new List<CrewMember>() { driver, passenger });
+        }
+
+        public IEnumerable<CrewMember> DisembarkAllIn(Place place)
+        {
+            if (place == null)
+                throw new Exception("Place should not be null");
+
+            if (place.SmartFortwo == null)
+                throw new Exception("The smart fortwo isn't at the place");
+
+            if (place.SmartFortwo.Driver == null)
+                throw new Exception("There is no driver in the smart fortwo");
+
+            if (place.SmartFortwo.Passenger == null)
+                throw new Exception("There is no passenger in the smart fortwo");
+
+            var driver = place.SmartFortwo.DisembarkDriver();
+            var passenger = place.SmartFortwo.DisembarkPassenger();
+
+            place.Board(new HashSet<CrewMember> { driver, passenger });
 
             return new List<CrewMember> { driver, passenger };
         }
