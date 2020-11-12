@@ -50,6 +50,22 @@ namespace kelvinho_airlines.Entities
             return new List<CrewMember> { driver, passenger };
         }
 
+        public CrewMember DisembarkDriverIn(Place place)
+        {
+            if (place == null)
+                throw new Exception("Place should not be null");
+
+            if (place.SmartFortwo == null)
+                throw new Exception("The smart fortwo isn't at the place");
+
+            if (place.SmartFortwo.Driver == null)
+                throw new Exception("There is no driver in the smart fortwo");
+
+            var driver = place.SmartFortwo.DisembarkDriver();
+            place.Board(new HashSet<CrewMember> { driver });
+            return driver;
+        }
+
         public CrewMember DisembarkDriver()
         {
             var driver = Driver;

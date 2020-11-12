@@ -12,19 +12,6 @@ namespace kelvinho_airlines.Services
         {
         }
 
-        public CrewMember DisembarkDriver(Place place)
-        {
-            VerifyDisembark(place);
-
-            if (place.SmartFortwo.Driver == null)
-                throw new Exception("There is no driver in the smart fortwo");
-
-            var driver = place.SmartFortwo.DisembarkDriver();
-            place.Board(new HashSet<CrewMember> { driver });
-
-            return driver;
-        }
-
         public CrewMember DisembarkPassenger(Place place)
         {
             if (place == null)
