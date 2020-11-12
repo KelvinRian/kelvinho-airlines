@@ -171,11 +171,11 @@ namespace kelvinho_airlines.Services
 
             if (_terminal.SmartFortwo != null)
             {
-                passenger = _smartFortwoService.DisembarkPassenger(_terminal);
+                passenger = _terminal.SmartFortwo.DisembarkPassengerIn(_terminal);
             }
             else if (_airplane.SmartFortwo != null)
             {
-                passenger = _smartFortwoService.DisembarkPassenger(_airplane);
+                passenger = _airplane.SmartFortwo.DisembarkPassengerIn(_airplane);
             }
             else
             {

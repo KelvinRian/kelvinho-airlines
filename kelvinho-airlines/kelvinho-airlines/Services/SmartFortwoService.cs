@@ -12,23 +12,6 @@ namespace kelvinho_airlines.Services
         {
         }
 
-        public CrewMember DisembarkPassenger(Place place)
-        {
-            if (place == null)
-                throw new Exception("Place should not be null");
-
-            if (place.SmartFortwo == null)
-                throw new Exception("The smart fortwo isn't at the place");
-
-            if (place.SmartFortwo.Passenger == null)
-                throw new Exception("There is no passenger in the smart fortwo");
-
-            var passenger = place.SmartFortwo.DisembarkPassenger();
-            place.Board(new HashSet<CrewMember> { passenger });
-
-            return passenger;
-        }
-
         public void Move(Place origin, Place destiny)
         {
             if (origin == null || destiny == null)
@@ -88,15 +71,6 @@ namespace kelvinho_airlines.Services
                     throw new Exception("There is some crew members that cannot be together at the place");
                 }
             }
-        }
-
-        private static void VerifyDisembark(Place place)
-        {
-            if (place == null)
-                throw new Exception("Place should not be null");
-
-            if (place.SmartFortwo == null)
-                throw new Exception("The smart fortwo isn't at the place");
         }
     }
 }
