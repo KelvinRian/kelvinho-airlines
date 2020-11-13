@@ -16,9 +16,8 @@ namespace kelvinho_airlines
                 typeof(Policeman),
                 typeof(FlightServiceChief)
             };
-            var smartFotwoService = new SmartFortwoService(drivers);
 
-            ITripService tripService = new TripService(smartFotwoService, drivers);
+            ITripService tripService = new TripService(drivers);
 
             tripService.Execute();
         }

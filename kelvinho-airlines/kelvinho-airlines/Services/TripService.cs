@@ -10,15 +10,13 @@ namespace kelvinho_airlines.Services
 {
     public class TripService : ITripService
     {
-        private readonly ISmartFortwoService _smartFortwoService;
         private readonly Terminal _terminal;
         private readonly Airplane _airplane;
         private readonly List<Type> _drivers;
 
-        public TripService(ISmartFortwoService smartFortwoService, List<Type> drivers)
+        public TripService(List<Type> drivers)
         {
             _drivers = drivers;
-            _smartFortwoService = smartFortwoService;
             _terminal = Terminal.StartWithASmartFortwo(new HashSet<CrewMember>
             {
                 new Pilot("Soler"),
@@ -149,12 +147,12 @@ namespace kelvinho_airlines.Services
         {
             if (_terminal.SmartFortwo != null)
             {
-                _smartFortwoService.Move(_terminal, _airplane);
+                _terminal.SmartFortwo.Move(_terminal, _airplane);
                 Console.WriteLine("Moving (Terminal => Airplane)");
             }
             else if (_airplane.SmartFortwo != null)
             {
-                _smartFortwoService.Move(_airplane, _terminal);
+                _airplane.SmartFortwo.Move(_airplane, _terminal);
                 Console.WriteLine("Moving (Airplane => Terminal)");
             }
             else
