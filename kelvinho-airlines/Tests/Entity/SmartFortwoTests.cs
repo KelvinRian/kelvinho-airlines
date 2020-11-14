@@ -14,56 +14,41 @@ namespace Tests.Entities
         {
             var driver = new Pilot("pilot");
             var passenger = new Officer("officer");
-            var originPlace = new Terminal(new HashSet<CrewMember> { driver, passenger });
             var smartFortwo = new SmartFortwo();
 
-            smartFortwo.GetIn(originPlace, driver, passenger);
+            smartFortwo.GetIn(driver, passenger);
 
             Assert.Equal(driver, smartFortwo.Driver);
             Assert.Equal(passenger, smartFortwo.Passenger);
-            Assert.Empty(originPlace.CrewMembers);
         }
 
         [Fact]
         public void should_keep_the_driver_in_the_smart_fortwo_if_the_new_driver_argument_is_null()
         {
             var passenger = new Officer("officer");
-            var originPlace = new Terminal(new HashSet<CrewMember> { passenger });
-
             var driver = new Pilot("pilot");
-            var smartFortwo = new SmartFortwo();
-            smartFortwo.GetIn(originPlace, driver, null);
 
-            smartFortwo.GetIn(originPlace, null, passenger);
+            var smartFortwo = new SmartFortwo();
+            smartFortwo.GetIn(driver, null);
+
+            smartFortwo.GetIn(null, passenger);
 
             Assert.Equal(driver, smartFortwo.Driver);
             Assert.Equal(passenger, smartFortwo.Passenger);
-            Assert.Empty(originPlace.CrewMembers);
         }
 
         [Fact]
         public void should_keep_the_passenger_in_the_smart_fortwo_if_the_new_passenger_argument_is_null()
         {
             var driver = new Pilot("pilot");
-            var originPlace = new Terminal(new HashSet<CrewMember> { driver });
-
             var passenger = new Officer("officer");
             var smartFortwo = new SmartFortwo();
-            smartFortwo.GetIn(originPlace, null, passenger);
+            smartFortwo.GetIn(null, passenger);
 
-            smartFortwo.GetIn(originPlace, driver, null);
+            smartFortwo.GetIn(driver, null);
 
             Assert.Equal(driver, smartFortwo.Driver);
             Assert.Equal(passenger, smartFortwo.Passenger);
-            Assert.Empty(originPlace.CrewMembers);
-        }
-
-        [Fact]
-        public void should_return_exception_if_place_argument_of_get_in_method_is_null()
-        {
-            var smartFortwo = new SmartFortwo();
-            var exception = Assert.Throws<Exception>(() => smartFortwo.GetIn(null, new Pilot("pilot"), new Officer("officer")));
-            Assert.Equal("Place should not be null", exception.Message);
         }
 
         [Fact]
@@ -71,10 +56,9 @@ namespace Tests.Entities
         {
             var driver = new Pilot("pilot");
             var passenger = new Officer("officer");
-            var originPlace = new Terminal(new HashSet<CrewMember> { driver, passenger });
             var smartFortwo = new SmartFortwo();
 
-            smartFortwo.GetIn(originPlace, driver, passenger);
+            smartFortwo.GetIn(driver, passenger);
 
             var destinyPlace = new Airplane();
             destinyPlace.SetSmartFortwo(smartFortwo);
@@ -128,10 +112,9 @@ namespace Tests.Entities
         public void should_return_exception_if_passenger_is_null_when_try_to_disembark_all()
         {
             var driver = new Pilot("pilot");
-            var originPlace = new Terminal(new HashSet<CrewMember> { driver });
             var smartFortwo = new SmartFortwo();
 
-            smartFortwo.GetIn(originPlace, driver, null);
+            smartFortwo.GetIn(driver, null);
 
             var destinyPlace = new Airplane();
             destinyPlace.SetSmartFortwo(smartFortwo);
@@ -145,10 +128,9 @@ namespace Tests.Entities
         public void should_disembark_driver_from_the_smart_fortwo_and_put_him_in_the_given_place()
         {
             var driver = new Pilot("pilot");
-            var originPlace = new Terminal(new HashSet<CrewMember> { driver });
             var smartFortwo = new SmartFortwo();
 
-            smartFortwo.GetIn(originPlace, driver, null);
+            smartFortwo.GetIn(driver, null);
 
             var destinyPlace = new Airplane();
             destinyPlace.SetSmartFortwo(smartFortwo);
@@ -197,10 +179,9 @@ namespace Tests.Entities
         public void should_disembark_passenger_from_the_smart_fortwo_and_put_him_in_the_given_place()
         {
             var passenger = new Pilot("pilot");
-            var originPlace = new Terminal(new HashSet<CrewMember> { passenger });
             var smartFortwo = new SmartFortwo();
 
-            smartFortwo.GetIn(originPlace, null, passenger);
+            smartFortwo.GetIn(null, passenger);
 
             var destinyPlace = new Airplane();
             destinyPlace.SetSmartFortwo(smartFortwo);
@@ -252,7 +233,7 @@ namespace Tests.Entities
 
             var origin = new Terminal(new HashSet<CrewMember>());
             origin.SetSmartFortwo(smartFortwo);
-            origin.SmartFortwo.GetIn(origin, new Pilot("pilot"), null);
+            origin.SmartFortwo.GetIn(new Pilot("pilot"), null);
             var destiny = new Airplane();
 
             smartFortwo.Move(origin, destiny);
@@ -341,7 +322,7 @@ namespace Tests.Entities
             string excpetedExceptionMessage)
         {
             var terminal = Terminal.StartWithASmartFortwo(new HashSet<CrewMember> { crewMember1, crewMember2 });
-            terminal.SmartFortwo.GetIn(terminal, new Pilot("pilot"), null);
+            terminal.SmartFortwo.GetIn(new Pilot("pilot"), null);
             var destiny = new Airplane();
 
             var returnedException = Assert.Throws<Exception>(() => terminal.SmartFortwo.Move(terminal, destiny));
@@ -357,7 +338,7 @@ namespace Tests.Entities
             string excpetedExceptionMessage)
         {
             var terminal = Terminal.StartWithASmartFortwo(new HashSet<CrewMember>());
-            terminal.SmartFortwo.GetIn(terminal, crewMember1, crewMember2);
+            terminal.SmartFortwo.GetIn(crewMember1, crewMember2);
             var destiny = new Airplane();
 
             var returnedException = Assert.Throws<Exception>(() => terminal.SmartFortwo.Move(terminal, destiny));

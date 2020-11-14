@@ -102,8 +102,8 @@ namespace kelvinho_airlines.Services
                         throw new Exception($"{driver.Name} is not authorized to drive this vehicle");
                 }
 
+                _terminal.Disembark(new List<CrewMember>() { driver, passenger });
                 _terminal.SmartFortwo.GetIn(
-                    _terminal,
                     driver,
                     passenger);
             }
@@ -118,8 +118,8 @@ namespace kelvinho_airlines.Services
                         throw new Exception($"{driver.Name} is not authorized to drive this vehicle");
                 }
 
+                _airplane.Disembark(new List<CrewMember>() { driver, passenger });
                 _airplane.SmartFortwo.GetIn(
-                    _airplane,
                     driver,
                     passenger);
             }

@@ -15,18 +15,13 @@ namespace kelvinho_airlines.Entities
 
         }
 
-        public void GetIn(Place originPlace, CrewMember driver, CrewMember passenger)
+        public void GetIn(CrewMember driver, CrewMember passenger)
         {
-            if (originPlace == null)
-                throw new Exception("Place should not be null");
-
             if (driver != null)
                 Driver = driver;
 
             if (passenger != null)
                 Passenger = passenger;
-
-            originPlace.Disembark(new List<CrewMember>() { driver, passenger });
         }
 
         public IEnumerable<CrewMember> DisembarkAllIn(Place place)
