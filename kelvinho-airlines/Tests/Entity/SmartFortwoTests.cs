@@ -60,40 +60,13 @@ namespace Tests.Entities
 
             smartFortwo.GetIn(driver, passenger);
 
-            var destinyPlace = new Airplane();
-            destinyPlace.SetSmartFortwo(smartFortwo);
-            var crewMembersReturned = smartFortwo.DisembarkAllIn(destinyPlace);
+            var crewMembersReturned = smartFortwo.DisembarkAll();
 
             Assert.Null(smartFortwo.Driver);
             Assert.Null(smartFortwo.Passenger);
-
-            Assert.Contains(driver, destinyPlace.CrewMembers);
-            Assert.Contains(passenger, destinyPlace.CrewMembers);
-
             Assert.Equal(2, crewMembersReturned.Count());
             Assert.Contains(driver, crewMembersReturned);
             Assert.Contains(passenger, crewMembersReturned);
-        }
-
-        [Fact]
-        public void should_return_exception_if_the_place_argument_of_disembark_all_in_method_is_null()
-        {
-            var smartFortwo = new SmartFortwo();
-
-            var exception = Assert.Throws<Exception>(() => smartFortwo.DisembarkAllIn(null));
-
-            Assert.Equal("Place should not be null", exception.Message);
-        }
-
-        [Fact]
-        public void should_return_exception_if_the_place_argument_of_disembark_all_in_method_has_no_smart_fortwo()
-        {
-            var airplane = new Airplane();
-            var smartFortwo = new SmartFortwo();
-
-            var exception = Assert.Throws<Exception>(() => smartFortwo.DisembarkAllIn(airplane));
-
-            Assert.Equal("The smart fortwo isn't at the place", exception.Message);
         }
 
         [Fact]
@@ -101,9 +74,8 @@ namespace Tests.Entities
         {
             var airplane = new Airplane();
             var smartFortwo = new SmartFortwo();
-            airplane.SetSmartFortwo(smartFortwo);
 
-            var exception = Assert.Throws<Exception>(() => smartFortwo.DisembarkAllIn(airplane));
+            var exception = Assert.Throws<Exception>(() => smartFortwo.DisembarkAll());
 
             Assert.Equal("There is no driver in the smart fortwo", exception.Message);
         }
@@ -116,10 +88,7 @@ namespace Tests.Entities
 
             smartFortwo.GetIn(driver, null);
 
-            var destinyPlace = new Airplane();
-            destinyPlace.SetSmartFortwo(smartFortwo);
-
-            var exception = Assert.Throws<Exception>(() => smartFortwo.DisembarkAllIn(destinyPlace));
+            var exception = Assert.Throws<Exception>(() => smartFortwo.DisembarkAll());
 
             Assert.Equal("There is no passenger in the smart fortwo", exception.Message);
         }

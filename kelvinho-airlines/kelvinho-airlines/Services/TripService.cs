@@ -211,11 +211,13 @@ namespace kelvinho_airlines.Services
 
             if (_terminal.SmartFortwo != null)
             {
-                crewMembers = _terminal.SmartFortwo.DisembarkAllIn(_terminal).ToList();
+                crewMembers = _terminal.SmartFortwo.DisembarkAll().ToList();
+                _terminal.Board(crewMembers.ToHashSet());
             }
             else if (_airplane.SmartFortwo != null)
             {
-                crewMembers = _airplane.SmartFortwo.DisembarkAllIn(_airplane).ToList();
+                crewMembers = _airplane.SmartFortwo.DisembarkAll().ToList();
+                _airplane.Board(crewMembers.ToHashSet());
             }
             else
             {

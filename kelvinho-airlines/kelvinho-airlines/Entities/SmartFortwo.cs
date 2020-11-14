@@ -24,24 +24,20 @@ namespace kelvinho_airlines.Entities
                 Passenger = passenger;
         }
 
-        public IEnumerable<CrewMember> DisembarkAllIn(Place place)
+        public IEnumerable<CrewMember> DisembarkAll()
         {
-            if (place == null)
-                throw new Exception("Place should not be null");
 
-            if (place.SmartFortwo == null)
-                throw new Exception("The smart fortwo isn't at the place");
-
-            if (place.SmartFortwo.Driver == null)
+            if (Driver == null)
                 throw new Exception("There is no driver in the smart fortwo");
 
-            if (place.SmartFortwo.Passenger == null)
+            if (Passenger == null)
                 throw new Exception("There is no passenger in the smart fortwo");
 
-            var driver = place.SmartFortwo.DisembarkDriver();
-            var passenger = place.SmartFortwo.DisembarkPassenger();
+            var driver = Driver;
+            var passenger = Passenger;
 
-            place.Board(new HashSet<CrewMember> { driver, passenger });
+            Driver = null;
+            Passenger = null;
 
             return new List<CrewMember> { driver, passenger };
         }
