@@ -190,11 +190,13 @@ namespace kelvinho_airlines.Services
 
             if (_terminal.SmartFortwo != null)
             {
-                driver = _terminal.SmartFortwo.DisembarkDriverIn(_terminal);
+                driver = _terminal.SmartFortwo.DisembarkDriver();
+                _terminal.Board(new HashSet<CrewMember> { driver });
             }
             else if (_airplane.SmartFortwo != null)
             {
-                driver = _airplane.SmartFortwo.DisembarkDriverIn(_airplane);
+                driver = _airplane.SmartFortwo.DisembarkDriver();
+                _airplane.Board(new HashSet<CrewMember> { driver });
             }
             else
             {

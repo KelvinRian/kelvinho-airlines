@@ -52,7 +52,7 @@ namespace Tests.Entities
         }
 
         [Fact]
-        public void should_disembark_all_crew_members_from_the_smart_fortwo_and_put_them_in_the_given_place()
+        public void should_disembark_all_crew_members_from_the_smart_fortwo()
         {
             var driver = new Pilot("pilot");
             var passenger = new Officer("officer");
@@ -94,52 +94,26 @@ namespace Tests.Entities
         }
 
         [Fact]
-        public void should_disembark_driver_from_the_smart_fortwo_and_put_him_in_the_given_place()
+        public void should_disembark_driver_from_the_smart_fortwo()
         {
             var driver = new Pilot("pilot");
             var smartFortwo = new SmartFortwo();
 
             smartFortwo.GetIn(driver, null);
 
-            var destinyPlace = new Airplane();
-            destinyPlace.SetSmartFortwo(smartFortwo);
-
-            var driverReturned = smartFortwo.DisembarkDriverIn(destinyPlace);
+            var driverReturned = smartFortwo.DisembarkDriver();
 
             Assert.Null(smartFortwo.Driver);
-            Assert.Contains(driver, destinyPlace.CrewMembers);
             Assert.Equal(driver, driverReturned);
         }
 
-        [Fact]
-        public void should_return_exception_if_the_place_argument_of_disembark_driver_in_method_is_null()
-        {
-            var smartFortwo = new SmartFortwo();
-
-            var exception = Assert.Throws<Exception>(() => smartFortwo.DisembarkDriverIn(null));
-
-            Assert.Equal("Place should not be null", exception.Message);
-        }
-
-        [Fact]
-        public void should_return_exception_if_the_place_argument_of_disembark_driver_in_method_has_no_smart_fortwo()
-        {
-            var airplane = new Airplane();
-            var smartFortwo = new SmartFortwo();
-
-            var exception = Assert.Throws<Exception>(() => smartFortwo.DisembarkDriverIn(airplane));
-
-            Assert.Equal("The smart fortwo isn't at the place", exception.Message);
-        }
 
         [Fact]
         public void should_return_exception_when_try_to_disembark_a_driver_that_is_null()
         {
-            var airplane = new Airplane();
             var smartFortwo = new SmartFortwo();
-            airplane.SetSmartFortwo(smartFortwo);
 
-            var exception = Assert.Throws<Exception>(() => smartFortwo.DisembarkDriverIn(airplane));
+            var exception = Assert.Throws<Exception>(() => smartFortwo.DisembarkDriver());
 
             Assert.Equal("There is no driver in the smart fortwo", exception.Message);
         }
