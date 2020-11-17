@@ -1,19 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace kelvinho_airlines.Entities
 {
-    public class SmartFortwo : BaseEntity
+    public class SmartFortwo
     {
-        public CrewMember Driver { get; protected set; }
-        public CrewMember Passenger { get; protected set; }
-        public string Location { get; set; }
+        public CrewMember Driver { get; private set; }
+        public CrewMember Passenger { get; private set; }
+        public string Location { get; private set; }
 
-        public SmartFortwo() : base()
+        public SmartFortwo()
         {
 
         }
+
+        //TODO
+        //Methods:
+        //EnterDriver
+        //EnterPassenger
+        //EnterAll
+        //use exceptions when some argument is null
+        //Remove GetIn method
 
         public void GetIn(CrewMember driver, CrewMember passenger)
         {
@@ -26,19 +33,8 @@ namespace kelvinho_airlines.Entities
 
         public IEnumerable<CrewMember> DisembarkAll()
         {
-
-            if (Driver == null)
-                throw new Exception("There is no driver in the smart fortwo");
-
-            if (Passenger == null)
-                throw new Exception("There is no passenger in the smart fortwo");
-
-            var driver = Driver;
-            var passenger = Passenger;
-
-            Driver = null;
-            Passenger = null;
-
+            var driver = DisembarkDriver();
+            var passenger = DisembarkPassenger();
             return new List<CrewMember> { driver, passenger };
         }
 

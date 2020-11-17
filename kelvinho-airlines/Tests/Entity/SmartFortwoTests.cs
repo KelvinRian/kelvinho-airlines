@@ -107,7 +107,6 @@ namespace Tests.Entities
             Assert.Equal(driver, driverReturned);
         }
 
-
         [Fact]
         public void should_return_exception_when_try_to_disembark_a_driver_that_is_null()
         {
@@ -143,6 +142,14 @@ namespace Tests.Entities
             var exception = Assert.Throws<Exception>(() => smartFortwo.DisembarkPassenger());
 
             Assert.Equal("There is no passenger in the smart fortwo", exception.Message);
+        }
+
+        [Fact]
+        public void should_set_location()
+        {
+            var smartFortwo = new SmartFortwo();
+            smartFortwo.SetLocation(new Airplane());
+            Assert.Equal(nameof(Airplane), smartFortwo.Location);
         }
     }
 }

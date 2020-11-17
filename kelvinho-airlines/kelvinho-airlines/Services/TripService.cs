@@ -165,7 +165,6 @@ namespace kelvinho_airlines.Services
                     throw new Exception("Smart Fortwo can't move without a driver");
 
                 _terminal.RemoveSmartFortwo();
-                _currentPlace.SmartFortwo.SetLocation(_currentPlace);
             }
             else if(_currentPlace is Airplane)
             {
@@ -185,7 +184,6 @@ namespace kelvinho_airlines.Services
                     throw new Exception("Smart Fortwo can't move without a driver");
 
                 _airplane.RemoveSmartFortwo();
-                _currentPlace.SmartFortwo.SetLocation(_currentPlace);
             }
             else
             {
