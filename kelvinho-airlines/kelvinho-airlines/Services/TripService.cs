@@ -10,6 +10,7 @@ namespace kelvinho_airlines.Services
 {
     public class TripService : ITripService
     {
+        private Place _currentPlace;
         private readonly Terminal _terminal;
         private readonly Airplane _airplane;
         private readonly List<Type> _drivers;
@@ -29,6 +30,7 @@ namespace kelvinho_airlines.Services
                 new Prisoner("Mahnke")
             });
             _airplane = new Airplane();
+            _currentPlace = _terminal;
         }
 
         public void Execute()
@@ -145,22 +147,89 @@ namespace kelvinho_airlines.Services
 
         private void Move()
         {
-            if (_terminal.SmartFortwo != null)
+            if(_currentPlace is Terminal)
             {
-                _terminal.SmartFortwo.Move(_terminal, _airplane);
                 Console.WriteLine("Moving (Terminal => Airplane)");
+
+                VerifyCrewMembersMovement(_terminal.CrewMembers);
+                var crewMembersInSmartFortwo = new List<CrewMember> { _terminal.SmartFortwo.Driver };
+                if (_terminal.SmartFortwo.Passenger != null)
+                    crewMembersInSmartFortwo.Add(_terminal.SmartFortwo.Passenger);
+
+                VerifyCrewMembersMovement(crewMembersInSmartFortwo);
+
+                _currentPlace = _airplane;
+                _currentPlace.SetSmartFortwo(_terminal.SmartFortwo);
+
+                if (_currentPlace.SmartFortwo.Driver == null)
+                    throw new Exception("Smart Fortwo can't move without a driver");
+
+                _terminal.RemoveSmartFortwo();
+                _currentPlace.SmartFortwo.SetLocation(_currentPlace);
             }
-            else if (_airplane.SmartFortwo != null)
+            else if(_currentPlace is Airplane)
             {
-                _airplane.SmartFortwo.Move(_airplane, _terminal);
                 Console.WriteLine("Moving (Airplane => Terminal)");
+
+                VerifyCrewMembersMovement(_airplane.CrewMembers);
+                var crewMembersInSmartFortwo = new List<CrewMember> { _airplane.SmartFortwo.Driver };
+                if (_airplane.SmartFortwo.Passenger != null)
+                    crewMembersInSmartFortwo.Add(_airplane.SmartFortwo.Passenger);
+
+                VerifyCrewMembersMovement(crewMembersInSmartFortwo);
+
+                _currentPlace = _terminal;
+                _currentPlace.SetSmartFortwo(_airplane.SmartFortwo);
+
+                if (_currentPlace.SmartFortwo.Driver == null)
+                    throw new Exception("Smart Fortwo can't move without a driver");
+
+                _airplane.RemoveSmartFortwo();
+                _currentPlace.SmartFortwo.SetLocation(_currentPlace);
             }
             else
             {
                 throw new Exception("The smart fortwo was not found!");
             }
-
             Console.WriteLine("\n*******************************************************************************************");
+        }
+
+        private static void VerifyCrewMembersMovement(IEnumerable<CrewMember> crewMembers)
+        {
+            HashSet<Type> IncompatibleTypesOfCrewMembersAtPlace = new HashSet<Type>();
+            HashSet<Type> crewMemberTypesAtPlace = new HashSet<Type>();
+            bool hasPoliceman = false;
+            bool hasPrisoner = false;
+
+            foreach (var crewMember in crewMembers)
+            {
+                if (crewMember is Policeman)
+                    hasPoliceman = true;
+
+                if (crewMember is Prisoner)
+                {
+                    hasPrisoner = true;
+                }
+                else
+                {
+                    crewMemberTypesAtPlace.Add(crewMember.GetType());
+                    IncompatibleTypesOfCrewMembersAtPlace.UnionWith(crewMember.IncompatibleCrewMemberTypes);
+                }
+            }
+
+            if (hasPrisoner && !hasPoliceman)
+                throw new Exception("The prisoner can't stay with the others crew members without a policeman");
+
+            IncompatibleTypesOfCrewMembersAtPlace.IntersectWith(crewMemberTypesAtPlace);
+
+            if (IncompatibleTypesOfCrewMembersAtPlace.Count() == 2 || IncompatibleTypesOfCrewMembersAtPlace.Count() == 1)
+            {
+                crewMemberTypesAtPlace.ExceptWith(IncompatibleTypesOfCrewMembersAtPlace);
+                if (crewMemberTypesAtPlace.Count() == 0)
+                {
+                    throw new Exception("There is some crew members that cannot be together at the place");
+                }
+            }
         }
 
         private void DisembarkPassenger()
