@@ -52,24 +52,11 @@ namespace kelvinho_airlines.Entities
             return driver;
         }
 
-        public CrewMember DisembarkPassengerIn(Place place)
-        {
-            if (place == null)
-                throw new Exception("Place should not be null");
-
-            if (place.SmartFortwo == null)
-                throw new Exception("The smart fortwo isn't at the place");
-
-            if (place.SmartFortwo.Passenger == null)
-                throw new Exception("There is no passenger in the smart fortwo");
-
-            var passenger = place.SmartFortwo.DisembarkPassenger();
-            place.Board(new HashSet<CrewMember> { passenger });
-            return passenger;
-        }
-
         public CrewMember DisembarkPassenger()
         {
+            if (Passenger == null)
+                throw new Exception("There is no passenger in the smart fortwo");
+
             var passenger = Passenger;
             Passenger = null;
             return passenger;

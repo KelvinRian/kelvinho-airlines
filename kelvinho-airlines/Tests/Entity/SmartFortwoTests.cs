@@ -119,7 +119,7 @@ namespace Tests.Entities
         }
 
         [Fact]
-        public void should_disembark_passenger_from_the_smart_fortwo_and_put_him_in_the_given_place()
+        public void should_disembark_passenger_from_the_smart_fortwo()
         {
             var passenger = new Pilot("pilot");
             var smartFortwo = new SmartFortwo();
@@ -129,42 +129,18 @@ namespace Tests.Entities
             var destinyPlace = new Airplane();
             destinyPlace.SetSmartFortwo(smartFortwo);
 
-            var returnedPassenger = smartFortwo.DisembarkPassengerIn(destinyPlace);
+            var returnedPassenger = smartFortwo.DisembarkPassenger();
 
             Assert.Null(smartFortwo.Driver);
-            Assert.Contains(passenger, destinyPlace.CrewMembers);
             Assert.Equal(passenger, returnedPassenger);
-        }
-
-        [Fact]
-        public void should_return_exception_if_the_place_argument_of_disembark_passenger_in_method_is_null()
-        {
-            var smartFortwo = new SmartFortwo();
-
-            var exception = Assert.Throws<Exception>(() => smartFortwo.DisembarkPassengerIn(null));
-
-            Assert.Equal("Place should not be null", exception.Message);
-        }
-
-        [Fact]
-        public void should_return_exception_if_the_place_argument_of_disembark_passenger_in_method_has_no_smart_fortwo()
-        {
-            var airplane = new Airplane();
-            var smartFortwo = new SmartFortwo();
-
-            var exception = Assert.Throws<Exception>(() => smartFortwo.DisembarkPassengerIn(airplane));
-
-            Assert.Equal("The smart fortwo isn't at the place", exception.Message);
         }
 
         [Fact]
         public void should_return_exception_when_try_to_disembark_a_passenger_that_is_null()
         {
-            var airplane = new Airplane();
             var smartFortwo = new SmartFortwo();
-            airplane.SetSmartFortwo(smartFortwo);
 
-            var exception = Assert.Throws<Exception>(() => smartFortwo.DisembarkPassengerIn(airplane));
+            var exception = Assert.Throws<Exception>(() => smartFortwo.DisembarkPassenger());
 
             Assert.Equal("There is no passenger in the smart fortwo", exception.Message);
         }

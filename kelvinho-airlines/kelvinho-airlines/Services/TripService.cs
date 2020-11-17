@@ -169,11 +169,13 @@ namespace kelvinho_airlines.Services
 
             if (_terminal.SmartFortwo != null)
             {
-                passenger = _terminal.SmartFortwo.DisembarkPassengerIn(_terminal);
+                passenger = _terminal.SmartFortwo.DisembarkPassenger();
+                _terminal.Board(new HashSet<CrewMember> { passenger });
             }
             else if (_airplane.SmartFortwo != null)
             {
-                passenger = _airplane.SmartFortwo.DisembarkPassengerIn(_airplane);
+                passenger = _airplane.SmartFortwo.DisembarkPassenger();
+                _airplane.Board(new HashSet<CrewMember> { passenger });
             }
             else
             {
