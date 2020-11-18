@@ -90,44 +90,38 @@ namespace kelvinho_airlines.Services
 
         private void GetInTheSmartFortwo(Type driverType, Type passengerType)
         {
+            if (_currentPlace.SmartFortwo == null)
+                throw new Exception("The smart fortwo was not found!");
+
             CrewMember driver;
             CrewMember passenger;
 
-            if (_terminal.SmartFortwo != null)
+            driver = _currentPlace.CrewMembers.FirstOrDefault(c => c.GetType() == driverType);
+            passenger = _currentPlace.CrewMembers.FirstOrDefault(c => c.GetType() == passengerType);
+
+            if (driver != null)
             {
-                driver = _terminal.CrewMembers.FirstOrDefault(c => c.GetType() == driverType);
-                passenger = _terminal.CrewMembers.FirstOrDefault(c => c.GetType() == passengerType);
-
-                if (driver != null)
-                {
-                    if (!_drivers.Contains(driver.GetType()))
-                        throw new Exception($"{driver.Name} is not authorized to drive this vehicle");
-                }
-
-                _terminal.Disembark(new List<CrewMember>() { driver, passenger });
-                _terminal.SmartFortwo.GetIn(
-                    driver,
-                    passenger);
+                if (!_drivers.Contains(driver.GetType()))
+                    throw new Exception($"{driver.Name} is not authorized to drive this vehicle");
             }
-            else if (_airplane.SmartFortwo != null)
+
+            _currentPlace.Disembark(new List<CrewMember>() { driver, passenger });
+
+            if (passenger == null && driver == null)
             {
-                driver = _airplane.CrewMembers.FirstOrDefault(c => c.GetType() == driverType);
-                passenger = _airplane.CrewMembers.FirstOrDefault(c => c.GetType() == passengerType);
-
-                if (driver != null)
-                {
-                    if (!_drivers.Contains(driver.GetType()))
-                        throw new Exception($"{driver.Name} is not authorized to drive this vehicle");
-                }
-
-                _airplane.Disembark(new List<CrewMember>() { driver, passenger });
-                _airplane.SmartFortwo.GetIn(
-                    driver,
-                    passenger);
+                return;
+            }
+            else if (passenger == null && driver != null)
+            {
+                _currentPlace.SmartFortwo.EnterDriver(driver);
+            }
+            else if (passenger != null && driver == null)
+            {
+                _currentPlace.SmartFortwo.EnterPassenger(passenger);
             }
             else
             {
-                throw new Exception("The smart fortwo was not found!");
+                _currentPlace.SmartFortwo.EnterBoth(driver, passenger);
             }
 
             var crewMembers = new List<CrewMember> { driver, passenger };
@@ -147,7 +141,7 @@ namespace kelvinho_airlines.Services
 
         private void Move()
         {
-            if(_currentPlace is Terminal)
+            if (_currentPlace is Terminal)
             {
                 Console.WriteLine("Moving (Terminal => Airplane)");
 
@@ -166,7 +160,7 @@ namespace kelvinho_airlines.Services
 
                 _terminal.RemoveSmartFortwo();
             }
-            else if(_currentPlace is Airplane)
+            else if (_currentPlace is Airplane)
             {
                 Console.WriteLine("Moving (Airplane => Terminal)");
 

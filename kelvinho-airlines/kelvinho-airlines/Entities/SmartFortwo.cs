@@ -14,21 +14,24 @@ namespace kelvinho_airlines.Entities
 
         }
 
-        //TODO
-        //Methods:
-        //EnterDriver
-        //EnterPassenger
-        //EnterAll
-        //use exceptions when some argument is null
-        //Remove GetIn method
-
-        public void GetIn(CrewMember driver, CrewMember passenger)
+        public void EnterDriver(CrewMember driver)
         {
-            if (driver != null)
-                Driver = driver;
+            if (driver == null)
+                throw new Exception("Its not possible to enter a null driver in the smart fortwo");
+            Driver = driver;
+        }
 
-            if (passenger != null)
-                Passenger = passenger;
+        public void EnterPassenger(CrewMember passenger)
+        {
+            if (passenger == null)
+                throw new Exception("Its not possible to enter a null passenger in the smart fortwo");
+            Passenger = passenger;
+        }
+
+        public void EnterBoth(CrewMember driver, CrewMember passenger)
+        {
+            EnterDriver(driver);
+            EnterPassenger(passenger);
         }
 
         public IEnumerable<CrewMember> DisembarkAll()

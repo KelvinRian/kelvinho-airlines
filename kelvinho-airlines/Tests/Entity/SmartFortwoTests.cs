@@ -2,6 +2,7 @@
 using kelvinho_airlines.Entities.Places;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Xunit;
 
@@ -10,55 +11,13 @@ namespace Tests.Entities
     public class SmartFortwoTests
     {
         [Fact]
-        public void should_get_in_the_smart_fortwo()
-        {
-            var driver = new Pilot("pilot");
-            var passenger = new Officer("officer");
-            var smartFortwo = new SmartFortwo();
-
-            smartFortwo.GetIn(driver, passenger);
-
-            Assert.Equal(driver, smartFortwo.Driver);
-            Assert.Equal(passenger, smartFortwo.Passenger);
-        }
-
-        [Fact]
-        public void should_keep_the_driver_in_the_smart_fortwo_if_the_new_driver_argument_is_null()
-        {
-            var passenger = new Officer("officer");
-            var driver = new Pilot("pilot");
-
-            var smartFortwo = new SmartFortwo();
-            smartFortwo.GetIn(driver, null);
-
-            smartFortwo.GetIn(null, passenger);
-
-            Assert.Equal(driver, smartFortwo.Driver);
-            Assert.Equal(passenger, smartFortwo.Passenger);
-        }
-
-        [Fact]
-        public void should_keep_the_passenger_in_the_smart_fortwo_if_the_new_passenger_argument_is_null()
-        {
-            var driver = new Pilot("pilot");
-            var passenger = new Officer("officer");
-            var smartFortwo = new SmartFortwo();
-            smartFortwo.GetIn(null, passenger);
-
-            smartFortwo.GetIn(driver, null);
-
-            Assert.Equal(driver, smartFortwo.Driver);
-            Assert.Equal(passenger, smartFortwo.Passenger);
-        }
-
-        [Fact]
         public void should_disembark_all_crew_members_from_the_smart_fortwo()
         {
             var driver = new Pilot("pilot");
             var passenger = new Officer("officer");
             var smartFortwo = new SmartFortwo();
 
-            smartFortwo.GetIn(driver, passenger);
+            smartFortwo.EnterBoth(driver, passenger);
 
             var crewMembersReturned = smartFortwo.DisembarkAll();
 
@@ -86,7 +45,7 @@ namespace Tests.Entities
             var driver = new Pilot("pilot");
             var smartFortwo = new SmartFortwo();
 
-            smartFortwo.GetIn(driver, null);
+            smartFortwo.EnterDriver(driver);
 
             var exception = Assert.Throws<Exception>(() => smartFortwo.DisembarkAll());
 
@@ -99,7 +58,7 @@ namespace Tests.Entities
             var driver = new Pilot("pilot");
             var smartFortwo = new SmartFortwo();
 
-            smartFortwo.GetIn(driver, null);
+            smartFortwo.EnterDriver(driver);
 
             var driverReturned = smartFortwo.DisembarkDriver();
 
@@ -123,7 +82,7 @@ namespace Tests.Entities
             var passenger = new Pilot("pilot");
             var smartFortwo = new SmartFortwo();
 
-            smartFortwo.GetIn(null, passenger);
+            smartFortwo.EnterPassenger(passenger);
 
             var destinyPlace = new Airplane();
             destinyPlace.SetSmartFortwo(smartFortwo);
@@ -150,6 +109,81 @@ namespace Tests.Entities
             var smartFortwo = new SmartFortwo();
             smartFortwo.SetLocation(new Airplane());
             Assert.Equal(nameof(Airplane), smartFortwo.Location);
+        }
+
+        [Fact]
+        public void should_enter_driver()
+        {
+            var smartFortwo = new SmartFortwo();
+            var driver = new Pilot("driver");
+
+            smartFortwo.EnterDriver(driver);
+
+            Assert.Equal(driver, smartFortwo.Driver);
+        }
+
+        [Fact]
+        public void should_throw_exception_if_driver_argument_of_enter_driver_method_is_null()
+        {
+            var smartFortwo = new SmartFortwo();
+
+            var exception = Assert.Throws<Exception>(() => smartFortwo.EnterDriver(null));
+
+            Assert.Equal("Its not possible to enter a null driver in the smart fortwo", exception.Message);
+        }
+
+        [Fact]
+        public void should_enter_passenger()
+        {
+            var smartFortwo = new SmartFortwo();
+            var passenger = new Pilot("passenger");
+
+            smartFortwo.EnterPassenger(passenger);
+
+            Assert.Equal(passenger, smartFortwo.Passenger);
+        }
+
+        [Fact]
+        public void should_throw_exception_if_passenger_argument_of_enter_passenger_method_is_null()
+        {
+            var smartFortwo = new SmartFortwo();
+
+            var exception = Assert.Throws<Exception>(() => smartFortwo.EnterPassenger(null));
+
+            Assert.Equal("Its not possible to enter a null passenger in the smart fortwo", exception.Message);
+        }
+
+        [Fact]
+        public void should_enter_both_passenger_and_driver_in_smartFortwo()
+        {
+            var smartFortwo = new SmartFortwo();
+            var driver = new Pilot("driver");
+            var passenger = new Officer("passenger");
+
+            smartFortwo.EnterBoth(driver, passenger);
+
+            Assert.Equal(driver, smartFortwo.Driver);
+            Assert.Equal(passenger, smartFortwo.Passenger);
+        }
+
+        [Fact]
+        public void should_throw_exception_if_driver_argument_of_enter_both_method_is_null()
+        {
+            var smartFortwo = new SmartFortwo();
+
+            var exception = Assert.Throws<Exception>(() => smartFortwo.EnterBoth(null, new Pilot("passenger")));
+
+            Assert.Equal("Its not possible to enter a null driver in the smart fortwo", exception.Message);
+        }
+
+        [Fact]
+        public void should_throw_exception_if_passenger_argument_of_enter_both_method_is_null()
+        {
+            var smartFortwo = new SmartFortwo();
+
+            var exception = Assert.Throws<Exception>(() => smartFortwo.EnterBoth(new Pilot("driver"), null));
+
+            Assert.Equal("Its not possible to enter a null passenger in the smart fortwo", exception.Message);
         }
     }
 }
