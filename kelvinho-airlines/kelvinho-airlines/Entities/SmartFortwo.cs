@@ -1,4 +1,5 @@
-﻿using System;
+﻿using kelvinho_airlines.Utils.ExtensionMethods;
+using System;
 using System.Collections.Generic;
 
 namespace kelvinho_airlines.Entities
@@ -9,24 +10,11 @@ namespace kelvinho_airlines.Entities
         public CrewMember Passenger { get; private set; }
         public string Location { get; private set; }
 
-        public SmartFortwo()
-        {
-
-        }
-
         public void EnterDriver(CrewMember driver)
-        {
-            if (driver == null)
-                throw new Exception("Its not possible to enter a null driver in the smart fortwo");
-            Driver = driver;
-        }
+            => Driver = driver ?? throw new Exception("Its not possible to enter a null driver in the smart fortwo");
 
         public void EnterPassenger(CrewMember passenger)
-        {
-            if (passenger == null)
-                throw new Exception("Its not possible to enter a null passenger in the smart fortwo");
-            Passenger = passenger;
-        }
+            => Passenger = passenger ?? throw new Exception("Its not possible to enter a null passenger in the smart fortwo");
 
         public void EnterBoth(CrewMember driver, CrewMember passenger)
         {
@@ -34,16 +22,9 @@ namespace kelvinho_airlines.Entities
             EnterPassenger(passenger);
         }
 
-        public IEnumerable<CrewMember> DisembarkAll()
-        {
-            var driver = DisembarkDriver();
-            var passenger = DisembarkPassenger();
-            return new List<CrewMember> { driver, passenger };
-        }
-
         public CrewMember DisembarkDriver()
         {
-            if (Driver == null)
+            if (Driver.IsNull())
                 throw new Exception("There is no driver in the smart fortwo");
 
             var driver = Driver;
@@ -53,7 +34,7 @@ namespace kelvinho_airlines.Entities
 
         public CrewMember DisembarkPassenger()
         {
-            if (Passenger == null)
+            if (Passenger.IsNull())
                 throw new Exception("There is no passenger in the smart fortwo");
 
             var passenger = Passenger;
@@ -61,16 +42,23 @@ namespace kelvinho_airlines.Entities
             return passenger;
         }
 
+        public IEnumerable<CrewMember> DisembarkAll()
+        {
+            var driver = DisembarkDriver();
+            var passenger = DisembarkPassenger();
+            return new List<CrewMember> { driver, passenger };
+        }
+
         public void SetLocation(Place place)
             => Location = place.GetType().Name;
 
         public override string ToString()
         {
-            var driver = Driver != null ? Driver.Name : "Empty";
-            var driverType = Driver != null ? Driver.GetType().Name : "";
+            var driver = !Driver.IsNull() ? Driver.Name : "Empty";
+            var driverType = !Driver.IsNull() ? Driver.GetType().Name : "";
 
-            var passenger = Passenger != null ? Passenger.Name : "Empty";
-            var passengerType = Passenger != null ? Passenger.GetType().Name : "";
+            var passenger = !Passenger.IsNull() ? Passenger.Name : "Empty";
+            var passengerType = !Passenger.IsNull() ? Passenger.GetType().Name : "";
 
             return $"Smart Fortwo:   |   Driver: {driverType} {driver}   |   Passenger: {passengerType} {passenger}   |   Location: {Location}";
         }
