@@ -177,5 +177,26 @@ namespace Tests.Entities
 
             Assert.Equal("Its not possible to enter a null passenger in the smart fortwo", exception.Message);
         }
+
+        [Fact]
+        public void to_string_method_should_show_return_smart_fortwo_information()
+        {
+            var smartFortwo = new SmartFortwo();
+            smartFortwo.EnterBoth(new Pilot("driverName"), new Officer("passengerName"));
+
+            var result = smartFortwo.ToString();
+
+            Assert.Equal("Smart Fortwo:   |   Driver: Pilot driverName   |   Passenger: Officer passengerName", result);
+        }
+
+        [Fact]
+        public void to_string_method_should_return_Empty_for_names_and_an_empty_string_for_type_when_crewMembers_are_null()
+        {
+            var smartFortwo = new SmartFortwo();
+
+            var result = smartFortwo.ToString();
+
+            Assert.Equal("Smart Fortwo:   |   Driver:  Empty   |   Passenger:  Empty", result);
+        }
     }
 }
