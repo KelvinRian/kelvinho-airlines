@@ -104,14 +104,6 @@ namespace Tests.Entities
         }
 
         [Fact]
-        public void should_set_location()
-        {
-            var smartFortwo = new SmartFortwo();
-            smartFortwo.SetLocation(new Airplane());
-            Assert.Equal(nameof(Airplane), smartFortwo.Location);
-        }
-
-        [Fact]
         public void should_enter_driver()
         {
             var smartFortwo = new SmartFortwo();

@@ -8,7 +8,6 @@ namespace kelvinho_airlines.Entities
     {
         public CrewMember Driver { get; private set; }
         public CrewMember Passenger { get; private set; }
-        public string Location { get; private set; }
 
         public void EnterDriver(CrewMember driver)
             => Driver = driver ?? throw new Exception("Its not possible to enter a null driver in the smart fortwo");
@@ -49,9 +48,6 @@ namespace kelvinho_airlines.Entities
             return new List<CrewMember> { driver, passenger };
         }
 
-        public void SetLocation(Place place)
-            => Location = place.GetType().Name;
-
         public override string ToString()
         {
             var driver = !Driver.IsNull() ? Driver.Name : "Empty";
@@ -60,7 +56,7 @@ namespace kelvinho_airlines.Entities
             var passenger = !Passenger.IsNull() ? Passenger.Name : "Empty";
             var passengerType = !Passenger.IsNull() ? Passenger.GetType().Name : "";
 
-            return $"Smart Fortwo:   |   Driver: {driverType} {driver}   |   Passenger: {passengerType} {passenger}   |   Location: {Location}";
+            return $"Smart Fortwo:   |   Driver: {driverType} {driver}   |   Passenger: {passengerType} {passenger}";
         }
     }
 }

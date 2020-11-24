@@ -73,6 +73,9 @@ namespace kelvinho_airlines.Services
         {
             var defaultColor = Console.ForegroundColor;
 
+            Console.ForegroundColor = ConsoleColor.Blue;
+            Console.WriteLine($"Location: {_currentPlace.GetType().Name}\n");
+
             Console.ForegroundColor = ConsoleColor.Cyan;
             if (_terminal.SmartFortwo != null)
                 Console.WriteLine($"{_terminal.SmartFortwo}\n");
