@@ -15,7 +15,6 @@ namespace kelvinho_airlines.Entities
         public void SetSmartFortwo(SmartFortwo smartFortwo)
         {
             SmartFortwo = smartFortwo;
-            SmartFortwo.Location = GetType().Name;
         }
 
         public void RemoveSmartFortwo()

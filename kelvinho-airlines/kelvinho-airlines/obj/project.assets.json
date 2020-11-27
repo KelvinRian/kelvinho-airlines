@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\kelvi\\OneDrive\\Área de Trabalho\\kelvinho-airlines\\kelvinho-airlines\\kelvinho-airlines\\kelvinho-airlines.csproj",
+      "projectUniqueName": "C:\\Users\\kelvi\\OneDrive\\Área de Trabalho\\Repos\\kelvinho-airlines\\kelvinho-airlines\\kelvinho-airlines\\kelvinho-airlines.csproj",
       "projectName": "kelvinho-airlines",
-      "projectPath": "C:\\Users\\kelvi\\OneDrive\\Área de Trabalho\\kelvinho-airlines\\kelvinho-airlines\\kelvinho-airlines\\kelvinho-airlines.csproj",
+      "projectPath": "C:\\Users\\kelvi\\OneDrive\\Área de Trabalho\\Repos\\kelvinho-airlines\\kelvinho-airlines\\kelvinho-airlines\\kelvinho-airlines.csproj",
       "packagesPath": "C:\\Users\\kelvi\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\kelvi\\OneDrive\\Área de Trabalho\\kelvinho-airlines\\kelvinho-airlines\\kelvinho-airlines\\obj\\",
+      "outputPath": "C:\\Users\\kelvi\\OneDrive\\Área de Trabalho\\Repos\\kelvinho-airlines\\kelvinho-airlines\\kelvinho-airlines\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\kelvi\\AppData\\Roaming\\NuGet\\NuGet.Config",
