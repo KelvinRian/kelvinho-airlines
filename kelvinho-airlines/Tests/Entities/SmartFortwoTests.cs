@@ -1,8 +1,6 @@
 ﻿using kelvinho_airlines.Entities;
 using kelvinho_airlines.Entities.Places;
 using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using Xunit;
 
@@ -197,6 +195,25 @@ namespace Tests.Entities
             var result = smartFortwo.ToString();
 
             Assert.Equal("Smart Fortwo:   |   Driver:  Empty   |   Passenger:  Empty", result);
+        }
+
+        [Fact]
+        public void should_get_crew_members()
+        {
+            var smartFortwo = new SmartFortwo();
+            var driver = new Pilot("pilot name");
+            var passenger = new Officer("officer name");
+
+            smartFortwo.EnterBoth(driver, passenger);
+
+            var returnedCrewMembers = smartFortwo.GetCrewMembers();
+
+            Assert.Equal(2, returnedCrewMembers.Count());
+            Assert.Contains(driver, returnedCrewMembers);
+            Assert.Contains(passenger, returnedCrewMembers);
+
+            Assert.NotNull(smartFortwo.Driver);
+            Assert.NotNull(smartFortwo.Passenger);
         }
     }
 }

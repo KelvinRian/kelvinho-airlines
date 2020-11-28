@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using kelvinho_airlines.Utils.ExtensionMethods;
+using System.Collections.Generic;
 
 namespace kelvinho_airlines.Entities
 {
@@ -21,6 +22,14 @@ namespace kelvinho_airlines.Entities
         {
             SmartFortwo = null;
         }
+
+        //TODO null check on SmartFortwo before call GetCrewMembers()
+        public IEnumerable<CrewMember> GetSmartFortwoCrewMembers()
+            => SmartFortwo.GetCrewMembers();
+
+        //TODO null check on SmartFortwo before call Driver
+        public bool SmartFortwoHasDriver()
+            => !SmartFortwo.Driver.IsNull();
 
         public abstract void Board(HashSet<CrewMember> crewMembers);
 

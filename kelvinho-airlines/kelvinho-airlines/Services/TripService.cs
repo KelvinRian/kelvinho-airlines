@@ -1,6 +1,7 @@
 ﻿using kelvinho_airlines.Entities;
 using kelvinho_airlines.Entities.Places;
 using kelvinho_airlines.Services.Interfaces;
+using kelvinho_airlines.Utils.ExtensionMethods;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,7 @@ namespace kelvinho_airlines.Services
         private readonly Terminal _terminal;
         private readonly Airplane _airplane;
         private readonly List<Type> _drivers;
+        private readonly string _dividingLine = "\n*******************************************************************************************";
 
         public TripService(List<Type> drivers)
         {
@@ -144,59 +146,46 @@ namespace kelvinho_airlines.Services
 
         private void Move()
         {
-            if (_currentPlace is Terminal)
-            {
-                Console.WriteLine("Moving (Terminal => Airplane)");
+            ShowMovementInfo();
 
-                VerifyCrewMembersMovement(_terminal.CrewMembers);
-                var crewMembersInSmartFortwo = new List<CrewMember> { _terminal.SmartFortwo.Driver };
-                if (_terminal.SmartFortwo.Passenger != null)
-                    crewMembersInSmartFortwo.Add(_terminal.SmartFortwo.Passenger);
-
-                VerifyCrewMembersMovement(crewMembersInSmartFortwo);
-
-                _currentPlace = _airplane;
-                _currentPlace.SetSmartFortwo(_terminal.SmartFortwo);
-
-                if (_currentPlace.SmartFortwo.Driver == null)
-                    throw new Exception("Smart Fortwo can't move without a driver");
-
-                _terminal.RemoveSmartFortwo();
-            }
-            else if (_currentPlace is Airplane)
-            {
-                Console.WriteLine("Moving (Airplane => Terminal)");
-
-                VerifyCrewMembersMovement(_airplane.CrewMembers);
-                var crewMembersInSmartFortwo = new List<CrewMember> { _airplane.SmartFortwo.Driver };
-                if (_airplane.SmartFortwo.Passenger != null)
-                    crewMembersInSmartFortwo.Add(_airplane.SmartFortwo.Passenger);
-
-                VerifyCrewMembersMovement(crewMembersInSmartFortwo);
-
-                _currentPlace = _terminal;
-                _currentPlace.SetSmartFortwo(_airplane.SmartFortwo);
-
-                if (_currentPlace.SmartFortwo.Driver == null)
-                    throw new Exception("Smart Fortwo can't move without a driver");
-
-                _airplane.RemoveSmartFortwo();
-            }
-            else
-            {
+            if (!CurrentPlaceHasSmartFortwo())
                 throw new Exception("The smart fortwo was not found!");
-            }
-            Console.WriteLine("\n*******************************************************************************************");
+
+            if (!SmartFortwoAtCurrentPlaceHasDriver())
+                throw new Exception("Smart Fortwo can't move without a driver");
+
+            VerifyCrewMembersMovement(_currentPlace.CrewMembers);
+            VerifyCrewMembersMovement(_currentPlace.GetSmartFortwoCrewMembers());
+
+            ChangePlaceOfSmartFortwo();
+
+            Console.WriteLine(_dividingLine);
         }
 
-        private static void VerifyCrewMembersMovement(IEnumerable<CrewMember> crewMembers)
+        private void ShowMovementInfo()
+        {
+            var origin = _currentPlace.GetType().Name;
+            var destiny = _currentPlace is Terminal
+                ? typeof(Airplane).Name
+                : typeof(Terminal).Name;
+
+            Console.WriteLine($"Moving ({origin} => {destiny})");
+        }
+
+        private bool CurrentPlaceHasSmartFortwo()
+            => !_currentPlace.SmartFortwo.IsNull();
+
+        private bool SmartFortwoAtCurrentPlaceHasDriver()
+            => _currentPlace.SmartFortwoHasDriver();
+
+        private void VerifyCrewMembersMovement(IEnumerable<CrewMember> crewMembers)
         {
             HashSet<Type> IncompatibleTypesOfCrewMembersAtPlace = new HashSet<Type>();
             HashSet<Type> crewMemberTypesAtPlace = new HashSet<Type>();
             bool hasPoliceman = false;
             bool hasPrisoner = false;
 
-            foreach (var crewMember in crewMembers)
+            foreach (var crewMember in crewMembers.Where(x => !x.IsNull()))
             {
                 if (crewMember is Policeman)
                     hasPoliceman = true;
@@ -224,6 +213,22 @@ namespace kelvinho_airlines.Services
                 {
                     throw new Exception("There is some crew members that cannot be together at the place");
                 }
+            }
+        }
+
+        private void ChangePlaceOfSmartFortwo()
+        {
+            if (_currentPlace is Terminal)
+            {
+                _airplane.SetSmartFortwo(_currentPlace.SmartFortwo);
+                _currentPlace.RemoveSmartFortwo();
+                _currentPlace = _airplane;
+            }
+            else
+            {
+                _terminal.SetSmartFortwo(_currentPlace.SmartFortwo);
+                _currentPlace.RemoveSmartFortwo();
+                _currentPlace = _terminal;
             }
         }
 
