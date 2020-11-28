@@ -15,7 +15,7 @@ namespace kelvinho_airlines.Services
         private readonly Terminal _terminal;
         private readonly Airplane _airplane;
         private readonly List<Type> _drivers;
-        private readonly string _dividingLine = "\n*******************************************************************************************";
+        private readonly string _dividingLine = "*******************************************************************************************";
 
         public TripService(List<Type> drivers)
         {
@@ -79,18 +79,16 @@ namespace kelvinho_airlines.Services
             Console.WriteLine($"Location: {_currentPlace.GetType().Name}\n");
 
             Console.ForegroundColor = ConsoleColor.Cyan;
-            if (_terminal.SmartFortwo != null)
-                Console.WriteLine($"{_terminal.SmartFortwo}\n");
-            else if (_airplane.SmartFortwo != null)
-                Console.WriteLine($"{_airplane.SmartFortwo}\n");
+            Console.WriteLine($"{_currentPlace.SmartFortwo}\n");
 
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine(_terminal);
+
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine(_airplane);
 
             Console.ForegroundColor = defaultColor;
-            Console.WriteLine("*******************************************************************************************");
+            Console.WriteLine(_dividingLine);
         }
 
         private void GetInTheSmartFortwo(Type driverType, Type passengerType)
@@ -159,7 +157,7 @@ namespace kelvinho_airlines.Services
 
             ChangePlaceOfSmartFortwo();
 
-            Console.WriteLine(_dividingLine);
+            Console.WriteLine($"\n{_dividingLine}");
         }
 
         private void ShowMovementInfo()
