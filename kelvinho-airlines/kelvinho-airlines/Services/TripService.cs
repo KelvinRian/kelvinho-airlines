@@ -234,20 +234,11 @@ namespace kelvinho_airlines.Services
         {
             CrewMember passenger;
 
-            if (_terminal.SmartFortwo != null)
-            {
-                passenger = _terminal.SmartFortwo.DisembarkPassenger();
-                _terminal.Board(new HashSet<CrewMember> { passenger });
-            }
-            else if (_airplane.SmartFortwo != null)
-            {
-                passenger = _airplane.SmartFortwo.DisembarkPassenger();
-                _airplane.Board(new HashSet<CrewMember> { passenger });
-            }
-            else
-            {
+            if(!CurrentPlaceHasSmartFortwo())
                 throw new Exception("The smart fortwo was not found!");
-            }
+
+            passenger = _currentPlace.DisembarkSmartFortwoPassenger();
+            _currentPlace.Board(passenger);
 
             Console.WriteLine($"Disembarking ({passenger})\n");
             ShowInfo();

@@ -31,8 +31,11 @@ namespace kelvinho_airlines.Entities
         public bool SmartFortwoHasDriver()
             => !SmartFortwo.Driver.IsNull();
 
-        public abstract void Board(HashSet<CrewMember> crewMembers);
+        public CrewMember DisembarkSmartFortwoPassenger()
+            => SmartFortwo.DisembarkPassenger();
 
+        public abstract void Board(IEnumerable<CrewMember> crewMembers);
+        public abstract void Board(CrewMember crewMember);
         public abstract void Disembark(List<CrewMember> crewMembers);
     }
 }

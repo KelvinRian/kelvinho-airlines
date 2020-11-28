@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace kelvinho_airlines.Entities.Places
@@ -17,10 +18,13 @@ namespace kelvinho_airlines.Entities.Places
             return terminal;
         }
 
-        public override void Board(HashSet<CrewMember> crewMembers)
+        public override void Board(IEnumerable<CrewMember> crewMembers)
         {
-            CrewMembers.UnionWith(crewMembers);
+            CrewMembers.UnionWith(crewMembers.Distinct());
         }
+
+        public override void Board(CrewMember crewMember)
+            => CrewMembers.Add(crewMember);
 
         public override void Disembark(List<CrewMember> crewMembers)
         {

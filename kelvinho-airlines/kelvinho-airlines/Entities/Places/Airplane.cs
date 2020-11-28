@@ -1,5 +1,6 @@
 ﻿using kelvinho_airlines.Enums;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace kelvinho_airlines.Entities.Places
@@ -17,24 +18,13 @@ namespace kelvinho_airlines.Entities.Places
             CommonCrew = new HashSet<CrewMember>();
         }
 
-        public override void Board(HashSet<CrewMember> crewMembers)
+        public override void Board(IEnumerable<CrewMember> crewMembers)
         {
-            CrewMembers.UnionWith(crewMembers);
+            CrewMembers.UnionWith(crewMembers.Distinct());
 
-            foreach (var crewMember in crewMembers)
+            foreach (var crewMember in crewMembers.Distinct())
             {
-                if (crewMember.CrewType == CrewType.Technical)
-                {
-                    TechnicalCrew.Add(crewMember);
-                }
-                else if (crewMember.CrewType == CrewType.Cabin)
-                {
-                    CabinCrew.Add(crewMember);
-                }
-                else
-                {
-                    CommonCrew.Add(crewMember);
-                }
+                PutCrewMemberInTheCorrectCrew(crewMember);
             }
         }
 
@@ -91,6 +81,22 @@ namespace kelvinho_airlines.Entities.Places
             }
 
             return $"Airplane:\n\nTechnical Crew:   {technicalCrew}\n\nCabin Crew:   {cabinCrew}\n\nCommon Crew:   {commonCrew}\n";
+        }
+
+        public override void Board(CrewMember crewMember)
+        {
+            CrewMembers.Add(crewMember);
+            PutCrewMemberInTheCorrectCrew(crewMember);
+        }
+
+        private void PutCrewMemberInTheCorrectCrew(CrewMember crewMember)
+        {
+            if (crewMember.CrewType == CrewType.Cabin)
+                CabinCrew.Add(crewMember);
+            else if (crewMember.CrewType == CrewType.Technical)
+                TechnicalCrew.Add(crewMember);
+            else
+                CommonCrew.Add(crewMember);
         }
     }
 }
