@@ -34,6 +34,9 @@ namespace kelvinho_airlines.Entities
         public CrewMember DisembarkSmartFortwoPassenger()
             => SmartFortwo.DisembarkPassenger();
 
+        public CrewMember DisembarkSmartFortwoDriver()
+            => SmartFortwo.DisembarkDriver();
+
         public abstract void Board(IEnumerable<CrewMember> crewMembers);
         public abstract void Board(CrewMember crewMember);
         public abstract void Disembark(List<CrewMember> crewMembers);

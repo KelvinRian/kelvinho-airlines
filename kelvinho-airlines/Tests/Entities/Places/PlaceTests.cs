@@ -66,5 +66,21 @@ namespace Tests.Entities.Places
             Assert.Null(place.SmartFortwo.Passenger);
             Assert.Equal(passenger, returnedCrewMember);
         }
+
+        [Fact]
+        public void should_disembark_driver_from_smart_fortwo_and_return_it()
+        {
+            var smartFortwo = new SmartFortwo();
+            var driver = new Officer("driver name");
+            smartFortwo.EnterDriver(driver);
+
+            var place = new PlaceMock();
+            place.SetSmartFortwo(smartFortwo);
+
+            var returnedCrewMember = place.DisembarkSmartFortwoDriver();
+
+            Assert.Null(place.SmartFortwo.Driver);
+            Assert.Equal(driver, returnedCrewMember);
+        }
     }
 }
