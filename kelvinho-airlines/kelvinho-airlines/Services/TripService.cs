@@ -258,23 +258,18 @@ namespace kelvinho_airlines.Services
 
         private void Disembark()
         {
-            List<CrewMember> crewMembers;
-
-            if (_terminal.SmartFortwo != null)
-            {
-                crewMembers = _terminal.SmartFortwo.DisembarkAll().ToList();
-                _terminal.Board(crewMembers.ToHashSet());
-            }
-            else if (_airplane.SmartFortwo != null)
-            {
-                crewMembers = _airplane.SmartFortwo.DisembarkAll().ToList();
-                _airplane.Board(crewMembers.ToHashSet());
-            }
-            else
-            {
+            if (!CurrentPlaceHasSmartFortwo())
                 throw new Exception("The smart fortwo was not found!");
-            }
 
+            var crewMembers = _currentPlace.DisembarkAllFromSmartFortwo();
+            _currentPlace.Board(crewMembers);
+
+            ShowCrewMembersDisembarking(crewMembers);
+            ShowInfo();
+        }
+
+        private void ShowCrewMembersDisembarking(IEnumerable<CrewMember> crewMembers)
+        {
             StringBuilder crewMembersDisembarking = new StringBuilder();
 
             foreach (var crewMember in crewMembers)
@@ -282,12 +277,11 @@ namespace kelvinho_airlines.Services
                 if (crewMembersDisembarking.Length > 0)
                     crewMembersDisembarking.Append(", ");
 
-                if (crewMember != null)
+                if (!crewMember.IsNull())
                     crewMembersDisembarking.Append(crewMember);
             }
 
             Console.WriteLine($"Disembarking ({crewMembersDisembarking})\n");
-            ShowInfo();
         }
     }
 }
