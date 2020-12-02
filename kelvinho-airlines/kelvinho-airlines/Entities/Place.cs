@@ -6,7 +6,7 @@ namespace kelvinho_airlines.Entities
 {
     public abstract class Place
     {
-        private readonly string _nullSmartFortwoException;
+        protected readonly string _nullSmartFortwoException;
 
         public SmartFortwo SmartFortwo { get; private set; }
         public List<CrewMember> CrewMembers { get; set; }

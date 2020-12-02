@@ -5,6 +5,11 @@ namespace Tests.Mocks
 {
     public class PlaceMock : Place
     {
+        public PlaceMock() : base()
+        {
+
+        }
+
         public override void Board(CrewMember crewMember)
         {
             throw new System.NotImplementedException();
@@ -19,5 +24,8 @@ namespace Tests.Mocks
         {
             throw new System.NotImplementedException();
         }
+
+        public string GetNullSmartFortwoException()
+            => _nullSmartFortwoException;
     }
 }

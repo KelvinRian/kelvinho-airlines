@@ -143,5 +143,14 @@ namespace Tests.Entities.Places
             var exception = Assert.Throws<Exception>(() => place.DisembarkAllFromSmartFortwo());
             Assert.Equal($"{place.GetType().Name} does not have a smart fortwo", exception.Message);
         }
+
+        [Fact]
+        public void should_set_crew_members_and_null_smart_fortwo_exception_in_constructor()
+        {
+            var place = new PlaceMock();
+
+            Assert.Empty(place.CrewMembers);
+            Assert.Equal($"{place.GetType().Name} does not have a smart fortwo", place.GetNullSmartFortwoException());
+        }
     }
 }
