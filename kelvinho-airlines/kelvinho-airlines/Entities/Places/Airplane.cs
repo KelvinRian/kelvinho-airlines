@@ -18,7 +18,7 @@ namespace kelvinho_airlines.Entities.Places
             CommonCrew = new HashSet<CrewMember>();
         }
 
-        public override void Board(IEnumerable<CrewMember> crewMembers)
+        public override void Board(List<CrewMember> crewMembers)
         {
             CrewMembers.AddRange(crewMembers.Distinct());
 

@@ -10,7 +10,7 @@ namespace Tests.Entities.Places
         [Fact]
         public void should_board_a_single_crew_member()
         {
-            var terminal = new Terminal(new HashSet<CrewMember>());
+            var terminal = new Terminal(new List<CrewMember>());
             var crewMember = new Pilot("crew member name");
             terminal.Board(crewMember);
             Assert.Contains(crewMember, terminal.CrewMembers);

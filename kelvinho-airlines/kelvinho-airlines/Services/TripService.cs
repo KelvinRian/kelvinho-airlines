@@ -20,7 +20,7 @@ namespace kelvinho_airlines.Services
         public TripService(List<Type> drivers)
         {
             _drivers = drivers;
-            _terminal = Terminal.StartWithASmartFortwo(new HashSet<CrewMember>
+            _terminal = Terminal.StartWithASmartFortwo(new List<CrewMember>
             {
                 new Pilot("Soler"),
                 new Officer("Coleta"),
@@ -262,7 +262,7 @@ namespace kelvinho_airlines.Services
                 throw new Exception("The smart fortwo was not found!");
 
             var crewMembers = _currentPlace.DisembarkAllFromSmartFortwo();
-            _currentPlace.Board(crewMembers);
+            _currentPlace.Board(crewMembers.ToList());
 
             ShowCrewMembersDisembarking(crewMembers);
             ShowInfo();
