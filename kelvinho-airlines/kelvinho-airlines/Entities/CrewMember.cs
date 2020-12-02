@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace kelvinho_airlines.Entities
 {
-    public abstract class CrewMember : BaseEntity
+    public abstract class CrewMember
     {
         public string Name { get; protected set; }
         public CrewType CrewType { get; protected set; }
