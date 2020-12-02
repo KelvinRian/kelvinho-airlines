@@ -1,4 +1,5 @@
 ﻿using kelvinho_airlines.Utils.ExtensionMethods;
+using System;
 using System.Collections.Generic;
 
 namespace kelvinho_airlines.Entities
@@ -14,31 +15,30 @@ namespace kelvinho_airlines.Entities
         }
 
         public void SetSmartFortwo(SmartFortwo smartFortwo)
-        {
-            SmartFortwo = smartFortwo;
-        }
+            => SmartFortwo = smartFortwo;
 
         public void RemoveSmartFortwo()
-        {
-            SmartFortwo = null;
-        }
+            => SmartFortwo = null;
 
-        //TODO null check on SmartFortwo before call GetCrewMembers()
-        public IEnumerable<CrewMember> GetSmartFortwoCrewMembers()
-            => SmartFortwo.GetCrewMembers();
+        public List<CrewMember> GetSmartFortwoCrewMembers()
+            => SmartFortwo?.GetCrewMembers()
+                ?? throw new Exception($"{GetType().Name} does not have a smart fortwo");
 
-        //TODO null check on SmartFortwo before call Driver
         public bool SmartFortwoHasDriver()
-            => !SmartFortwo.Driver.IsNull();
+            => !SmartFortwo?.Driver.IsNull() 
+                ?? throw new Exception($"{GetType().Name} does not have a smart fortwo");
 
         public CrewMember DisembarkSmartFortwoPassenger()
-            => SmartFortwo.DisembarkPassenger();
+            => SmartFortwo?.DisembarkPassenger()
+                ?? throw new Exception($"{GetType().Name} does not have a smart fortwo");
 
         public CrewMember DisembarkSmartFortwoDriver()
-            => SmartFortwo.DisembarkDriver();
+            => SmartFortwo?.DisembarkDriver()
+                ?? throw new Exception($"{GetType().Name} does not have a smart fortwo");
 
         public IEnumerable<CrewMember> DisembarkAllFromSmartFortwo()
-            => SmartFortwo.DisembarkAll();
+            => SmartFortwo?.DisembarkAll()
+                ?? throw new Exception($"{GetType().Name} does not have a smart fortwo");
 
         public abstract void Board(IEnumerable<CrewMember> crewMembers);
         public abstract void Board(CrewMember crewMember);

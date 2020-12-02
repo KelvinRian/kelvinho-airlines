@@ -48,7 +48,7 @@ namespace kelvinho_airlines.Entities
             return new List<CrewMember> { driver, passenger };
         }
 
-        public IEnumerable<CrewMember> GetCrewMembers()
+        public List<CrewMember> GetCrewMembers()
             => new List<CrewMember> { Driver, Passenger };
 
         public override string ToString()
