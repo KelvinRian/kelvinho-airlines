@@ -6,12 +6,15 @@ namespace kelvinho_airlines.Entities
 {
     public abstract class Place
     {
+        private readonly string _nullSmartFortwoException;
+
         public SmartFortwo SmartFortwo { get; private set; }
         public List<CrewMember> CrewMembers { get; set; }
 
         public Place()
         {
             CrewMembers = new List<CrewMember>();
+            _nullSmartFortwoException = $"{GetType().Name} does not have a smart fortwo";
         }
 
         public void SetSmartFortwo(SmartFortwo smartFortwo)
@@ -22,23 +25,23 @@ namespace kelvinho_airlines.Entities
 
         public List<CrewMember> GetSmartFortwoCrewMembers()
             => SmartFortwo?.GetCrewMembers()
-                ?? throw new Exception($"{GetType().Name} does not have a smart fortwo");
+                ?? throw new Exception(_nullSmartFortwoException);
 
         public bool SmartFortwoHasDriver()
             => !SmartFortwo?.Driver.IsNull() 
-                ?? throw new Exception($"{GetType().Name} does not have a smart fortwo");
+                ?? throw new Exception(_nullSmartFortwoException);
 
         public CrewMember DisembarkSmartFortwoPassenger()
             => SmartFortwo?.DisembarkPassenger()
-                ?? throw new Exception($"{GetType().Name} does not have a smart fortwo");
+                ?? throw new Exception(_nullSmartFortwoException);
 
         public CrewMember DisembarkSmartFortwoDriver()
             => SmartFortwo?.DisembarkDriver()
-                ?? throw new Exception($"{GetType().Name} does not have a smart fortwo");
+                ?? throw new Exception(_nullSmartFortwoException);
 
         public IEnumerable<CrewMember> DisembarkAllFromSmartFortwo()
             => SmartFortwo?.DisembarkAll()
-                ?? throw new Exception($"{GetType().Name} does not have a smart fortwo");
+                ?? throw new Exception(_nullSmartFortwoException);
 
         public abstract void Board(IEnumerable<CrewMember> crewMembers);
         public abstract void Board(CrewMember crewMember);
