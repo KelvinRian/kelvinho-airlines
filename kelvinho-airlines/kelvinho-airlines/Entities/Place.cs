@@ -6,11 +6,11 @@ namespace kelvinho_airlines.Entities
     public abstract class Place
     {
         public SmartFortwo SmartFortwo { get; private set; }
-        public HashSet<CrewMember> CrewMembers { get; set; }
+        public List<CrewMember> CrewMembers { get; set; }
 
         public Place()
         {
-            CrewMembers = new HashSet<CrewMember>();
+            CrewMembers = new List<CrewMember>();
         }
 
         public void SetSmartFortwo(SmartFortwo smartFortwo)

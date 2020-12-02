@@ -20,16 +20,15 @@ namespace kelvinho_airlines.Entities.Places
 
         public override void Board(IEnumerable<CrewMember> crewMembers)
         {
-            CrewMembers.UnionWith(crewMembers.Distinct());
+            CrewMembers.AddRange(crewMembers.Distinct());
         }
 
         public override void Board(CrewMember crewMember)
             => CrewMembers.Add(crewMember);
 
         public override void Disembark(List<CrewMember> crewMembers)
-        {
-            CrewMembers.ExceptWith(crewMembers);
-        }
+            => CrewMembers.RemoveAll(x => crewMembers.Contains(x));
+
 
         public override string ToString()
         {
