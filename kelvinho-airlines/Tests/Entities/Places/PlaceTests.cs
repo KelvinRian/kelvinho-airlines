@@ -152,5 +152,16 @@ namespace Tests.Entities.Places
             Assert.Empty(place.CrewMembers);
             Assert.Equal($"{place.GetType().Name} does not have a smart fortwo", place.GetNullSmartFortwoException());
         }
+
+        [Fact]
+        public void should_remove_smart_fortwo()
+        {
+            var place = new PlaceMock();
+            place.SetSmartFortwo(new SmartFortwo());
+
+            place.RemoveSmartFortwo();
+            
+            Assert.Null(place.SmartFortwo);
+        }
     }
 }

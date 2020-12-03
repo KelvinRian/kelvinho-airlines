@@ -9,7 +9,7 @@ namespace kelvinho_airlines.Entities
         protected readonly string _nullSmartFortwoException;
 
         public SmartFortwo SmartFortwo { get; private set; }
-        public List<CrewMember> CrewMembers { get; set; }
+        public List<CrewMember> CrewMembers { get; private set; }
 
         public Place()
         {
