@@ -7,10 +7,6 @@ namespace kelvinho_airlines.Entities.Places
 {
     public class Airplane : Place
     {
-        public Airplane()
-        {
-        }
-
         public override void Board(List<CrewMember> crewMembers)
         {
             CrewMembers.AddRange(crewMembers.Distinct());
