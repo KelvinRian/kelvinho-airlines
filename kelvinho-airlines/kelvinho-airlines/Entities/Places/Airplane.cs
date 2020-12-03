@@ -1,5 +1,4 @@
 ﻿using kelvinho_airlines.Enums;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
@@ -7,16 +6,6 @@ namespace kelvinho_airlines.Entities.Places
 {
     public class Airplane : Place
     {
-        public override void Board(List<CrewMember> crewMembers)
-        {
-            CrewMembers.AddRange(crewMembers.Distinct());
-        }
-
-        public override void Disembark(List<CrewMember> crewMembers)
-        {
-            CrewMembers.RemoveAll(x => crewMembers.Contains(x));
-        }
-
         public override string ToString()
         {
             StringBuilder technicalCrew = new StringBuilder();
@@ -46,11 +35,6 @@ namespace kelvinho_airlines.Entities.Places
             }
 
             return $"Airplane:\n\nTechnical Crew:   {technicalCrew}\n\nCabin Crew:   {cabinCrew}\n\nCommon Crew:   {commonCrew}\n";
-        }
-
-        public override void Board(CrewMember crewMember)
-        {
-            CrewMembers.Add(crewMember);
         }
     }
 }

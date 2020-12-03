@@ -1,5 +1,6 @@
 ﻿using kelvinho_airlines.Entities;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Tests.Mocks;
 using Xunit;
@@ -162,6 +163,56 @@ namespace Tests.Entities.Places
             place.RemoveSmartFortwo();
             
             Assert.Null(place.SmartFortwo);
+        }
+
+        [Fact]
+        public void should_board_a_single_crew_member()
+        {
+            var place = new PlaceMock();
+            var crewMember = new Policeman("crew member name");
+
+            place.Board(crewMember);
+
+            Assert.Contains(crewMember, place.CrewMembers);
+        }
+
+        [Fact]
+        public void should_board_a_list_of_crew_members()
+        {
+            var place = new PlaceMock();
+            var crewMembers = new List<CrewMember>
+            {
+                new Policeman("policeman name"),
+                new Prisoner("prisoner name")
+            };
+
+            place.Board(crewMembers);
+
+            Assert.True(place.CrewMembers.All(x => crewMembers.Contains(x)));
+            Assert.Equal(crewMembers.Count(), place.CrewMembers.Count());
+        }
+
+        [Fact]
+        public void should_remove_crew_members()
+        {
+            var place = new PlaceMock();
+            var crewMemberThatMustStay = new Pilot("pilot name");
+            var crewMembersThatMustBeRemoved = new List<CrewMember>
+            {
+                new Policeman("policeman name"),
+                new Prisoner("prisoner name"),
+            };
+            
+            var crewMembers = new List<CrewMember>();
+            crewMembers.Add(crewMemberThatMustStay);
+            crewMembers.AddRange(crewMembersThatMustBeRemoved);
+
+            place.Board(crewMembers);
+
+            place.Remove(crewMembersThatMustBeRemoved);
+
+            Assert.Contains(crewMemberThatMustStay, place.CrewMembers);
+            Assert.Single(place.CrewMembers);
         }
     }
 }

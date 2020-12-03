@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
 namespace kelvinho_airlines.Entities.Places
@@ -17,18 +16,6 @@ namespace kelvinho_airlines.Entities.Places
             terminal.SetSmartFortwo(new SmartFortwo());
             return terminal;
         }
-
-        public override void Board(List<CrewMember> crewMembers)
-        {
-            CrewMembers.AddRange(crewMembers.Distinct());
-        }
-
-        public override void Board(CrewMember crewMember)
-            => CrewMembers.Add(crewMember);
-
-        public override void Disembark(List<CrewMember> crewMembers)
-            => CrewMembers.RemoveAll(x => crewMembers.Contains(x));
-
 
         public override string ToString()
         {

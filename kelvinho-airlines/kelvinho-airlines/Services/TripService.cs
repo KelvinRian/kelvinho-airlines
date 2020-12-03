@@ -108,7 +108,7 @@ namespace kelvinho_airlines.Services
                     throw new Exception($"{driver.Name} is not authorized to drive this vehicle");
             }
 
-            _currentPlace.Disembark(new List<CrewMember>() { driver, passenger });
+            _currentPlace.Remove(new List<CrewMember>() { driver, passenger });
 
             if (passenger == null && driver == null)
             {
