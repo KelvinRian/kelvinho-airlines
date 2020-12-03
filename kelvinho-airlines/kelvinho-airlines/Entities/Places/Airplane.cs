@@ -7,55 +7,24 @@ namespace kelvinho_airlines.Entities.Places
 {
     public class Airplane : Place
     {
-        public HashSet<CrewMember> TechnicalCrew { get; protected set; }
-        public HashSet<CrewMember> CabinCrew { get; protected set; }
-        public HashSet<CrewMember> CommonCrew { get; protected set; }
-
         public Airplane()
         {
-            TechnicalCrew = new HashSet<CrewMember>();
-            CabinCrew = new HashSet<CrewMember>();
-            CommonCrew = new HashSet<CrewMember>();
         }
 
         public override void Board(List<CrewMember> crewMembers)
         {
             CrewMembers.AddRange(crewMembers.Distinct());
-
-            foreach (var crewMember in crewMembers.Distinct())
-            {
-                PutCrewMemberInTheCorrectCrew(crewMember);
-            }
         }
 
         public override void Disembark(List<CrewMember> crewMembers)
         {
             CrewMembers.RemoveAll(x => crewMembers.Contains(x));
-
-            foreach (var crewMember in crewMembers)
-            {
-                if (crewMember != null)
-                {
-                    if (crewMember.CrewType == CrewType.Technical)
-                    {
-                        TechnicalCrew.Remove(crewMember);
-                    }
-                    else if (crewMember.CrewType == CrewType.Cabin)
-                    {
-                        CabinCrew.Remove(crewMember);
-                    }
-                    else
-                    {
-                        CommonCrew.Remove(crewMember);
-                    }
-                }
-            }
         }
 
         public override string ToString()
         {
             StringBuilder technicalCrew = new StringBuilder();
-            foreach (var crewMember in TechnicalCrew)
+            foreach (var crewMember in CrewMembers.Where(x => x.CrewType == CrewType.Technical))
             {
                 if (technicalCrew.Length > 0)
                     technicalCrew.Append("   |   ");
@@ -64,7 +33,7 @@ namespace kelvinho_airlines.Entities.Places
             }
 
             StringBuilder cabinCrew = new StringBuilder();
-            foreach (var crewMember in CabinCrew)
+            foreach (var crewMember in CrewMembers.Where(x => x.CrewType == CrewType.Cabin))
             {
                 if (cabinCrew.Length > 0)
                     cabinCrew.Append("  |   ");
@@ -73,7 +42,7 @@ namespace kelvinho_airlines.Entities.Places
             }
 
             StringBuilder commonCrew = new StringBuilder();
-            foreach (var crewMember in CommonCrew)
+            foreach (var crewMember in CrewMembers.Where(x => x.CrewType == CrewType.Common))
             {
                 if (commonCrew.Length > 0)
                     commonCrew.Append("   |   ");
@@ -86,17 +55,6 @@ namespace kelvinho_airlines.Entities.Places
         public override void Board(CrewMember crewMember)
         {
             CrewMembers.Add(crewMember);
-            PutCrewMemberInTheCorrectCrew(crewMember);
-        }
-
-        private void PutCrewMemberInTheCorrectCrew(CrewMember crewMember)
-        {
-            if (crewMember.CrewType == CrewType.Cabin)
-                CabinCrew.Add(crewMember);
-            else if (crewMember.CrewType == CrewType.Technical)
-                TechnicalCrew.Add(crewMember);
-            else
-                CommonCrew.Add(crewMember);
         }
     }
 }
