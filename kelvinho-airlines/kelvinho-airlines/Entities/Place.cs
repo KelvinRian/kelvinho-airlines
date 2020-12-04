@@ -31,11 +31,11 @@ namespace kelvinho_airlines.Entities
             => !SmartFortwo?.Driver.IsNull() 
                 ?? throw new Exception(_nullSmartFortwoException);
 
-        public CrewMember DisembarkSmartFortwoPassenger()
+        public CrewMember DisembarkPassengerFromSmartFortwo()
             => SmartFortwo?.DisembarkPassenger()
                 ?? throw new Exception(_nullSmartFortwoException);
 
-        public CrewMember DisembarkSmartFortwoDriver()
+        public CrewMember DisembarkDriverFromSmartFortwo()
             => SmartFortwo?.DisembarkDriver()
                 ?? throw new Exception(_nullSmartFortwoException);
 

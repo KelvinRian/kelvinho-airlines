@@ -5,12 +5,12 @@ namespace kelvinho_airlines.Entities.Places
 {
     public class Terminal : Place
     {
-        public Terminal(List<CrewMember> crewMembers) : base()
+        private Terminal(List<CrewMember> crewMembers)
         {
             Board(crewMembers);
         }
 
-        public static Terminal StartWithASmartFortwo(List<CrewMember> crewMembers)
+        public static Terminal CreateWithSmartFortwo(List<CrewMember> crewMembers)
         {
             var terminal = new Terminal(crewMembers);
             terminal.SetSmartFortwo(new SmartFortwo());

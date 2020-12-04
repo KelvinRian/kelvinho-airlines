@@ -20,7 +20,7 @@ namespace kelvinho_airlines.Services
         public TripService(List<Type> drivers)
         {
             _drivers = drivers;
-            _terminal = Terminal.StartWithASmartFortwo(new List<CrewMember>
+            _terminal = Terminal.CreateWithSmartFortwo(new List<CrewMember>
             {
                 new Pilot("Soler"),
                 new Officer("Coleta"),
@@ -237,7 +237,7 @@ namespace kelvinho_airlines.Services
             if(!CurrentPlaceHasSmartFortwo())
                 throw new Exception("The smart fortwo was not found!");
 
-            passenger = _currentPlace.DisembarkSmartFortwoPassenger();
+            passenger = _currentPlace.DisembarkPassengerFromSmartFortwo();
             _currentPlace.Board(passenger);
 
             Console.WriteLine($"Disembarking ({passenger})\n");
@@ -249,7 +249,7 @@ namespace kelvinho_airlines.Services
             if (!CurrentPlaceHasSmartFortwo())
                 throw new Exception("The smart fortwo was not found!");
 
-            var driver = _currentPlace.DisembarkSmartFortwoDriver();
+            var driver = _currentPlace.DisembarkDriverFromSmartFortwo();
             _currentPlace.Board(driver);
 
             Console.WriteLine($"Disembarking ({driver})\n");

@@ -79,7 +79,7 @@ namespace Tests.Entities.Places
             var place = new PlaceMock();
             place.SetSmartFortwo(smartFortwo);
 
-            var returnedCrewMember = place.DisembarkSmartFortwoPassenger();
+            var returnedCrewMember = place.DisembarkPassengerFromSmartFortwo();
 
             Assert.Null(place.SmartFortwo.Passenger);
             Assert.Equal(passenger, returnedCrewMember);
@@ -89,7 +89,7 @@ namespace Tests.Entities.Places
         public void should_throws_exception_when_try_to_disembark_passenger_if_smart_fortwo_is_null()
         {
             var place = new PlaceMock();
-            var exception = Assert.Throws<Exception>(() => place.DisembarkSmartFortwoPassenger());
+            var exception = Assert.Throws<Exception>(() => place.DisembarkPassengerFromSmartFortwo());
             Assert.Equal($"{place.GetType().Name} does not have a smart fortwo", exception.Message);
         }
 
@@ -103,7 +103,7 @@ namespace Tests.Entities.Places
             var place = new PlaceMock();
             place.SetSmartFortwo(smartFortwo);
 
-            var returnedCrewMember = place.DisembarkSmartFortwoDriver();
+            var returnedCrewMember = place.DisembarkDriverFromSmartFortwo();
 
             Assert.Null(place.SmartFortwo.Driver);
             Assert.Equal(driver, returnedCrewMember);
@@ -113,7 +113,7 @@ namespace Tests.Entities.Places
         public void should_throws_exception_when_try_to_disembark_driver_if_smart_fortwo_is_null()
         {
             var place = new PlaceMock();
-            var exception = Assert.Throws<Exception>(() => place.DisembarkSmartFortwoDriver());
+            var exception = Assert.Throws<Exception>(() => place.DisembarkDriverFromSmartFortwo());
             Assert.Equal($"{place.GetType().Name} does not have a smart fortwo", exception.Message);
         }
 
