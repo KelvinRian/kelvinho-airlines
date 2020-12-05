@@ -1,6 +1,6 @@
-﻿namespace kelvinho_airlines.Entities
+﻿namespace kelvinho_airlines.Entities.CrewMembers
 {
-    public class Prisoner : CrewMember
+    public class Prisoner : CommonCrewMember
     {
         public Prisoner(string name) : base(name)
         {

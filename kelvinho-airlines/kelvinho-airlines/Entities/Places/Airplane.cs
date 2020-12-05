@@ -1,4 +1,5 @@
-﻿using kelvinho_airlines.Enums;
+﻿using kelvinho_airlines.Entities.CrewMembers;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
@@ -8,25 +9,26 @@ namespace kelvinho_airlines.Entities.Places
     {
         public override string ToString()
         {
-            var technicalCrew = GetStringCrewMembersByType(CrewType.Technical);
-            var cabinCrew = GetStringCrewMembersByType(CrewType.Cabin);
-            var commonCrew = GetStringCrewMembersByType(CrewType.Common);
+            var technicalCrewMembers = GetCrewMembersInfo(CrewMembers.Where(x => x is TechnicalCrewMember));
+            var cabinCrewMembers = GetCrewMembersInfo(CrewMembers.Where(x => x is CabinCrewMember));
+            var commonCrewMembers = GetCrewMembersInfo(CrewMembers.Where(x => x is CommonCrewMember));
 
-            return $"Airplane:\n\nTechnical Crew:   {technicalCrew}\n\nCabin Crew:   {cabinCrew}\n\nCommon Crew:   {commonCrew}\n";
+
+            return $"Airplane:\n\nTechnical Crew:   {technicalCrewMembers}\n\nCabin Crew:   {cabinCrewMembers}\n\nCommon Crew:   {commonCrewMembers}\n";
         }
 
-        private string GetStringCrewMembersByType(CrewType type)
+        private string GetCrewMembersInfo(IEnumerable<CrewMember> crewMembers)
         {
-            var crewMembers = new StringBuilder();
-            foreach (var crewMember in CrewMembers.Where(x => x.CrewType == type))
+            var crewMembersInfo = new StringBuilder();
+            foreach (var crewMember in crewMembers)
             {
-                if (crewMembers.Length > 0)
-                    crewMembers.Append("   |   ");
+                if (crewMembersInfo.Length > 0)
+                    crewMembersInfo.Append("   |   ");
 
-                crewMembers.Append($"{crewMember.GetType().Name}: {crewMember.Name}");
+                crewMembersInfo.Append($"{crewMember.GetType().Name}: {crewMember.Name}");
             }
 
-            return crewMembers.ToString();
+            return crewMembersInfo.ToString();
         }
     }
 }

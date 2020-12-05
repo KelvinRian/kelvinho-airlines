@@ -1,4 +1,5 @@
 ﻿using kelvinho_airlines.Entities;
+using kelvinho_airlines.Entities.CrewMembers;
 using System;
 using System.Collections.Generic;
 using System.Linq;

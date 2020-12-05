@@ -1,4 +1,5 @@
 ﻿using kelvinho_airlines.Entities;
+using kelvinho_airlines.Entities.CrewMembers;
 using kelvinho_airlines.Entities.Places;
 using kelvinho_airlines.Services.Interfaces;
 using kelvinho_airlines.Utils.ExtensionMethods;

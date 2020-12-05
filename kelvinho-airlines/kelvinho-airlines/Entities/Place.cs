@@ -1,4 +1,5 @@
-﻿using kelvinho_airlines.Utils.ExtensionMethods;
+﻿using kelvinho_airlines.Entities.CrewMembers;
+using kelvinho_airlines.Utils.ExtensionMethods;
 using System;
 using System.Collections.Generic;
 

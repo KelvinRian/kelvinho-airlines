@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using kelvinho_airlines.Entities.CrewMembers;
+using System.Collections.Generic;
 using System.Text;
 
 namespace kelvinho_airlines.Entities.Places

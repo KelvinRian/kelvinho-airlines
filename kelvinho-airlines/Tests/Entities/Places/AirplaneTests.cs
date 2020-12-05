@@ -1,4 +1,4 @@
-﻿using kelvinho_airlines.Entities;
+﻿using kelvinho_airlines.Entities.CrewMembers;
 using kelvinho_airlines.Entities.Places;
 using System.Collections.Generic;
 using Xunit;

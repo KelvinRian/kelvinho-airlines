@@ -1,4 +1,4 @@
-﻿using kelvinho_airlines.Entities;
+﻿using kelvinho_airlines.Entities.CrewMembers;
 using kelvinho_airlines.Services;
 using kelvinho_airlines.Services.Interfaces;
 using System;
