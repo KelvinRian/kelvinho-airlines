@@ -5,10 +5,10 @@ namespace kelvinho_airlines.Entities.CrewMembers
 {
     public abstract class CrewMember
     {
-        public string Name { get; protected set; }
-        public HashSet<Type> IncompatibleCrewMemberTypes { get; protected set; } = new HashSet<Type>();
+        public string Name { get; private set; }
+        public List<Type> IncompatibleCrewMemberTypes { get; protected set; } = new List<Type>();
 
-        public CrewMember(string name) : base()
+        public CrewMember(string name)
         {
             Name = name;
         }
