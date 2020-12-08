@@ -1,4 +1,4 @@
-﻿using kelvinho_airlines.Entities;
+﻿using kelvinho_airlines.Entities.CrewMembers;
 using kelvinho_airlines.Services;
 using kelvinho_airlines.Services.Interfaces;
 using System;
@@ -16,9 +16,8 @@ namespace kelvinho_airlines
                 typeof(Policeman),
                 typeof(FlightServiceChief)
             };
-            var smartFotwoService = new SmartFortwoService(drivers);
 
-            ITripService tripService = new TripService(smartFotwoService);
+            ITripService tripService = new TripService(drivers);
 
             tripService.Execute();
         }

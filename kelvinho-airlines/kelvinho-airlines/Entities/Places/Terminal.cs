@@ -1,30 +1,21 @@
-﻿using System.Collections.Generic;
+﻿using kelvinho_airlines.Entities.CrewMembers;
+using System.Collections.Generic;
 using System.Text;
 
 namespace kelvinho_airlines.Entities.Places
 {
     public class Terminal : Place
     {
-        public Terminal(HashSet<CrewMember> crewMembers) : base()
+        private Terminal(List<CrewMember> crewMembers)
         {
             Board(crewMembers);
         }
 
-        public static Terminal StartWithASmartFortwo(HashSet<CrewMember> crewMembers)
+        public static Terminal CreateWithSmartFortwo(List<CrewMember> crewMembers)
         {
             var terminal = new Terminal(crewMembers);
             terminal.SetSmartFortwo(new SmartFortwo());
             return terminal;
-        }
-
-        public override void Board(HashSet<CrewMember> crewMembers)
-        {
-            CrewMembers.UnionWith(crewMembers);
-        }
-
-        public override void Disembark(List<CrewMember> crewMembers)
-        {
-            CrewMembers.ExceptWith(crewMembers);
         }
 
         public override string ToString()
