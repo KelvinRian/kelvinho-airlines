@@ -7,6 +7,7 @@ using kelvinho_airlines.Utils.ExtensionMethods;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace kelvinho_airlines.Services
@@ -14,6 +15,7 @@ namespace kelvinho_airlines.Services
     public class TripService : ITripService
     {
         private Place _currentPlace;
+        private Place _destinyPlace;
         private readonly Terminal _terminal;
         private readonly Airplane _airplane;
         private readonly List<Type> _drivers;
@@ -34,6 +36,12 @@ namespace kelvinho_airlines.Services
             });
             _airplane = new Airplane();
             _currentPlace = _terminal;
+        }
+
+        public TripService(Place currentPlace, Place destinyPlace)
+        {
+            _currentPlace = currentPlace;
+            _destinyPlace = destinyPlace;
         }
 
         public void Execute()
