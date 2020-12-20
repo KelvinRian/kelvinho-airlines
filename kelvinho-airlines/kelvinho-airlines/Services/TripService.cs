@@ -2,6 +2,7 @@
 using kelvinho_airlines.Entities.CrewMembers;
 using kelvinho_airlines.Entities.Places;
 using kelvinho_airlines.Services.Interfaces;
+using kelvinho_airlines.Utils;
 using kelvinho_airlines.Utils.ExtensionMethods;
 using System;
 using System.Collections.Generic;
@@ -16,7 +17,6 @@ namespace kelvinho_airlines.Services
         private readonly Terminal _terminal;
         private readonly Airplane _airplane;
         private readonly List<Type> _drivers;
-        private readonly string _dividingLine = "*******************************************************************************************";
 
         public TripService(List<Type> drivers)
         {
@@ -89,7 +89,7 @@ namespace kelvinho_airlines.Services
             Console.WriteLine(_airplane);
 
             Console.ForegroundColor = defaultColor;
-            Console.WriteLine(_dividingLine);
+            Console.WriteLine(TextHelper.DividingLine);
         }
 
         private void GetInTheSmartFortwo(Type driverType, Type passengerType)
@@ -158,7 +158,7 @@ namespace kelvinho_airlines.Services
 
             ChangePlaceOfSmartFortwo();
 
-            Console.WriteLine($"\n{_dividingLine}");
+            Console.WriteLine($"\n{TextHelper.DividingLine}");
         }
 
         private void ShowMovementInfo()
