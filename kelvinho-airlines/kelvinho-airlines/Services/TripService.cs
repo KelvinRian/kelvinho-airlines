@@ -7,7 +7,6 @@ using kelvinho_airlines.Utils.ExtensionMethods;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Text;
 
 namespace kelvinho_airlines.Services
@@ -16,14 +15,12 @@ namespace kelvinho_airlines.Services
     {
         private Place _currentPlace;
         private Place _destinyPlace;
-        private readonly Terminal _terminal;
-        private readonly Airplane _airplane;
         private readonly List<Type> _drivers;
 
         public TripService(List<Type> drivers)
         {
             _drivers = drivers;
-            _terminal = Terminal.CreateWithSmartFortwo(new List<CrewMember>
+            _currentPlace = Terminal.CreateWithSmartFortwo(new List<CrewMember>
             {
                 new Pilot("Soler"),
                 new Officer("Coleta"),
@@ -34,14 +31,7 @@ namespace kelvinho_airlines.Services
                 new Policeman("Tyler"),
                 new Prisoner("Mahnke")
             });
-            _airplane = new Airplane();
-            _currentPlace = _terminal;
-        }
-
-        public TripService(Place currentPlace, Place destinyPlace)
-        {
-            _currentPlace = currentPlace;
-            _destinyPlace = destinyPlace;
+            _destinyPlace = new Airplane();
         }
 
         public void Execute()
@@ -91,10 +81,12 @@ namespace kelvinho_airlines.Services
             Console.WriteLine($"{_currentPlace.SmartFortwo}\n");
 
             Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine(_terminal);
+            var terminal = _currentPlace is Terminal ? _currentPlace : _destinyPlace;
+            Console.WriteLine(terminal);
 
             Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine(_airplane);
+            var airplane = _currentPlace is Airplane ? _currentPlace : _destinyPlace;
+            Console.WriteLine(airplane);
 
             Console.ForegroundColor = defaultColor;
             Console.WriteLine(TextHelper.DividingLine);
@@ -172,9 +164,7 @@ namespace kelvinho_airlines.Services
         private void ShowMovementInfo()
         {
             var origin = _currentPlace.GetType().Name;
-            var destiny = _currentPlace is Terminal
-                ? typeof(Airplane).Name
-                : typeof(Terminal).Name;
+            var destiny = _destinyPlace.GetType().Name;
 
             Console.WriteLine($"Moving ({origin} => {destiny})");
         }
@@ -225,18 +215,12 @@ namespace kelvinho_airlines.Services
 
         private void ChangePlaceOfSmartFortwo()
         {
-            if (_currentPlace is Terminal)
-            {
-                _airplane.SetSmartFortwo(_currentPlace.SmartFortwo);
-                _currentPlace.RemoveSmartFortwo();
-                _currentPlace = _airplane;
-            }
-            else
-            {
-                _terminal.SetSmartFortwo(_currentPlace.SmartFortwo);
-                _currentPlace.RemoveSmartFortwo();
-                _currentPlace = _terminal;
-            }
+            _destinyPlace.SetSmartFortwo(_currentPlace.SmartFortwo);
+            _currentPlace.RemoveSmartFortwo();
+
+            var newCurrentPlace = _destinyPlace;
+            _destinyPlace = _currentPlace;
+            _currentPlace = newCurrentPlace;
         }
 
         private void DisembarkPassenger()
