@@ -50,8 +50,35 @@ namespace kelvinho_airlines.Entities
         public void Board(List<CrewMember> crewMembers)
             => CrewMembers.AddRange(crewMembers);
 
-        public void Remove(List<CrewMember> crewMembers)
-            => CrewMembers.RemoveAll(x => crewMembers.Contains(x));
+        public void Remove(params CrewMember[] crewMembers)
+        {
+            foreach (var crewMember in crewMembers)
+                CrewMembers.Remove(crewMember);
+        }
 
+        public void PutDriverInSmartFortwo(CrewMember driver)
+        {
+            if(SmartFortwo.IsNull())
+                throw new Exception(_nullSmartFortwoException);
+
+            SmartFortwo.EnterDriver(driver);
+        }
+
+        public void PutPassengerInSmartFortwo(CrewMember passenger)
+        {
+            if (SmartFortwo.IsNull())
+                throw new Exception(_nullSmartFortwoException);
+
+            SmartFortwo.EnterPassenger(passenger);
+        }
+
+        public void PutBothInSmartFortwo(CrewMember driver, CrewMember passenger)
+        {
+            if (SmartFortwo.IsNull())
+                throw new Exception(_nullSmartFortwoException);
+
+            SmartFortwo.EnterDriver(driver);
+            SmartFortwo.EnterPassenger(passenger);
+        }
     }
 }

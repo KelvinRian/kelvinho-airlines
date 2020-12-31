@@ -210,10 +210,74 @@ namespace Tests.Entities.Places
 
             place.Board(crewMembers);
 
-            place.Remove(crewMembersThatMustBeRemoved);
+            place.Remove(crewMembersThatMustBeRemoved.First(), crewMembersThatMustBeRemoved.Last());
 
             Assert.Contains(crewMemberThatMustStay, place.CrewMembers);
             Assert.Single(place.CrewMembers);
+        }
+
+        [Fact]
+        public void should_put_driver_in_smart_fortwo()
+        {
+            var place = new PlaceMock();
+            place.SetSmartFortwo(new SmartFortwo());
+
+            var driver = new Pilot("pilot name");
+
+            place.PutDriverInSmartFortwo(driver);
+
+            Assert.Equal(driver, place.SmartFortwo.Driver);
+        }
+
+        [Fact]
+        public void should_throws_exception_when_try_to_put_driver_in_a_null_smart_fortwo()
+        {
+            var place = new PlaceMock();
+            var exception = Assert.Throws<Exception>(() => place.PutDriverInSmartFortwo(new Officer("name")));
+            Assert.Equal($"{place.GetType().Name} does not have a smart fortwo", exception.Message);
+        }
+
+        [Fact]
+        public void should_put_passenger_in_smart_fortwo()
+        {
+            var place = new PlaceMock();
+            place.SetSmartFortwo(new SmartFortwo());
+
+            var passenger = new Pilot("passenger name");
+
+            place.PutPassengerInSmartFortwo(passenger);
+
+            Assert.Equal(passenger, place.SmartFortwo.Passenger);
+        }
+
+        [Fact]
+        public void should_throws_exception_when_try_to_put_passenger_in_a_null_smart_fortwo()
+        {
+            var place = new PlaceMock();
+            var exception = Assert.Throws<Exception>(() => place.PutPassengerInSmartFortwo(new Officer("name")));
+            Assert.Equal($"{place.GetType().Name} does not have a smart fortwo", exception.Message);
+        }
+
+        [Fact]
+        public void should_put_both_in_smart_fortwo()
+        {
+            var place = new PlaceMock();
+            place.SetSmartFortwo(new SmartFortwo());
+
+            var passenger = new Prisoner("passenger name");
+            var driver = new Policeman("pilot name");
+            place.PutBothInSmartFortwo(driver, passenger);
+
+            Assert.Equal(passenger, place.SmartFortwo.Passenger);
+            Assert.Equal(driver, place.SmartFortwo.Driver);
+        }
+
+        [Fact]
+        public void should_throws_exception_when_try_to_put_both_in_a_null_smart_fortwo()
+        {
+            var place = new PlaceMock();
+            var exception = Assert.Throws<Exception>(() => place.PutBothInSmartFortwo(new Officer("name"), new Pilot("name")));
+            Assert.Equal($"{place.GetType().Name} does not have a smart fortwo", exception.Message);
         }
     }
 }

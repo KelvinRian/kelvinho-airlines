@@ -2,6 +2,7 @@
 using kelvinho_airlines.Entities.CrewMembers;
 using kelvinho_airlines.Entities.Places;
 using kelvinho_airlines.Services.Interfaces;
+using kelvinho_airlines.Utils;
 using kelvinho_airlines.Utils.ExtensionMethods;
 using System;
 using System.Collections.Generic;
@@ -13,15 +14,13 @@ namespace kelvinho_airlines.Services
     public class TripService : ITripService
     {
         private Place _currentPlace;
-        private readonly Terminal _terminal;
-        private readonly Airplane _airplane;
+        private Place _destinyPlace;
         private readonly List<Type> _drivers;
-        private readonly string _dividingLine = "*******************************************************************************************";
 
         public TripService(List<Type> drivers)
         {
             _drivers = drivers;
-            _terminal = Terminal.CreateWithSmartFortwo(new List<CrewMember>
+            _currentPlace = Terminal.CreateWithSmartFortwo(new List<CrewMember>
             {
                 new Pilot("Soler"),
                 new Officer("Coleta"),
@@ -32,42 +31,41 @@ namespace kelvinho_airlines.Services
                 new Policeman("Tyler"),
                 new Prisoner("Mahnke")
             });
-            _airplane = new Airplane();
-            _currentPlace = _terminal;
+            _destinyPlace = new Airplane();
         }
 
         public void Execute()
         {
             Console.WriteLine("Started\n");
             ShowInfo();
-            GetInTheSmartFortwo(typeof(Pilot), typeof(Officer));
+            PutInTheSmartFortwo(_currentPlace.CrewMembers.FirstOrDefault(x => x is Pilot), _currentPlace.CrewMembers.FirstOrDefault(x => x is Officer));
             Move();
             DisembarkPassenger();
             Move();
-            GetInTheSmartFortwo(null, typeof(Officer));
-            Move();
-            DisembarkPassenger();
-            Move();
-            DisembarkDriver();
-            GetInTheSmartFortwo(typeof(FlightServiceChief), typeof(FlightAttendant));
-            Move();
-            DisembarkPassenger();
-            Move();
-            GetInTheSmartFortwo(null, typeof(FlightAttendant));
-            Move();
-            DisembarkPassenger();
-            Move();
-            GetInTheSmartFortwo(null, typeof(Pilot));
+            PutInTheSmartFortwo(null, _currentPlace.CrewMembers.FirstOrDefault(x => x is Officer));
             Move();
             DisembarkPassenger();
             Move();
             DisembarkDriver();
-            GetInTheSmartFortwo(typeof(Policeman), typeof(Prisoner));
+            PutInTheSmartFortwo(_currentPlace.CrewMembers.FirstOrDefault(x => x is FlightServiceChief), _currentPlace.CrewMembers.FirstOrDefault(x => x is FlightAttendant));
+            Move();
+            DisembarkPassenger();
+            Move();
+            PutInTheSmartFortwo(null, _currentPlace.CrewMembers.FirstOrDefault(x => x is FlightAttendant));
+            Move();
+            DisembarkPassenger();
+            Move();
+            PutInTheSmartFortwo(null, _currentPlace.CrewMembers.FirstOrDefault(x => x is Pilot));
+            Move();
+            DisembarkPassenger();
+            Move();
+            DisembarkDriver();
+            PutInTheSmartFortwo(_currentPlace.CrewMembers.FirstOrDefault(x => x is Policeman), _currentPlace.CrewMembers.FirstOrDefault(x => x is Prisoner));
             Move();
             Disembark();
-            GetInTheSmartFortwo(typeof(Pilot), null);
+            PutInTheSmartFortwo(_currentPlace.CrewMembers.FirstOrDefault(x => x is Pilot), null);
             Move();
-            GetInTheSmartFortwo(null, typeof(FlightServiceChief));
+            PutInTheSmartFortwo(null, _currentPlace.CrewMembers.FirstOrDefault(x => x is FlightServiceChief));
             Move();
             Disembark();
         }
@@ -83,52 +81,50 @@ namespace kelvinho_airlines.Services
             Console.WriteLine($"{_currentPlace.SmartFortwo}\n");
 
             Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine(_terminal);
+            var terminal = _currentPlace is Terminal ? _currentPlace : _destinyPlace;
+            Console.WriteLine(terminal);
 
             Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine(_airplane);
+            var airplane = _currentPlace is Airplane ? _currentPlace : _destinyPlace;
+            Console.WriteLine(airplane);
 
             Console.ForegroundColor = defaultColor;
-            Console.WriteLine(_dividingLine);
+            Console.WriteLine(TextHelper.DividingLine);
         }
 
-        private void GetInTheSmartFortwo(Type driverType, Type passengerType)
+        private void PutInTheSmartFortwo(CrewMember driver, CrewMember passenger)
         {
-            if (_currentPlace.SmartFortwo == null)
+            if (!CurrentPlaceHasSmartFortwo())
                 throw new Exception("The smart fortwo was not found!");
 
-            CrewMember driver;
-            CrewMember passenger;
-
-            driver = _currentPlace.CrewMembers.FirstOrDefault(c => c.GetType() == driverType);
-            passenger = _currentPlace.CrewMembers.FirstOrDefault(c => c.GetType() == passengerType);
-
-            if (driver != null)
-            {
-                if (!_drivers.Contains(driver.GetType()))
+            if (!driver.IsNull())
+                if (!DriverHasAuthorization(driver))
                     throw new Exception($"{driver.Name} is not authorized to drive this vehicle");
-            }
 
-            _currentPlace.Remove(new List<CrewMember>() { driver, passenger });
+            _currentPlace.Remove(driver, passenger);
 
-            if (passenger == null && driver == null)
-            {
+            var shouldPutBoth = !passenger.IsNull() && !driver.IsNull();
+            var shouldPutOnlyDriver = !driver.IsNull() && passenger.IsNull();
+            var shouldPutOnlyPassenger = !passenger.IsNull() && driver.IsNull();
+
+            if (!shouldPutBoth && !shouldPutOnlyDriver && !shouldPutOnlyPassenger)
                 return;
-            }
-            else if (passenger == null && driver != null)
-            {
-                _currentPlace.SmartFortwo.EnterDriver(driver);
-            }
-            else if (passenger != null && driver == null)
-            {
-                _currentPlace.SmartFortwo.EnterPassenger(passenger);
-            }
-            else
-            {
-                _currentPlace.SmartFortwo.EnterBoth(driver, passenger);
-            }
 
-            var crewMembers = new List<CrewMember> { driver, passenger };
+            else if (shouldPutOnlyDriver)
+                _currentPlace.PutDriverInSmartFortwo(driver);
+
+            else if (shouldPutOnlyPassenger)
+                _currentPlace.PutPassengerInSmartFortwo(passenger);
+
+            else
+                _currentPlace.PutBothInSmartFortwo(driver, passenger);
+
+            ShowBoardingInfo(driver, passenger);
+            ShowInfo();
+        }
+
+        private void ShowBoardingInfo(params CrewMember[] crewMembers)
+        {
             StringBuilder crewMembersInfo = new StringBuilder();
 
             foreach (var crewMember in crewMembers.Where(c => c != null))
@@ -140,8 +136,10 @@ namespace kelvinho_airlines.Services
             }
 
             Console.WriteLine($"Boarding ({crewMembersInfo})\n");
-            ShowInfo();
         }
+
+        private bool DriverHasAuthorization(CrewMember driver)
+            => _drivers.Contains(driver.GetType());
 
         private void Move()
         {
@@ -158,15 +156,13 @@ namespace kelvinho_airlines.Services
 
             ChangePlaceOfSmartFortwo();
 
-            Console.WriteLine($"\n{_dividingLine}");
+            Console.WriteLine($"\n{TextHelper.DividingLine}");
         }
 
         private void ShowMovementInfo()
         {
             var origin = _currentPlace.GetType().Name;
-            var destiny = _currentPlace is Terminal
-                ? typeof(Airplane).Name
-                : typeof(Terminal).Name;
+            var destiny = _destinyPlace.GetType().Name;
 
             Console.WriteLine($"Moving ({origin} => {destiny})");
         }
@@ -217,25 +213,19 @@ namespace kelvinho_airlines.Services
 
         private void ChangePlaceOfSmartFortwo()
         {
-            if (_currentPlace is Terminal)
-            {
-                _airplane.SetSmartFortwo(_currentPlace.SmartFortwo);
-                _currentPlace.RemoveSmartFortwo();
-                _currentPlace = _airplane;
-            }
-            else
-            {
-                _terminal.SetSmartFortwo(_currentPlace.SmartFortwo);
-                _currentPlace.RemoveSmartFortwo();
-                _currentPlace = _terminal;
-            }
+            _destinyPlace.SetSmartFortwo(_currentPlace.SmartFortwo);
+            _currentPlace.RemoveSmartFortwo();
+
+            var newCurrentPlace = _destinyPlace;
+            _destinyPlace = _currentPlace;
+            _currentPlace = newCurrentPlace;
         }
 
         private void DisembarkPassenger()
         {
             CrewMember passenger;
 
-            if(!CurrentPlaceHasSmartFortwo())
+            if (!CurrentPlaceHasSmartFortwo())
                 throw new Exception("The smart fortwo was not found!");
 
             passenger = _currentPlace.DisembarkPassengerFromSmartFortwo();
