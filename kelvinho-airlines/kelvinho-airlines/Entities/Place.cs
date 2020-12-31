@@ -61,17 +61,24 @@ namespace kelvinho_airlines.Entities
             if(SmartFortwo.IsNull())
                 throw new Exception(_nullSmartFortwoException);
 
-            SmartFortwo?.EnterDriver(driver);
+            SmartFortwo.EnterDriver(driver);
         }
 
         public void PutPassengerInSmartFortwo(CrewMember passenger)
         {
-            //TODO
+            if (SmartFortwo.IsNull())
+                throw new Exception(_nullSmartFortwoException);
+
+            SmartFortwo.EnterPassenger(passenger);
         }
 
         public void PutBothInSmartFortwo(CrewMember driver, CrewMember passenger)
         {
-            //TODO
+            if (SmartFortwo.IsNull())
+                throw new Exception(_nullSmartFortwoException);
+
+            SmartFortwo.EnterDriver(driver);
+            SmartFortwo.EnterPassenger(passenger);
         }
     }
 }

@@ -36,38 +36,38 @@ namespace kelvinho_airlines.Services
 
         public void Execute()
         {
-            //Console.WriteLine("Started\n");
-            //ShowInfo();
-            //GetInTheSmartFortwo(typeof(Pilot), typeof(Officer));
-            //Move();
-            //DisembarkPassenger();
-            //Move();
-            //GetInTheSmartFortwo(null, typeof(Officer));
-            //Move();
-            //DisembarkPassenger();
-            //Move();
-            //DisembarkDriver();
-            //GetInTheSmartFortwo(typeof(FlightServiceChief), typeof(FlightAttendant));
-            //Move();
-            //DisembarkPassenger();
-            //Move();
-            //GetInTheSmartFortwo(null, typeof(FlightAttendant));
-            //Move();
-            //DisembarkPassenger();
-            //Move();
-            //GetInTheSmartFortwo(null, typeof(Pilot));
-            //Move();
-            //DisembarkPassenger();
-            //Move();
-            //DisembarkDriver();
-            //GetInTheSmartFortwo(typeof(Policeman), typeof(Prisoner));
-            //Move();
-            //Disembark();
-            //GetInTheSmartFortwo(typeof(Pilot), null);
-            //Move();
-            //GetInTheSmartFortwo(null, typeof(FlightServiceChief));
-            //Move();
-            //Disembark();
+            Console.WriteLine("Started\n");
+            ShowInfo();
+            PutInTheSmartFortwo(_currentPlace.CrewMembers.FirstOrDefault(x => x is Pilot), _currentPlace.CrewMembers.FirstOrDefault(x => x is Officer));
+            Move();
+            DisembarkPassenger();
+            Move();
+            PutInTheSmartFortwo(null, _currentPlace.CrewMembers.FirstOrDefault(x => x is Officer));
+            Move();
+            DisembarkPassenger();
+            Move();
+            DisembarkDriver();
+            PutInTheSmartFortwo(_currentPlace.CrewMembers.FirstOrDefault(x => x is FlightServiceChief), _currentPlace.CrewMembers.FirstOrDefault(x => x is FlightAttendant));
+            Move();
+            DisembarkPassenger();
+            Move();
+            PutInTheSmartFortwo(null, _currentPlace.CrewMembers.FirstOrDefault(x => x is FlightAttendant));
+            Move();
+            DisembarkPassenger();
+            Move();
+            PutInTheSmartFortwo(null, _currentPlace.CrewMembers.FirstOrDefault(x => x is Pilot));
+            Move();
+            DisembarkPassenger();
+            Move();
+            DisembarkDriver();
+            PutInTheSmartFortwo(_currentPlace.CrewMembers.FirstOrDefault(x => x is Policeman), _currentPlace.CrewMembers.FirstOrDefault(x => x is Prisoner));
+            Move();
+            Disembark();
+            PutInTheSmartFortwo(_currentPlace.CrewMembers.FirstOrDefault(x => x is Pilot), null);
+            Move();
+            PutInTheSmartFortwo(null, _currentPlace.CrewMembers.FirstOrDefault(x => x is FlightServiceChief));
+            Move();
+            Disembark();
         }
 
         private void ShowInfo()
@@ -103,11 +103,11 @@ namespace kelvinho_airlines.Services
 
             _currentPlace.Remove(driver, passenger);
 
-            var driverAndPassengerAreNull = passenger.IsNull() && driver.IsNull();
-            var shouldPutOnlyDriver = !driver.IsNull();
-            var shouldPutOnlyPassenger = !passenger.IsNull();
+            var shouldPutBoth = !passenger.IsNull() && !driver.IsNull();
+            var shouldPutOnlyDriver = !driver.IsNull() && passenger.IsNull();
+            var shouldPutOnlyPassenger = !passenger.IsNull() && driver.IsNull();
 
-            if (driverAndPassengerAreNull)
+            if (!shouldPutBoth && !shouldPutOnlyDriver && !shouldPutOnlyPassenger)
                 return;
 
             else if (shouldPutOnlyDriver)
