@@ -62,12 +62,12 @@ namespace kelvinho_airlines.Services
             DisembarkDriver();
             PutInTheSmartFortwo(_currentPlace.CrewMembers.FirstOrDefault(x => x is Policeman), _currentPlace.CrewMembers.FirstOrDefault(x => x is Prisoner));
             Move();
-            Disembark();
+            DisembarkAll();
             PutInTheSmartFortwo(_currentPlace.CrewMembers.FirstOrDefault(x => x is Pilot), null);
             Move();
             PutInTheSmartFortwo(null, _currentPlace.CrewMembers.FirstOrDefault(x => x is FlightServiceChief));
             Move();
-            Disembark();
+            DisembarkAll();
         }
 
         private void ShowInfo()
@@ -123,11 +123,17 @@ namespace kelvinho_airlines.Services
             ShowInfo();
         }
 
+        private bool CurrentPlaceHasSmartFortwo()
+            => !_currentPlace.SmartFortwo.IsNull();
+
+        private bool DriverHasAuthorization(CrewMember driver)
+            => _drivers.Contains(driver.GetType());
+
         private void ShowBoardingInfo(params CrewMember[] crewMembers)
         {
             StringBuilder crewMembersInfo = new StringBuilder();
 
-            foreach (var crewMember in crewMembers.Where(c => c != null))
+            foreach (var crewMember in crewMembers.Where(c => !c.IsNull()))
             {
                 if (crewMembersInfo.Length > 0)
                     crewMembersInfo.Append(", ");
@@ -137,9 +143,6 @@ namespace kelvinho_airlines.Services
 
             Console.WriteLine($"Boarding ({crewMembersInfo})\n");
         }
-
-        private bool DriverHasAuthorization(CrewMember driver)
-            => _drivers.Contains(driver.GetType());
 
         private void Move()
         {
@@ -166,9 +169,6 @@ namespace kelvinho_airlines.Services
 
             Console.WriteLine($"Moving ({origin} => {destiny})");
         }
-
-        private bool CurrentPlaceHasSmartFortwo()
-            => !_currentPlace.SmartFortwo.IsNull();
 
         private bool SmartFortwoAtCurrentPlaceHasDriver()
             => _currentPlace.SmartFortwoHasDriver();
@@ -247,7 +247,7 @@ namespace kelvinho_airlines.Services
             ShowInfo();
         }
 
-        private void Disembark()
+        private void DisembarkAll()
         {
             if (!CurrentPlaceHasSmartFortwo())
                 throw new Exception("The smart fortwo was not found!");
