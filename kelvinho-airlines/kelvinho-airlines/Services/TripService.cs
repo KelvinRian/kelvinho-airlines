@@ -154,8 +154,11 @@ namespace kelvinho_airlines.Services
             if (!SmartFortwoAtCurrentPlaceHasDriver())
                 throw new Exception("Smart Fortwo can't move without a driver");
 
-            VerifyCrewMembersMovement(_currentPlace.CrewMembers);
-            VerifyCrewMembersMovement(_currentPlace.GetSmartFortwoCrewMembers());
+            var currentPlaceMembersCanStayTogether = CrewChecker.CrewMembersAreAllowedToStayTogether(_currentPlace.CrewMembers);
+            var smartFortwoMembersCanStayTogether = CrewChecker.CrewMembersAreAllowedToStayTogether(_currentPlace.GetSmartFortwoCrewMembers());
+
+            if (!currentPlaceMembersCanStayTogether || !smartFortwoMembersCanStayTogether)
+                throw new Exception("Some incompatible crew members are together alone or the prisoner is far from policeman");
 
             ChangePlaceOfSmartFortwo();
 
@@ -172,44 +175,6 @@ namespace kelvinho_airlines.Services
 
         private bool SmartFortwoAtCurrentPlaceHasDriver()
             => _currentPlace.SmartFortwoHasDriver();
-
-        private void VerifyCrewMembersMovement(IEnumerable<CrewMember> crewMembers)
-        {
-            HashSet<Type> IncompatibleTypesOfCrewMembersAtPlace = new HashSet<Type>();
-            HashSet<Type> crewMemberTypesAtPlace = new HashSet<Type>();
-            bool hasPoliceman = false;
-            bool hasPrisoner = false;
-
-            foreach (var crewMember in crewMembers.Where(x => !x.IsNull()))
-            {
-                if (crewMember is Policeman)
-                    hasPoliceman = true;
-
-                if (crewMember is Prisoner)
-                {
-                    hasPrisoner = true;
-                }
-                else
-                {
-                    crewMemberTypesAtPlace.Add(crewMember.GetType());
-                    IncompatibleTypesOfCrewMembersAtPlace.UnionWith(crewMember.IncompatibleCrewMemberTypes);
-                }
-            }
-
-            if (hasPrisoner && !hasPoliceman)
-                throw new Exception("The prisoner can't stay with the others crew members without a policeman");
-
-            IncompatibleTypesOfCrewMembersAtPlace.IntersectWith(crewMemberTypesAtPlace);
-
-            if (IncompatibleTypesOfCrewMembersAtPlace.Count() == 2 || IncompatibleTypesOfCrewMembersAtPlace.Count() == 1)
-            {
-                crewMemberTypesAtPlace.ExceptWith(IncompatibleTypesOfCrewMembersAtPlace);
-                if (crewMemberTypesAtPlace.Count() == 0)
-                {
-                    throw new Exception("There is some crew members that cannot be together at the place");
-                }
-            }
-        }
 
         private void ChangePlaceOfSmartFortwo()
         {

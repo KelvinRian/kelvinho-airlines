@@ -1,4 +1,5 @@
 ﻿using kelvinho_airlines.Entities.CrewMembers;
+using kelvinho_airlines.Utils.ExtensionMethods;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -8,19 +9,37 @@ namespace kelvinho_airlines.Utils
     {
         public static bool CrewMembersAreAllowedToStayTogether(IEnumerable<CrewMember> crewMembers)
         {
-            if (crewMembers.Any(x => x is Prisoner) && !crewMembers.Any(x => x is Policeman))
-                return false;
+            if (crewMembers.IsNull())
+                return true;
+            else
+                return !IsThereAPrisonerWithoutPoliceman(crewMembers)
+                    && !IncompatibleCrewMembersAreTogetherAlone(crewMembers);
+        }
 
-            var crewMembersByType = crewMembers.GroupBy(x => x.GetType());
-            foreach(var crewMemberByType in crewMembersByType)
+        private static bool IsThereAPrisonerWithoutPoliceman(IEnumerable<CrewMember> crewMembers)
+        {
+                var hasPrisoner = crewMembers.Where(x => !x.IsNull()).Any(x => x is Prisoner);
+                var hasPoliceman = crewMembers.Where(x => !x.IsNull()).Any(x => x is Policeman);
+                return hasPrisoner && !hasPoliceman;
+        }
+
+        private static bool IncompatibleCrewMembersAreTogetherAlone(IEnumerable<CrewMember> crewMembers)
+        {
+            var crewMembersByType = crewMembers.Where(x => !x.IsNull()).GroupBy(x => x.GetType());
+
+            foreach (var crewMember in crewMembers.Where(x => !x.IsNull()))
             {
-                foreach(var crewMember in crewMembers)
+                foreach (var crewMemberGrouping in crewMembersByType)
                 {
-                    if (!crewMemberByType.FirstOrDefault().CanBeTogetherWith(crewMember) && crewMembersByType.Count() == 2)
-                        return false;
+                    var firstCrewMemberOfGrouping = crewMemberGrouping.FirstOrDefault();
+                    var theyAreTheOnlyTypesAtTheLocation = crewMembersByType.Count() == 2;
+
+                    if (!crewMember.CanBeTogetherWith(firstCrewMemberOfGrouping) && theyAreTheOnlyTypesAtTheLocation)
+                        return true;
                 }
             }
-            return true;
+
+            return false;
         }
     }
 }

@@ -91,5 +91,27 @@ namespace Tests.Utils
 
             Assert.True(result);
         }
+
+        [Fact]
+        public void Should_accept_null_crew_member_list()
+        {
+            var result = CrewChecker.CrewMembersAreAllowedToStayTogether(null);
+            Assert.True(result);
+        }
+
+        [Fact]
+        public void Should_disregard_null_elements()
+        {
+            var crewMembers = new List<CrewMember>
+            {
+                new Pilot("pilot"),
+                new Officer("flightAttendant"),
+                null
+            };
+
+            var result = CrewChecker.CrewMembersAreAllowedToStayTogether(crewMembers);
+
+            Assert.True(result);
+        }
     }
 }
