@@ -1,4 +1,5 @@
 ﻿using kelvinho_airlines.Entities.CrewMembers;
+using System;
 
 namespace Tests.Mocks
 {
@@ -6,6 +7,11 @@ namespace Tests.Mocks
     {
         public CrewMemberMock(string name) : base(name)
         {
+        }
+
+        public void AddIncompatibleCrewMemberType(Type crewMemberType)
+        {
+            IncompatibleCrewMemberTypes.Add(crewMemberType);
         }
     }
 }

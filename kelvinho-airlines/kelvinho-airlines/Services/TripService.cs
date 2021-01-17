@@ -62,12 +62,12 @@ namespace kelvinho_airlines.Services
             DisembarkDriver();
             PutInTheSmartFortwo(_currentPlace.CrewMembers.FirstOrDefault(x => x is Policeman), _currentPlace.CrewMembers.FirstOrDefault(x => x is Prisoner));
             Move();
-            Disembark();
+            DisembarkAll();
             PutInTheSmartFortwo(_currentPlace.CrewMembers.FirstOrDefault(x => x is Pilot), null);
             Move();
             PutInTheSmartFortwo(null, _currentPlace.CrewMembers.FirstOrDefault(x => x is FlightServiceChief));
             Move();
-            Disembark();
+            DisembarkAll();
         }
 
         private void ShowInfo()
@@ -123,11 +123,17 @@ namespace kelvinho_airlines.Services
             ShowInfo();
         }
 
+        private bool CurrentPlaceHasSmartFortwo()
+            => !_currentPlace.SmartFortwo.IsNull();
+
+        private bool DriverHasAuthorization(CrewMember driver)
+            => _drivers.Contains(driver.GetType());
+
         private void ShowBoardingInfo(params CrewMember[] crewMembers)
         {
             StringBuilder crewMembersInfo = new StringBuilder();
 
-            foreach (var crewMember in crewMembers.Where(c => c != null))
+            foreach (var crewMember in crewMembers.Where(c => !c.IsNull()))
             {
                 if (crewMembersInfo.Length > 0)
                     crewMembersInfo.Append(", ");
@@ -137,9 +143,6 @@ namespace kelvinho_airlines.Services
 
             Console.WriteLine($"Boarding ({crewMembersInfo})\n");
         }
-
-        private bool DriverHasAuthorization(CrewMember driver)
-            => _drivers.Contains(driver.GetType());
 
         private void Move()
         {
@@ -151,8 +154,11 @@ namespace kelvinho_airlines.Services
             if (!SmartFortwoAtCurrentPlaceHasDriver())
                 throw new Exception("Smart Fortwo can't move without a driver");
 
-            VerifyCrewMembersMovement(_currentPlace.CrewMembers);
-            VerifyCrewMembersMovement(_currentPlace.GetSmartFortwoCrewMembers());
+            var currentPlaceMembersCanStayTogether = CrewChecker.CrewMembersAreAllowedToStayTogether(_currentPlace.CrewMembers);
+            var smartFortwoMembersCanStayTogether = CrewChecker.CrewMembersAreAllowedToStayTogether(_currentPlace.GetSmartFortwoCrewMembers());
+
+            if (!currentPlaceMembersCanStayTogether || !smartFortwoMembersCanStayTogether)
+                throw new Exception("Some incompatible crew members are together alone or the prisoner is far from policeman");
 
             ChangePlaceOfSmartFortwo();
 
@@ -167,49 +173,8 @@ namespace kelvinho_airlines.Services
             Console.WriteLine($"Moving ({origin} => {destiny})");
         }
 
-        private bool CurrentPlaceHasSmartFortwo()
-            => !_currentPlace.SmartFortwo.IsNull();
-
         private bool SmartFortwoAtCurrentPlaceHasDriver()
             => _currentPlace.SmartFortwoHasDriver();
-
-        private void VerifyCrewMembersMovement(IEnumerable<CrewMember> crewMembers)
-        {
-            HashSet<Type> IncompatibleTypesOfCrewMembersAtPlace = new HashSet<Type>();
-            HashSet<Type> crewMemberTypesAtPlace = new HashSet<Type>();
-            bool hasPoliceman = false;
-            bool hasPrisoner = false;
-
-            foreach (var crewMember in crewMembers.Where(x => !x.IsNull()))
-            {
-                if (crewMember is Policeman)
-                    hasPoliceman = true;
-
-                if (crewMember is Prisoner)
-                {
-                    hasPrisoner = true;
-                }
-                else
-                {
-                    crewMemberTypesAtPlace.Add(crewMember.GetType());
-                    IncompatibleTypesOfCrewMembersAtPlace.UnionWith(crewMember.IncompatibleCrewMemberTypes);
-                }
-            }
-
-            if (hasPrisoner && !hasPoliceman)
-                throw new Exception("The prisoner can't stay with the others crew members without a policeman");
-
-            IncompatibleTypesOfCrewMembersAtPlace.IntersectWith(crewMemberTypesAtPlace);
-
-            if (IncompatibleTypesOfCrewMembersAtPlace.Count() == 2 || IncompatibleTypesOfCrewMembersAtPlace.Count() == 1)
-            {
-                crewMemberTypesAtPlace.ExceptWith(IncompatibleTypesOfCrewMembersAtPlace);
-                if (crewMemberTypesAtPlace.Count() == 0)
-                {
-                    throw new Exception("There is some crew members that cannot be together at the place");
-                }
-            }
-        }
 
         private void ChangePlaceOfSmartFortwo()
         {
@@ -247,7 +212,7 @@ namespace kelvinho_airlines.Services
             ShowInfo();
         }
 
-        private void Disembark()
+        private void DisembarkAll()
         {
             if (!CurrentPlaceHasSmartFortwo())
                 throw new Exception("The smart fortwo was not found!");

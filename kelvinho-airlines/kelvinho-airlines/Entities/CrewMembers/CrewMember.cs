@@ -17,5 +17,8 @@ namespace kelvinho_airlines.Entities.CrewMembers
         {
             return $"{GetType().Name}: {Name}";
         }
+
+        public bool CanBeTogetherWith(CrewMember crewMember)
+            => !IncompatibleCrewMemberTypes.Contains(crewMember.GetType());
     }
 }
