@@ -3,9 +3,11 @@ using kelvinho_airlines.Services;
 using kelvinho_airlines.Services.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace kelvinho_airlines
 {
+    [ExcludeFromCodeCoverage]
     class Program
     {
         static void Main(string[] args)
