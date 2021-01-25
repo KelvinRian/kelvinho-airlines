@@ -19,7 +19,10 @@ namespace kelvinho_airlines
                 typeof(FlightServiceChief)
             };
 
-            ITripService tripService = new TripService(drivers);
+            ITripInformerService tripInformerService = new TripInformerService();
+            IMovementService movementService = new MovementService(drivers, tripInformerService);
+
+            ITripService tripService = new TripService(tripInformerService, movementService);
 
             tripService.Execute();
         }
