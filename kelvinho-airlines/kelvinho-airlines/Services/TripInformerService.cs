@@ -50,6 +50,7 @@ namespace kelvinho_airlines.Services
             var destinyType = destiny.GetType().Name;
 
             Console.WriteLine($"Moving ({originType} => {destinyType})");
+            Console.WriteLine($"\n{TextHelper.DividingLine}");
         }
 
         public void ShowStartMessage()

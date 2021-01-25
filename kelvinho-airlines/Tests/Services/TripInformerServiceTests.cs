@@ -29,7 +29,7 @@ namespace Tests.Services
 
             _service.ShowMovementInfo(terminal, airplane);
 
-            var expectedOutput = "Moving (Terminal => Airplane)\r\n";
+            var expectedOutput = "Moving (Terminal => Airplane)\r\n\n*******************************************************************************************\r\n";
 
             Assert.Equal(expectedOutput, output.ToString());
         }

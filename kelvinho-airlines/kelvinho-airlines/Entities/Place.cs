@@ -44,8 +44,8 @@ namespace kelvinho_airlines.Entities
             => SmartFortwo?.DisembarkAll()
                 ?? throw new Exception(_nullSmartFortwoException);
 
-        public void Board(CrewMember crewMembers)
-            => CrewMembers.Add(crewMembers);
+        public void Board(CrewMember crewMember)
+            => CrewMembers.Add(crewMember);
 
         public void Board(List<CrewMember> crewMembers)
             => CrewMembers.AddRange(crewMembers);
