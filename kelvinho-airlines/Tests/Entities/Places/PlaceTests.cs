@@ -11,7 +11,7 @@ namespace Tests.Entities.Places
     public class PlaceTests
     {
         [Fact]
-        public void should_get_crew_members_from_smart_fortwo()
+        public void Should_get_crew_members_from_smart_fortwo()
         {
             var smartFortwo = new SmartFortwo();
             var driver = new FlightServiceChief("driver name");
@@ -29,7 +29,7 @@ namespace Tests.Entities.Places
         }
 
         [Fact]
-        public void should_throw_exception_when_try_to_get_crew_member_from_a_null_smart_fortwo()
+        public void Should_throw_exception_when_try_to_get_crew_member_from_a_null_smart_fortwo()
         {
             var place = new PlaceMock();
             var exception = Assert.Throws<Exception>(() => place.GetSmartFortwoCrewMembers());
@@ -37,7 +37,7 @@ namespace Tests.Entities.Places
         }
 
         [Fact]
-        public void should_check_whether_smart_fortwo_has_driver_and_return_true_if_it_has()
+        public void Should_check_whether_smart_fortwo_has_driver_and_return_true_if_it_has()
         {
             var smartFortwo = new SmartFortwo();
             var driver = new Pilot("driver name");
@@ -52,7 +52,7 @@ namespace Tests.Entities.Places
         }
 
         [Fact]
-        public void should_check_whether_smart_fortwo_has_driver_and_return_false_if_it_doesnt_have()
+        public void Should_check_whether_smart_fortwo_has_driver_and_return_false_if_it_doesnt_have()
         {
             var place = new PlaceMock();
             place.SetSmartFortwo(new SmartFortwo());
@@ -63,7 +63,7 @@ namespace Tests.Entities.Places
         }
 
         [Fact]
-        public void should_check_whether_smart_fortwo_has_driver_and_throw_exception_if_it_is_null()
+        public void Should_check_whether_smart_fortwo_has_driver_and_throw_exception_if_it_is_null()
         {
             var place = new PlaceMock();
             var exception = Assert.Throws<Exception>(() => place.SmartFortwoHasDriver());
@@ -71,7 +71,7 @@ namespace Tests.Entities.Places
         }
 
         [Fact]
-        public void should_disembark_passenger_from_smart_fortwo_and_return_it()
+        public void Should_disembark_passenger_from_smart_fortwo_and_return_it()
         {
             var smartFortwo = new SmartFortwo();
             var passenger = new Officer("passenger name");
@@ -87,7 +87,7 @@ namespace Tests.Entities.Places
         }
 
         [Fact]
-        public void should_throws_exception_when_try_to_disembark_passenger_if_smart_fortwo_is_null()
+        public void Should_throws_exception_when_try_to_disembark_passenger_if_smart_fortwo_is_null()
         {
             var place = new PlaceMock();
             var exception = Assert.Throws<Exception>(() => place.DisembarkPassengerFromSmartFortwo());
@@ -95,7 +95,7 @@ namespace Tests.Entities.Places
         }
 
         [Fact]
-        public void should_disembark_driver_from_smart_fortwo_and_return_it()
+        public void Should_disembark_driver_from_smart_fortwo_and_return_it()
         {
             var smartFortwo = new SmartFortwo();
             var driver = new Officer("driver name");
@@ -111,7 +111,7 @@ namespace Tests.Entities.Places
         }
 
         [Fact]
-        public void should_throws_exception_when_try_to_disembark_driver_if_smart_fortwo_is_null()
+        public void Should_throws_exception_when_try_to_disembark_driver_if_smart_fortwo_is_null()
         {
             var place = new PlaceMock();
             var exception = Assert.Throws<Exception>(() => place.DisembarkDriverFromSmartFortwo());
@@ -119,7 +119,7 @@ namespace Tests.Entities.Places
         }
 
         [Fact]
-        public void should_disembark_all_from_smart_fortwo_and_return_it()
+        public void Should_disembark_all_from_smart_fortwo_and_return_it()
         {
             var smartFortwo = new SmartFortwo();
             var driver = new Pilot("driver name");
@@ -139,7 +139,7 @@ namespace Tests.Entities.Places
         }
 
         [Fact]
-        public void should_throws_exception_when_try_to_disembark_all_if_smart_fortwo_is_null()
+        public void Should_throws_exception_when_try_to_disembark_all_if_smart_fortwo_is_null()
         {
             var place = new PlaceMock();
             var exception = Assert.Throws<Exception>(() => place.DisembarkAllFromSmartFortwo());
@@ -147,7 +147,7 @@ namespace Tests.Entities.Places
         }
 
         [Fact]
-        public void should_set_crew_members_and_null_smart_fortwo_exception_in_constructor()
+        public void Should_set_crew_members_and_null_smart_fortwo_exception_in_constructor()
         {
             var place = new PlaceMock();
 
@@ -156,7 +156,7 @@ namespace Tests.Entities.Places
         }
 
         [Fact]
-        public void should_remove_smart_fortwo()
+        public void Should_remove_smart_fortwo()
         {
             var place = new PlaceMock();
             place.SetSmartFortwo(new SmartFortwo());
@@ -167,7 +167,7 @@ namespace Tests.Entities.Places
         }
 
         [Fact]
-        public void should_board_a_single_crew_member()
+        public void Should_board_a_single_crew_member()
         {
             var place = new PlaceMock();
             var crewMember = new Policeman("crew member name");
@@ -178,7 +178,7 @@ namespace Tests.Entities.Places
         }
 
         [Fact]
-        public void should_board_a_list_of_crew_members()
+        public void Should_board_a_list_of_crew_members()
         {
             var place = new PlaceMock();
             var crewMembers = new List<CrewMember>
@@ -194,7 +194,7 @@ namespace Tests.Entities.Places
         }
 
         [Fact]
-        public void should_remove_crew_members()
+        public void Should_remove_crew_members()
         {
             var place = new PlaceMock();
             var crewMemberThatMustStay = new Pilot("pilot name");
@@ -217,7 +217,7 @@ namespace Tests.Entities.Places
         }
 
         [Fact]
-        public void should_put_driver_in_smart_fortwo()
+        public void Should_put_driver_in_smart_fortwo()
         {
             var place = new PlaceMock();
             place.SetSmartFortwo(new SmartFortwo());
@@ -230,7 +230,7 @@ namespace Tests.Entities.Places
         }
 
         [Fact]
-        public void should_throws_exception_when_try_to_put_driver_in_a_null_smart_fortwo()
+        public void Should_throws_exception_when_try_to_put_driver_in_a_null_smart_fortwo()
         {
             var place = new PlaceMock();
             var exception = Assert.Throws<Exception>(() => place.PutDriverInSmartFortwo(new Officer("name")));
@@ -238,7 +238,7 @@ namespace Tests.Entities.Places
         }
 
         [Fact]
-        public void should_put_passenger_in_smart_fortwo()
+        public void Should_put_passenger_in_smart_fortwo()
         {
             var place = new PlaceMock();
             place.SetSmartFortwo(new SmartFortwo());
@@ -251,7 +251,7 @@ namespace Tests.Entities.Places
         }
 
         [Fact]
-        public void should_throws_exception_when_try_to_put_passenger_in_a_null_smart_fortwo()
+        public void Should_throws_exception_when_try_to_put_passenger_in_a_null_smart_fortwo()
         {
             var place = new PlaceMock();
             var exception = Assert.Throws<Exception>(() => place.PutPassengerInSmartFortwo(new Officer("name")));
@@ -259,7 +259,7 @@ namespace Tests.Entities.Places
         }
 
         [Fact]
-        public void should_put_both_in_smart_fortwo()
+        public void Should_put_both_in_smart_fortwo()
         {
             var place = new PlaceMock();
             place.SetSmartFortwo(new SmartFortwo());
@@ -273,7 +273,7 @@ namespace Tests.Entities.Places
         }
 
         [Fact]
-        public void should_throws_exception_when_try_to_put_both_in_a_null_smart_fortwo()
+        public void Should_throws_exception_when_try_to_put_both_in_a_null_smart_fortwo()
         {
             var place = new PlaceMock();
             var exception = Assert.Throws<Exception>(() => place.PutBothInSmartFortwo(new Officer("name"), new Pilot("name")));
